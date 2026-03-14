@@ -1,70 +1,112 @@
-# Getting Started with Create React App
+## Project Exam 2
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## _Holidaze_
 
-## Available Scripts
+Screenshot here
 
-In the project directory, you can run:
+## :books: Description
 
-### `npm start`
+This is my delivery for **Project Exam 2** at Noroff. The task was to apply the skills learned over the last two years and create a booking site.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### :sparkles: Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- List of features is coming
 
-### `npm test`
+<br><br>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## :globe_with_meridians: API
 
-### `npm run build`
+This project uses the [Noroff API V2](https://docs.noroff.dev/docs/v2/holidaze/bookings) for the booking site functionality.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<br><br>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## :rocket: Live Version
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+[Holidaze](https://example.com)
 
-### `npm run eject`
+<br><br>
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## :computer: Testing
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+If you want to test site, you can visit the live version.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+<br><br>
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## :handshake: Contribution
 
-## Learn More
+If you'd like to contribute, feel free to fork the repo and follow the steps under _Getting Started_.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+<br><br>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## :construction_worker: Getting Started
 
-### Code Splitting
+Before you begin, make sure you have the following installed:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- [Node.js](https://nodejs.org/)
+- A terminal
+- Your preferred code editor
 
-### Analyzing the Bundle Size
+### Clone the Repository
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+git clone git@github.com:VildeAvloes/project-exam-2.git
 
-### Making a Progressive Web App
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Navigate to project folder
 
-### Advanced Configuration
+```
+cd project-exam-2
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Install dependencies
 
-### Deployment
+```
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Usage
 
-### `npm run build` fails to minify
+When installed you can use the following commands to run the application
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Start:** Launches the application in web browser and watch for changes.
+
+```
+npm run start
+```
+
+**Build:** Builds the application for production
+
+```
+npm run build
+```
+
+**Format:** Formats files using Prettier
+
+```
+npm run format
+```
+
+<br><br>
+
+## :wrench: Technologies Used
+
+- React
+- Bootstrap
+- React Router
+- Prettier
+- Google Material Symbols
+- GitHub pages
+
+<br><br>
+
+## :page_facing_up: License
+
+This project is open for educational use as part of Noroff's Project Exam 2 Assignment. Please contact me before reusing the code for anything outside of that.
+
+<br><br>
+
+## :envelope: Contact
+
+- [My GitHub Profile](https://github.com/VildeAvloes)
+- [My LinkedIn Page](https://www.linkedin.com/in/vildeavloes/)
