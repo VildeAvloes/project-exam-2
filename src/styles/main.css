@@ -26,6 +26,12 @@ body {
 
 .logo {
   font-family: "Playfair Display", serif;
+  font-size: 1.8rem;
   font-weight: 700;
   letter-spacing: 1px;
+  color: #1f3d3a;
+}
+
+.logo:hover {
+  color: #1f3d3a;
 }
