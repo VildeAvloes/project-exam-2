@@ -1,0 +1,13 @@
+@import "./_variables.scss";
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+body {
+  background-color: $light;
+  color: $dark;
+}
+
+.logo {
+  font-family: $headings-font-family;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
