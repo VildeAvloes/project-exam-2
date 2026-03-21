@@ -24,8 +24,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  width: 2.625em;
+  height: 2.625em;
   border-radius: 50%;
 }
 
@@ -73,5 +73,17 @@ body {
     border: none;
     box-shadow: none;
     outline: none;
+  }
+}
+
+//footer
+
+.footer-link {
+  color: $primary;
+  text-decoration: none;
+
+  &:hover {
+    color: $primary-hover;
+    text-decoration: underline;
   }
 }

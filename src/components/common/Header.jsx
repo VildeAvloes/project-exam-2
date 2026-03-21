@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+
+  function handleToggleMenu() {
+    setIsOpen((prev) => !prev);
+  }
+
   function handleCloseMenu() {
-    setIsOpen(!isOpen);
+    setIsOpen(false);
   }
 
   return (
@@ -18,7 +24,7 @@ export default function Header() {
           <button
             className="navbar-toggler"
             type="button"
-            onClick={handleCloseMenu}
+            onClick={handleToggleMenu}
             aria-label="Toggle navigation"
             aria-expanded={isOpen}
             aria-controls="mainNavbar"
@@ -29,10 +35,10 @@ export default function Header() {
           </button>
 
           <div
-            className={`collapse navbar-collapse justify-content-center ${isOpen ? "show" : ""}`}
+            className={`collapse navbar-collapse ${isOpen ? "show" : ""}`}
             id="mainNavbar"
           >
-            <div className="navbar-nav mx-lg-auto text-start text-lg-center">
+            <div className="navbar-nav ms-lg-auto text-start">
               <Link className="nav-link" to="/" onClick={handleCloseMenu}>
                 Home
               </Link>
@@ -51,22 +57,7 @@ export default function Header() {
         </div>
       </nav>
 
-      <div className="bg-light py-3">
-        <div className="container">
-          <form className="d-flex justify-content-center">
-            <div className="d-flex w-100 w-lg-50 gap-2">
-              <input
-                className="form-control"
-                type="search"
-                placeholder="Search venues"
-              />
-              <button className="btn btn-primary btn-icon">
-                <span className="material-symbols-outlined">search</span>
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
+      <SearchBar />
     </header>
   );
 }
