@@ -7,6 +7,10 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    document.title = "Holidaze | Home";
+  }, []);
+
+  useEffect(() => {
     async function loadVenues() {
       const data = await getVenues();
       setVenues(data);

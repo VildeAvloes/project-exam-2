@@ -19,6 +19,10 @@ export default function Venue() {
     loadVenue();
   }, [id]);
 
+  // useEffect(() => {
+  //   document.title = `Holidaze | ${venue.name}`;
+  // }, []);
+
   console.log("venue.state", venue);
 
   if (loading) {
