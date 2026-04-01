@@ -1,7 +1,7 @@
-import { BASE_URL } from "./constants";
+import { BASE_URL } from "../constants";
 
 export async function getVenues() {
-  const url = `${BASE_URL}/venues`;
+  const url = `${BASE_URL}/holidaze/venues`;
 
   try {
     const response = await fetch(url);

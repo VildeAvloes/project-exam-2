@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
+import LogoutButton from "../LogoutButton";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const { auth } = useAuth();
 
   function handleToggleMenu() {
     setIsOpen((prev) => !prev);
@@ -49,9 +52,22 @@ export default function Header() {
               >
                 Contact
               </Link>
-              <Link className="nav-link" to="/login" onClick={handleCloseMenu}>
-                Login
-              </Link>
+              {auth ? (
+                <>
+                  <Link
+                    className="nav-link"
+                    to="/profile"
+                    onClick={handleCloseMenu}
+                  >
+                    {auth.name}
+                  </Link>
+                  <LogoutButton />
+                </>
+              ) : (
+                <Link to="/login" className="nav-link">
+                  Login
+                </Link>
+              )}
             </div>
           </div>
         </div>
