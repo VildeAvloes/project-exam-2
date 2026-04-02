@@ -103,7 +103,7 @@ export default function Register() {
             )}
           </div>
 
-          <div className="card shadow-sm">
+          <div className="card shadow">
             <div className="card-body p-4 p-lg-5">
               {apiError && (
                 <div className="alert alert-danger" role="alert">
@@ -181,13 +181,15 @@ export default function Register() {
                   </label>
                 </div>
 
-                <button
-                  className="btn btn-primary w-100"
-                  type="submit"
-                  disabled={loading}
-                >
-                  {loading ? "Registering..." : "Register"}
-                </button>
+                <div className="d-flex justify-content-center">
+                  <button
+                    className="btn btn-primary w-50"
+                    type="submit"
+                    disabled={loading}
+                  >
+                    {loading ? "Registering..." : "Register"}
+                  </button>
+                </div>
               </form>
             </div>
           </div>

@@ -65,7 +65,7 @@ export default function Header() {
                 </>
               ) : (
                 <Link to="/login" className="nav-link">
-                  Login
+                  Log in
                 </Link>
               )}
             </div>

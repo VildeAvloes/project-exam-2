@@ -1,89 +1,12 @@
-@import "./_variables.scss";
+@import "./_variables";
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+@import "./_header";
+@import "./_footer";
+@import "./_profile";
+@import "./_ui";
 
 body {
   background-color: white;
   color: $dark;
-}
-
-//icons
-.material-symbols-outlined {
-  font-size: 1.5em;
-}
-
-.hamburger {
-  color: $primary;
-
-  &:hover,
-  &:focus {
-    color: $primary-hover;
-  }
-}
-
-.btn-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.625em;
-  height: 2.625em;
-  border-radius: 50%;
-}
-
-//header
-.logo {
-  font-family: $headings-font-family;
-  font-size: 2em;
-  font-weight: 700;
-  letter-spacing: 3px;
-  color: $primary;
-  text-transform: lowercase;
-
-  &:hover,
-  &:focus {
-    color: $primary-hover;
-  }
-}
-
-.nav-link {
-  text-transform: uppercase;
-  color: $primary;
-  font-weight: 700;
-  letter-spacing: 3px;
-
-  &:hover {
-    color: $primary-hover;
-    text-decoration: underline;
-  }
-
-  &:focus {
-    color: $primary-hover;
-  }
-}
-
-.navbar-toggler {
-  border: none;
-  box-shadow: none;
-  outline: none;
-  padding: 0.25rem;
-
-  &:focus,
-  &:active,
-  &:focus-visible {
-    color: $primary-hover;
-    border: none;
-    box-shadow: none;
-    outline: none;
-  }
-}
-
-//footer
-
-.footer-link {
-  color: $primary;
-  text-decoration: none;
-
-  &:hover {
-    color: $primary-hover;
-    text-decoration: underline;
-  }
 }

@@ -1,4 +1,4 @@
-import { AUTH_KEY } from "../api/constants";
+import { AUTH_KEY } from "../../api/constants";
 
 export function saveAuth(authData) {
   console.log("Saving auth:", authData);

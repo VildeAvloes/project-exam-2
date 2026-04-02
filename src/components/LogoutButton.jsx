@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { clearAuth } from "../storage/clearAuth";
+import { clearAuth } from "../utils/storage/clearAuth";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function LogoutButton() {
@@ -15,10 +15,10 @@ export default function LogoutButton() {
   return (
     <button
       type="button"
-      className="btn btn-outline-primary"
+      className="btn btn-primary logout-button"
       onClick={handleLogout}
     >
-      Logout
+      Log out
     </button>
   );
 }

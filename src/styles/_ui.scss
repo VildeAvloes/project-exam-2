@@ -1,0 +1,26 @@
+.material-symbols-outlined {
+  font-size: 1.5em;
+}
+
+.hamburger {
+  color: $primary;
+
+  &:hover,
+  &:focus {
+    color: $primary-hover;
+  }
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.625em;
+  height: 2.625em;
+  border-radius: 50%;
+}
+
+.logout-button {
+  text-transform: uppercase;
+  font-weight: 700;
+}

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function VenueCard({ venue }) {
   return (
     <div className="col">
-      <div className="card p-3">
+      <div className="card shadow p-3">
         <h5>{venue.name}</h5>
 
         <p>{venue.location?.city}</p>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../api/auth/login";
 import { createApiKey } from "../api/auth/createApiKey";
-import { saveAuth } from "../storage/saveAuth";
+import { saveAuth } from "../utils/storage/saveAuth";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function Login() {
@@ -104,7 +104,7 @@ export default function Login() {
             </p>
           </div>
 
-          <div className="card shadow-sm">
+          <div className="card shadow">
             <div className="card-body p-4 p-lg-5">
               {apiError && (
                 <div className="alert alert-danger" role="alert">
@@ -151,13 +151,15 @@ export default function Login() {
                   )}
                 </div>
 
-                <button
-                  className="btn btn-primary w-100"
-                  type="submit"
-                  disabled={loading}
-                >
-                  {loading ? "Logging in..." : "Login"}
-                </button>
+                <div className="d-flex justify-content-center">
+                  <button
+                    className="btn btn-primary w-50"
+                    type="submit"
+                    disabled={loading}
+                  >
+                    {loading ? "Logging in..." : "Login"}
+                  </button>
+                </div>
               </form>
             </div>
           </div>

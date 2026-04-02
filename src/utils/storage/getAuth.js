@@ -1,4 +1,4 @@
-import { AUTH_KEY } from "../api/constants";
+import { AUTH_KEY } from "../../api/constants";
 
 export function getAuth() {
   const value = localStorage.getItem(AUTH_KEY);
