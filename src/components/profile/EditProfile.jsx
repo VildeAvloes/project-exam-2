@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { updateProfile } from "../../api/profile/updateProfile";
 import { saveAuth } from "../../utils/storage/saveAuth";
+import Loader from "../common/Loader";
 
 export default function EditProfile({ auth, setAuth, onCancel }) {
   const [avatarUrl, setAvatarUrl] = useState(
@@ -75,6 +76,16 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
     }
   }
 
+  if (loading) {
+    return (
+      <div className="card shadow-sm">
+        <div className="card-body p-4 p-lg-5">
+          <Loader text="Updating profile..." />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="card shadow-sm">
       <div className="card-body p-4 p-lg-5">
@@ -146,34 +157,6 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
               >
                 Remove banner
               </button>
-            </div>
-          </div>
-
-          <div className="mb-4">
-            <h3 className="h6 mb-3">Preview</h3>
-
-            <div className="mb-3">
-              {bannerRemoved || !bannerUrl ? (
-                <div className="profile-banner profile-banner-fallback" />
-              ) : (
-                <img
-                  src={bannerUrl}
-                  alt="Banner preview"
-                  className="profile-banner img-fluid"
-                />
-              )}
-            </div>
-
-            <div className="text-center">
-              {avatarRemoved || !avatarUrl ? (
-                <div className="profile-avatar profile-avatar-fallback rounded-circle" />
-              ) : (
-                <img
-                  src={avatarUrl}
-                  alt="Avatar preview"
-                  className="profile-avatar rounded-circle img-fluid"
-                />
-              )}
             </div>
           </div>
 

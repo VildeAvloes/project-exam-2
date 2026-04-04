@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getVenues } from "../api/venues/getVenues";
 import VenueCard from "../components/venues/VenueCard";
+import Loader from "../components/common/Loader";
 
 export default function Home() {
   const [venues, setVenues] = useState([]);
@@ -21,7 +22,7 @@ export default function Home() {
   }, []);
 
   if (loading) {
-    return <p className="container py-4">Loading venues...</p>;
+    return <Loader text="Loading venues..." />;
   }
 
   return (

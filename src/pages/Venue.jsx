@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getVenueById } from "../api/venues/getVenueById";
+import Loader from "../components/common/Loader";
 
 export default function Venue() {
   const { id } = useParams();
@@ -26,11 +27,7 @@ export default function Venue() {
   console.log("venue.state", venue);
 
   if (loading) {
-    return (
-      <div className="container py-4">
-        <p>Loading venue...</p>
-      </div>
-    );
+    return <Loader text="Loading venue..." />;
   }
 
   if (!venue) {
