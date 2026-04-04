@@ -4,6 +4,7 @@ import { loginUser } from "../api/auth/login";
 import { createApiKey } from "../api/auth/createApiKey";
 import { saveAuth } from "../utils/storage/saveAuth";
 import { useAuth } from "../contexts/AuthContext";
+import Message from "../components/common/Message";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function Login() {
 
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
-  const [apiError, setApiError] = useState("");
+  const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export default function Login() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    setApiError("");
+    setStatus(null);
 
     console.log("Login values:", values);
 
@@ -84,10 +85,19 @@ export default function Login() {
       saveAuth(authData);
       setAuth(authData);
 
+      setStatus({
+        type: "success",
+        message: "Login successful. Redirecting...",
+      });
+
       navigate("/");
     } catch (error) {
       console.error("Login error:", error);
-      setApiError(error.message || "Login failed");
+      setStatus({
+        type: "error",
+        title: "Login failed",
+        message: error.message || "Something went wrong.",
+      });
     } finally {
       setLoading(false);
     }
@@ -106,10 +116,13 @@ export default function Login() {
 
           <div className="card shadow">
             <div className="card-body p-4 p-lg-5">
-              {apiError && (
-                <div className="alert alert-danger" role="alert">
-                  {apiError}
-                </div>
+              {status && (
+                <Message
+                  variant={status.type === "error" ? "danger" : status.type}
+                  title={status.title}
+                  message={status.message}
+                  center={false}
+                />
               )}
 
               <form onSubmit={handleSubmit} noValidate>

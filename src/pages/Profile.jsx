@@ -3,10 +3,15 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import EditProfile from "../components/profile/EditProfile";
+import Loader from "../components/common/Loader";
 
 export default function Profile() {
-  const { auth, setAuth } = useAuth();
+  const { auth, setAuth, loading } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
+
+  if (loading) {
+    return <Loader text="Loading profile.." />;
+  }
 
   if (!auth) {
     return <Navigate to="/login" replace />;

@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { getVenues } from "../api/venues/getVenues";
 import VenueCard from "../components/venues/VenueCard";
 import Loader from "../components/common/Loader";
+import Message from "../components/common/Message";
 
 export default function Home() {
   const [venues, setVenues] = useState([]);
+  const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -13,9 +15,28 @@ export default function Home() {
 
   useEffect(() => {
     async function loadVenues() {
-      const data = await getVenues();
-      setVenues(data);
-      setLoading(false);
+      try {
+        const data = await getVenues();
+        setVenues(data);
+
+        if (!data.length) {
+          setStatus({
+            type: "info",
+            title: "No venues found",
+            message: "There are no venues to display right now.",
+          });
+        } else {
+          setStatus(null);
+        }
+      } catch (err) {
+        setStatus({
+          type: "error",
+          title: "Something went wrong",
+          message: err.message || "Failed to load venues.",
+        });
+      } finally {
+        setLoading(false);
+      }
     }
 
     loadVenues();
@@ -23,6 +44,18 @@ export default function Home() {
 
   if (loading) {
     return <Loader text="Loading venues..." />;
+  }
+
+  if (status && status.type === "error") {
+    return (
+      <Message variant="danger" title={status.title} message={status.message} />
+    );
+  }
+
+  if (status && status.type === "info") {
+    return (
+      <Message variant="info" title={status.title} message={status.message} />
+    );
   }
 
   return (

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../api/auth/register";
+import Message from "../components/common/Message";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function Register() {
 
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
-  const [apiError, setApiError] = useState("");
+  const [status, setStatus] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -52,7 +53,7 @@ export default function Register() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    setApiError("");
+    setStatus(null);
     setIsSubmitted(false);
 
     console.log("📝 Register values:", values);
@@ -75,12 +76,21 @@ export default function Register() {
       setIsSubmitted(true);
       setValues(initialValues);
 
+      setStatus({
+        type: "success",
+        message: "Register successful. Redirecting...",
+      });
+
       setTimeout(() => {
         navigate("/login");
       }, 1200);
     } catch (error) {
       console.error("❌ Register error:", error);
-      setApiError(error.message || "Something went wrong");
+      setStatus({
+        type: "error",
+        title: "Login failed",
+        message: error.message || "Something went wrong.",
+      });
     } finally {
       setLoading(false);
     }
@@ -105,10 +115,13 @@ export default function Register() {
 
           <div className="card shadow">
             <div className="card-body p-4 p-lg-5">
-              {apiError && (
-                <div className="alert alert-danger" role="alert">
-                  {apiError}
-                </div>
+              {status && (
+                <Message
+                  variant={status.type === "error" ? "danger" : status.type}
+                  title={status.title}
+                  message={status.message}
+                  center={false}
+                />
               )}
 
               <form onSubmit={handleSubmit} noValidate>

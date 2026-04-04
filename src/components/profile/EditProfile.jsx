@@ -2,6 +2,7 @@ import { useState } from "react";
 import { updateProfile } from "../../api/profile/updateProfile";
 import { saveAuth } from "../../utils/storage/saveAuth";
 import Loader from "../common/Loader";
+import Message from "../common/Message";
 
 export default function EditProfile({ auth, setAuth, onCancel }) {
   const [avatarUrl, setAvatarUrl] = useState(
@@ -15,8 +16,7 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
   const [bannerRemoved, setBannerRemoved] = useState(false);
 
   const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [error, setError] = useState("");
+  const [status, setStatus] = useState(null);
 
   function handleRemoveAvatar() {
     setAvatarUrl("");
@@ -31,8 +31,7 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
   async function handleSubmit(event) {
     event.preventDefault();
     setLoading(true);
-    setError("");
-    setSuccessMessage("");
+    setStatus(null);
 
     try {
       const payload = {};
@@ -51,26 +50,44 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
         };
       }
 
-      let updatedProfile = null;
-
       if (Object.keys(payload).length > 0) {
-        updatedProfile = await updateProfile(payload);
+        await updateProfile(payload);
       }
 
       const updatedAuth = {
         ...auth,
-        avatar: avatarRemoved ? null : (updatedProfile?.avatar ?? auth.avatar),
-        banner: bannerRemoved ? null : (updatedProfile?.banner ?? auth.banner),
+        avatar:
+          avatarRemoved || !avatarUrl.trim()
+            ? null
+            : {
+                url: avatarUrl.trim(),
+                alt: `${auth.name} avatar`,
+              },
+        banner:
+          bannerRemoved || !bannerUrl.trim()
+            ? null
+            : {
+                url: bannerUrl.trim(),
+                alt: `${auth.name} banner`,
+              },
       };
 
       saveAuth(updatedAuth);
       setAuth(updatedAuth);
 
-      setSuccessMessage("Profile updated successfully.");
+      setStatus({
+        type: "success",
+        message: "Profile updated successfully.",
+      });
+
       setAvatarRemoved(false);
       setBannerRemoved(false);
     } catch (err) {
-      setError(err.message || "Something went wrong.");
+      setStatus({
+        type: "error",
+        title: "Something went wrong",
+        message: err.message || "Failed to update profile.",
+      });
     } finally {
       setLoading(false);
     }
@@ -97,11 +114,14 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
           </button>
         </div>
 
-        {successMessage && (
-          <div className="alert alert-success">{successMessage}</div>
+        {status && (
+          <Message
+            variant={status.type === "error" ? "danger" : status.type}
+            title={status.title}
+            message={status.message}
+            center={false}
+          />
         )}
-
-        {error && <div className="alert alert-danger">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -169,12 +189,8 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
               Cancel
             </button>
 
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={loading}
-            >
-              {loading ? "Saving..." : "Save changes"}
+            <button type="submit" className="btn btn-primary">
+              Save changes
             </button>
           </div>
         </form>

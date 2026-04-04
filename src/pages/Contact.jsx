@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Message from "../components/common/Message";
 
 export default function Contact() {
   const initialValues = {
@@ -10,7 +11,7 @@ export default function Contact() {
 
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [status, setStatus] = useState(null);
 
   function validate(formValues) {
     const newErrors = {};
@@ -41,20 +42,25 @@ export default function Contact() {
       ...prev,
       [name]: value,
     }));
+    setStatus(null);
   }
 
   function handleSubmit(event) {
     event.preventDefault();
+    setStatus(null);
 
     const validationErrors = validate(values);
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
       console.log("Contact form data:", values);
-      setIsSubmitted(true);
+
+      setStatus({
+        type: "success",
+        message: "Your message has been submitted.",
+      });
+
       setValues(initialValues);
-    } else {
-      setIsSubmitted(false);
     }
   }
 
@@ -68,19 +74,22 @@ export default function Contact() {
         <div className="col-12 col-lg-8 col-xl-6">
           <div className="text-center mb-4">
             <h1 className="mb-3">Contact</h1>
-            {!isSubmitted ? (
-              <p className="text-muted mb-0">
-                Send us a message and we’ll get back to you.
-              </p>
-            ) : (
-              <div className="alert alert-success " role="alert">
-                Your message has been submitted.
-              </div>
-            )}
+            <p className="text-muted mb-0">
+              Send us a message and we’ll get back to you.
+            </p>
           </div>
 
           <div className="card shadow">
             <div className="card-body p-4 p-lg-5">
+              {status && (
+                <Message
+                  variant={status.type === "error" ? "danger" : status.type}
+                  title={status.title}
+                  message={status.message}
+                  center={false}
+                />
+              )}
+
               <form onSubmit={handleSubmit} noValidate>
                 <div className="mb-3">
                   <label className="form-label" htmlFor="fullName">
@@ -106,7 +115,9 @@ export default function Contact() {
                     Email
                   </label>
                   <input
-                    className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.email ? "is-invalid" : ""
+                    }`}
                     id="email"
                     name="email"
                     type="email"
@@ -142,7 +153,9 @@ export default function Contact() {
                     Message
                   </label>
                   <textarea
-                    className={`form-control ${errors.body ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.body ? "is-invalid" : ""
+                    }`}
                     id="body"
                     name="body"
                     rows="6"
@@ -155,7 +168,7 @@ export default function Contact() {
                 </div>
 
                 <div className="d-flex justify-content-center">
-                  <button className="btn btn-primary w-50 " type="submit">
+                  <button className="btn btn-primary w-50" type="submit">
                     Submit
                   </button>
                 </div>
