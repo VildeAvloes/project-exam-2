@@ -45,6 +45,9 @@ export default function Header() {
               <Link className="nav-link" to="/" onClick={handleCloseMenu}>
                 Home
               </Link>
+              <Link className="nav-link" to="/venues" onClick={handleCloseMenu}>
+                Venues
+              </Link>
               <Link
                 className="nav-link"
                 to="/contact"

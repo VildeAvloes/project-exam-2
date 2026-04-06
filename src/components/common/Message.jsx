@@ -1,5 +1,5 @@
 export default function Message({
-  variant = "info", // success | danger | warning | info
+  variant = "info",
   title,
   message,
   center = true,
