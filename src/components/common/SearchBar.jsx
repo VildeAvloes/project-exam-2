@@ -1,6 +1,13 @@
+import { useNavigate } from "react-router-dom";
+import { useSearch } from "../../contexts/SearchContext";
+
 export default function SearchBar() {
+  const navigate = useNavigate();
+  const { search, setSearch } = useSearch();
+
   function handleSubmit(event) {
     event.preventDefault();
+    navigate("/venues");
   }
 
   return (
@@ -12,6 +19,8 @@ export default function SearchBar() {
               className="form-control"
               type="search"
               placeholder="Search venues"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
               aria-label="Search venues"
             />
             <button className="btn btn-primary btn-icon" type="submit">

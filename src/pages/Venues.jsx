@@ -3,10 +3,13 @@ import { getVenues } from "../api/venues/getVenues";
 import VenueCard from "../components/venues/VenueCard";
 import Loader from "../components/common/Loader";
 import Message from "../components/common/Message";
+import { useSearch } from "../contexts/SearchContext";
 
 const STEP = 12;
 
 export default function Venues() {
+  const { search } = useSearch();
+
   const [venues, setVenues] = useState([]);
   const [visibleCount, setVisibleCount] = useState(STEP);
   const [sortOrder, setSortOrder] = useState("az");
@@ -46,8 +49,30 @@ export default function Venues() {
     loadVenues();
   }, []);
 
+  useEffect(() => {
+    setVisibleCount(STEP);
+  }, [search, sortOrder]);
+
+  const filteredVenues = useMemo(() => {
+    const query = search.trim().toLowerCase();
+
+    if (!query) {
+      return venues;
+    }
+
+    return venues.filter((venue) => {
+      const name = venue.name?.toLowerCase() || "";
+      const city = venue.location?.city?.toLowerCase() || "";
+      const country = venue.location?.country?.toLowerCase() || "";
+
+      return (
+        name.includes(query) || city.includes(query) || country.includes(query)
+      );
+    });
+  }, [venues, search]);
+
   const sortedVenues = useMemo(() => {
-    const copy = [...venues];
+    const copy = [...filteredVenues];
 
     copy.sort((a, b) => {
       const nameA = a.name?.toLowerCase() || "";
@@ -59,7 +84,7 @@ export default function Venues() {
     });
 
     return copy;
-  }, [venues, sortOrder]);
+  }, [filteredVenues, sortOrder]);
 
   const visibleVenues = sortedVenues.slice(0, visibleCount);
   const hasMore = visibleCount < sortedVenues.length;
@@ -75,7 +100,6 @@ export default function Venues() {
 
   function handleSortChange(event) {
     setSortOrder(event.target.value);
-    setVisibleCount(STEP);
   }
 
   if (loading) {
@@ -94,13 +118,20 @@ export default function Venues() {
     );
   }
 
+  if (!sortedVenues.length && search.trim()) {
+    return (
+      <Message
+        variant="info"
+        title="No matching venues"
+        message={`No venues matched "${search}". Try a different search.`}
+      />
+    );
+  }
+
   return (
     <section className="container py-5">
       <div className="row justify-content-center text-center mb-5">
         <div className="col-12 col-lg-8">
-          <p className="text-uppercase text-muted fw-semibold mb-2">
-            Browse venues
-          </p>
           <h1 className="mb-3">Find the right stay for your next trip</h1>
           <p className="text-muted mb-0">
             Explore all available venues and discover places that match your
@@ -110,9 +141,17 @@ export default function Venues() {
       </div>
 
       <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
-        <p className="mb-0 text-muted">
-          Showing {visibleVenues.length} of {sortedVenues.length} venues
-        </p>
+        <div>
+          <p className="mb-0 text-muted">
+            Showing {visibleVenues.length} of {sortedVenues.length} venues
+          </p>
+
+          {search.trim() && (
+            <p className="mb-0 small text-muted">
+              Showing results for "{search}"
+            </p>
+          )}
+        </div>
 
         <div className="d-flex align-items-center gap-2">
           <label htmlFor="sortOrder" className="form-label mb-0">
