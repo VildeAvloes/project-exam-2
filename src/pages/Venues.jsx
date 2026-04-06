@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { getVenues } from "../api/venues/getVenues";
 import VenueCard from "../components/venues/VenueCard";
 import Loader from "../components/common/Loader";
@@ -8,7 +9,11 @@ import { useSearch } from "../contexts/SearchContext";
 const STEP = 12;
 
 export default function Venues() {
-  const { search } = useSearch();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const query = searchParams.get("q") || "";
+
+  const { setSearchInput } = useSearch();
 
   const [venues, setVenues] = useState([]);
   const [visibleCount, setVisibleCount] = useState(STEP);
@@ -19,6 +24,10 @@ export default function Venues() {
   useEffect(() => {
     document.title = "Holidaze | Venues";
   }, []);
+
+  useEffect(() => {
+    setSearchInput(query);
+  }, [query, setSearchInput]);
 
   useEffect(() => {
     async function loadVenues() {
@@ -51,12 +60,12 @@ export default function Venues() {
 
   useEffect(() => {
     setVisibleCount(STEP);
-  }, [search, sortOrder]);
+  }, [query, sortOrder]);
 
   const filteredVenues = useMemo(() => {
-    const query = search.trim().toLowerCase();
+    const normalizedQuery = query.trim().toLowerCase();
 
-    if (!query) {
+    if (!normalizedQuery) {
       return venues;
     }
 
@@ -66,10 +75,12 @@ export default function Venues() {
       const country = venue.location?.country?.toLowerCase() || "";
 
       return (
-        name.includes(query) || city.includes(query) || country.includes(query)
+        name.includes(normalizedQuery) ||
+        city.includes(normalizedQuery) ||
+        country.includes(normalizedQuery)
       );
     });
-  }, [venues, search]);
+  }, [venues, query]);
 
   const sortedVenues = useMemo(() => {
     const copy = [...filteredVenues];
@@ -102,6 +113,11 @@ export default function Venues() {
     setSortOrder(event.target.value);
   }
 
+  function handleClearSearch() {
+    setSearchInput("");
+    navigate("/venues");
+  }
+
   if (loading) {
     return <Loader text="Loading venues..." />;
   }
@@ -118,12 +134,12 @@ export default function Venues() {
     );
   }
 
-  if (!sortedVenues.length && search.trim()) {
+  if (!sortedVenues.length && query.trim()) {
     return (
       <Message
         variant="info"
         title="No matching venues"
-        message={`No venues matched "${search}". Try a different search.`}
+        message={`No venues matched "${query}". Try a different search.`}
       />
     );
   }
@@ -132,6 +148,9 @@ export default function Venues() {
     <section className="container py-5">
       <div className="row justify-content-center text-center mb-5">
         <div className="col-12 col-lg-8">
+          <p className="text-uppercase text-muted fw-semibold mb-2">
+            Browse venues
+          </p>
           <h1 className="mb-3">Find the right stay for your next trip</h1>
           <p className="text-muted mb-0">
             Explore all available venues and discover places that match your
@@ -146,10 +165,18 @@ export default function Venues() {
             Showing {visibleVenues.length} of {sortedVenues.length} venues
           </p>
 
-          {search.trim() && (
-            <p className="mb-0 small text-muted">
-              Showing results for "{search}"
-            </p>
+          {query.trim() && (
+            <div className="d-flex align-items-center gap-2 flex-wrap mt-1">
+              <p className="mb-0 small text-muted">Results for "{query}"</p>
+
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-secondary"
+                onClick={handleClearSearch}
+              >
+                Clear search
+              </button>
+            </div>
           )}
         </div>
 
