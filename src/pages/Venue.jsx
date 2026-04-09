@@ -2,70 +2,101 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getVenueById } from "../api/venues/getVenueById";
 import Loader from "../components/common/Loader";
+import Message from "../components/common/Message";
+import BookingForm from "../components/bookings/BookingForm";
 
 export default function Venue() {
   const { id } = useParams();
 
   const [venue, setVenue] = useState(null);
+  const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    document.title = "Holidaze | Venue";
+  }, []);
+
+  useEffect(() => {
     async function loadVenue() {
-      const data = await getVenueById(id);
-      console.log("loaded data:", data);
-      setVenue(data);
-      setLoading(false);
+      try {
+        const data = await getVenueById(id);
+        setVenue(data);
+        setStatus(null);
+      } catch (error) {
+        setStatus({
+          type: "error",
+          title: "Something went wrong",
+          message: error.message || "Failed to load venue.",
+        });
+      } finally {
+        setLoading(false);
+      }
     }
 
     loadVenue();
   }, [id]);
 
-  // useEffect(() => {
-  //   document.title = `Holidaze | ${venue.name}`;
-  // }, []);
-
-  console.log("venue.state", venue);
-
   if (loading) {
     return <Loader text="Loading venue..." />;
   }
 
-  if (!venue) {
+  if (status && status.type === "error") {
     return (
-      <div className="container py-4">
-        <p>Venue not found.</p>
-      </div>
+      <Message variant="danger" title={status.title} message={status.message} />
     );
   }
 
-  const image =
-    venue.media && venue.media.length > 0
-      ? venue.media[0].url
-      : "https://placehold.co/800x500?text=No+image";
+  if (!venue) {
+    return (
+      <Message
+        variant="info"
+        title="Venue not found"
+        message="The requested venue could not be found."
+      />
+    );
+  }
+
+  const image = venue.media?.[0]?.url || "";
+  const city = venue.location?.city || "Unknown city";
+  const country = venue.location?.country || "";
+  const locationText = country ? `${city}, ${country}` : city;
 
   return (
-    <div className="container py-4">
+    <section className="container py-5">
       <div className="row g-4">
-        <div className="col-12 col-lg-6">
-          <img src={image} alt={venue.name} className="img-fluid rounded" />
+        <div className="col-12 col-lg-7">
+          {image ? (
+            <img
+              src={image}
+              alt={venue.name}
+              className="img-fluid rounded w-100"
+            />
+          ) : (
+            <div className="venue-image-fallback rounded" />
+          )}
         </div>
 
-        <div className="col-12 col-lg-6">
+        <div className="col-12 col-lg-5">
+          <p className="text-uppercase text-muted fw-semibold mb-2">Venue</p>
           <h1 className="mb-3">{venue.name}</h1>
+          <p className="text-muted mb-2">{locationText}</p>
+          <p className="mb-3">{venue.description}</p>
 
-          {venue.location?.city && (
-            <p className="text-muted">
-              {venue.location.city}, {venue.location.country}
-            </p>
-          )}
+          <div className="mb-2">
+            <span className="fw-semibold">Price:</span> ${venue.price} / night
+          </div>
 
-          <h4 className="mb-3">${venue.price} / night</h4>
+          <div className="mb-2">
+            <span className="fw-semibold">Max guests:</span> {venue.maxGuests}
+          </div>
 
-          <p>{venue.description}</p>
-
-          <button className="btn btn-primary mt-3">Book now</button>
+          <div className="mb-2">
+            <span className="fw-semibold">Rating:</span> {venue.rating}
+          </div>
         </div>
       </div>
-    </div>
+
+      <BookingForm venueId={venue.id} maxGuests={venue.maxGuests} />
+    </section>
   );
 }

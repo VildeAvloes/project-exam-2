@@ -1,7 +1,7 @@
 import { BASE_URL } from "../constants";
 
 export async function getVenueById(id) {
-  const url = `${BASE_URL}/holidaze/venues/${id}`;
+  const url = `${BASE_URL}/holidaze/venues/${id}?_bookings=true`;
 
   try {
     const response = await fetch(url);
