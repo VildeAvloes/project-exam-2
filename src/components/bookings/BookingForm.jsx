@@ -67,6 +67,12 @@ export default function BookingForm({ venueId, maxGuests }) {
     }
 
     setLoading(true);
+    console.log("Submitting booking with:", {
+      dateFrom: values.dateFrom,
+      dateTo: values.dateTo,
+      guests: Number(values.guests),
+      venueId,
+    });
 
     try {
       await createBooking({

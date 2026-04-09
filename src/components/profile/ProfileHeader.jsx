@@ -30,7 +30,7 @@ export default function ProfileHeader({ auth, onEdit }) {
             </div>
           )}
 
-          <h2 className="h4 mb-1">{auth.name}</h2>
+          <h1 className="h4 mb-1">{auth.name}</h1>
           <p className="text-muted mb-2">{auth.email}</p>
           <p className="mb-4">
             <span className="fw-semibold">Account type:</span>{" "}
