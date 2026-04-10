@@ -29,30 +29,27 @@ function getBookingStatus(dateFrom, dateTo) {
 
   if (today < start) return "Upcoming";
   if (today > end) return "Past";
-
   return "Active";
 }
 
 function getStatusClass(status) {
-  if (status === "Upcoming") return "text-bg-primary";
+  if (status === "Upcoming") return "text-bg-secondary";
   if (status === "Active") return "text-bg-success";
   return "text-bg-secondary";
 }
 
-export default function BookingCard({ booking }) {
+export default function BookingItem({ booking, onEdit }) {
   const venue = booking?.venue;
   const venueId = venue?.id || venue?._id;
   const image = venue?.media?.[0]?.url;
   const imageAlt = venue?.media?.[0]?.alt || venue?.name || "Venue image";
-
   const location = [venue?.location?.city, venue?.location?.country]
     .filter(Boolean)
     .join(", ");
-
   const status = getBookingStatus(booking?.dateFrom, booking?.dateTo);
 
   return (
-    <article className="card shadow booking-item">
+    <article className="card shadow-sm booking-item">
       <div className="row g-0">
         <div className="col-12 col-md-4 col-lg-3">
           {image ? (
@@ -123,7 +120,11 @@ export default function BookingCard({ booking }) {
                 </Link>
               )}
 
-              <button type="button" className="btn btn-primary" disabled>
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                onClick={onEdit}
+              >
                 Edit booking
               </button>
             </div>

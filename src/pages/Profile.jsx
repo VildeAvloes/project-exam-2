@@ -26,6 +26,8 @@ export default function Profile() {
     <section className="container py-5">
       <div className="row justify-content-center">
         <div className="col-12 col-lg-10 col-xl-8">
+          <h1 className="mb-4 text-center">Profile</h1>
+
           <ProfileHeader auth={auth} onEdit={() => setIsEditing(true)} />
 
           {isEditing && (

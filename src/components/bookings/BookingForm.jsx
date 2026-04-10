@@ -16,28 +16,27 @@ export default function BookingForm({ venueId, maxGuests }) {
 
   function validate(formValues) {
     const newErrors = {};
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const from = formValues.dateFrom ? new Date(formValues.dateFrom) : null;
+    const to = formValues.dateTo ? new Date(formValues.dateTo) : null;
 
     if (!formValues.dateFrom) {
       newErrors.dateFrom = "Please select a check-in date";
+    } else if (from < today) {
+      newErrors.dateFrom = "Check-in date cannot be in the past";
     }
 
     if (!formValues.dateTo) {
       newErrors.dateTo = "Please select a check-out date";
-    }
-
-    if (
-      formValues.dateFrom &&
-      formValues.dateTo &&
-      new Date(formValues.dateTo) <= new Date(formValues.dateFrom)
-    ) {
+    } else if (from && to <= from) {
       newErrors.dateTo = "Check-out must be after check-in";
     }
 
     if (!formValues.guests || Number(formValues.guests) < 1) {
       newErrors.guests = "Guests must be at least 1";
-    }
-
-    if (Number(formValues.guests) > maxGuests) {
+    } else if (Number(formValues.guests) > maxGuests) {
       newErrors.guests = `Guests cannot exceed ${maxGuests}`;
     }
 
@@ -50,6 +49,11 @@ export default function BookingForm({ venueId, maxGuests }) {
     setValues((prev) => ({
       ...prev,
       [name]: name === "guests" ? Number(value) : value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: undefined,
     }));
 
     setStatus(null);
@@ -67,12 +71,6 @@ export default function BookingForm({ venueId, maxGuests }) {
     }
 
     setLoading(true);
-    console.log("Submitting booking with:", {
-      dateFrom: values.dateFrom,
-      dateTo: values.dateTo,
-      guests: Number(values.guests),
-      venueId,
-    });
 
     try {
       await createBooking({
@@ -106,12 +104,14 @@ export default function BookingForm({ venueId, maxGuests }) {
         <h2 className="h5 mb-4">Book this venue</h2>
 
         {status && (
-          <Message
-            variant={status.type === "error" ? "danger" : status.type}
-            title={status.title}
-            message={status.message}
-            center={false}
-          />
+          <div className="mb-3">
+            <Message
+              variant={status.type === "error" ? "danger" : status.type}
+              title={status.title}
+              message={status.message}
+              center={false}
+            />
+          </div>
         )}
 
         <form onSubmit={handleSubmit} noValidate>
@@ -129,6 +129,7 @@ export default function BookingForm({ venueId, maxGuests }) {
                 }`}
                 value={values.dateFrom}
                 onChange={handleChange}
+                min={new Date().toISOString().split("T")[0]}
               />
               {errors.dateFrom && (
                 <div className="invalid-feedback">{errors.dateFrom}</div>
@@ -146,6 +147,7 @@ export default function BookingForm({ venueId, maxGuests }) {
                 className={`form-control ${errors.dateTo ? "is-invalid" : ""}`}
                 value={values.dateTo}
                 onChange={handleChange}
+                min={values.dateFrom || new Date().toISOString().split("T")[0]}
               />
               {errors.dateTo && (
                 <div className="invalid-feedback">{errors.dateTo}</div>
@@ -166,8 +168,10 @@ export default function BookingForm({ venueId, maxGuests }) {
                 value={values.guests}
                 onChange={handleChange}
               />
-              {errors.guests && (
+              {errors.guests ? (
                 <div className="invalid-feedback">{errors.guests}</div>
+              ) : (
+                <div className="form-text">Max guests: {maxGuests}</div>
               )}
             </div>
           </div>

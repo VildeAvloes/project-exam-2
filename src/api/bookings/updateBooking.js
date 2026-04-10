@@ -1,10 +1,14 @@
 import { BASE_URL } from "../constants";
 import { getAuth } from "../../utils/storage/getAuth";
 
-export async function updateProfile(data) {
+export async function updateBooking(bookingId, data) {
   const auth = getAuth();
 
-  const response = await fetch(`${BASE_URL}/holidaze/profiles/${auth.name}`, {
+  if (!bookingId) {
+    throw new Error("Booking ID is required");
+  }
+
+  const response = await fetch(`${BASE_URL}/holidaze/bookings/${bookingId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -17,7 +21,7 @@ export async function updateProfile(data) {
   const json = await response.json();
 
   if (!response.ok) {
-    throw new Error(json.errors?.[0]?.message || "Failed to update profile");
+    throw new Error(json.errors?.[0]?.message || "Failed to update booking");
   }
 
   return json.data;
