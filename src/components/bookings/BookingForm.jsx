@@ -179,7 +179,7 @@ export default function BookingForm({ venueId, maxGuests }) {
           <div className="d-flex justify-content-end mt-4">
             <button
               type="submit"
-              className="btn btn-primary"
+              className="btn btn-secondary"
               disabled={loading}
             >
               {loading ? "Booking..." : "Book now"}

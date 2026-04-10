@@ -3,28 +3,22 @@
   font-size: 2em;
   font-weight: 700;
   letter-spacing: 3px;
-  color: $primary;
+  color: $dark;
   text-transform: lowercase;
-
-  &:hover,
-  &:focus {
-    color: $primary-hover;
-  }
 }
 
 .nav-link {
   text-transform: uppercase;
-  color: $primary;
+  color: $dark;
   font-weight: 700;
   letter-spacing: 3px;
 
   &:hover {
-    color: $primary-hover;
     text-decoration: underline;
   }
 
   &:focus {
-    color: $primary-hover;
+    text-decoration: underline;
   }
 }
 
@@ -37,7 +31,7 @@
   &:focus,
   &:active,
   &:focus-visible {
-    color: $primary-hover;
+    color: $dark;
     border: none;
     box-shadow: none;
     outline: none;

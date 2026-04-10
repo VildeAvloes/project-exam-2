@@ -3,12 +3,12 @@
 }
 
 .hamburger {
-  color: $primary;
+  color: $dark;
 
-  &:hover,
-  &:focus {
-    color: $primary-hover;
-  }
+  // &:hover,
+  // &:focus {
+  //   color: $primary-hover;
+  // }
 }
 
 .btn-icon {

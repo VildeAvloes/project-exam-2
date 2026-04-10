@@ -10,8 +10,8 @@ export default function VenueCard({ venue }) {
 
         <p>${venue.price}</p>
 
-        <Link to={`/venue/${venue.id}`} className="btn btn-primary">
-          View
+        <Link to={`/venue/${venue.id}`} className="btn btn-secondary w-50">
+          Book now
         </Link>
       </div>
     </div>

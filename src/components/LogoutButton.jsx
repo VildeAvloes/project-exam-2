@@ -13,11 +13,7 @@ export default function LogoutButton() {
   }
 
   return (
-    <button
-      type="button"
-      className="btn btn-primary logout-button"
-      onClick={handleLogout}
-    >
+    <button type="button" className="nav-link" onClick={handleLogout}>
       Log out
     </button>
   );

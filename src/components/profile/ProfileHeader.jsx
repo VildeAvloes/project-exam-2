@@ -11,7 +11,7 @@ export default function ProfileHeader({ auth, onEdit }) {
           className="profile-banner  img-fluid"
         />
       ) : (
-        <div className="profile-banner bg-secondary-subtle"></div>
+        <div className="profile-banner bg-primary-subtle"></div>
       )}
 
       <div className="card-body p-4 p-lg-5">

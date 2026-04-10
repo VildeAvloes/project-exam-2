@@ -73,9 +73,9 @@ export default function Home() {
             </p>
 
             <div className="d-flex justify-content-center gap-2 flex-wrap">
-              <Link to="/venues" className="btn btn-primary">
+              {/* <Link to="/venues" className="btn btn-primary">
                 Browse venues
-              </Link>
+              </Link> */}
               <Link to="/register" className="btn btn-outline-primary">
                 Get started
               </Link>
