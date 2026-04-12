@@ -110,11 +110,11 @@ export default function BookingItem({ booking, onEdit }) {
               </div>
             </div>
 
-            <div className="mt-auto d-flex flex-column flex-sm-row gap-2">
+            <div className="d-flex gap-2 justify-content-center justify-content-lg-end">
               {venueId && (
                 <Link
                   to={`/venue/${venueId}`}
-                  className="btn btn-outline-primary"
+                  className="btn btn-outline-accent"
                 >
                   View venue
                 </Link>
@@ -122,7 +122,7 @@ export default function BookingItem({ booking, onEdit }) {
 
               <button
                 type="button"
-                className="btn btn-outline-primary"
+                className="btn btn-primary"
                 onClick={onEdit}
               >
                 Edit booking

@@ -5,18 +5,23 @@
 // $extra-light: #fbfcfd;
 // $dark: #1c1c1c;
 
-$primary: #1e6f9f;
-$primary-hover: #185a82;
-$secondary: #f4a261;
-$secondary-hover: #e08e45;
-$accent: #2a9d8f;
-$light: #f8fbfd;
+$primary: #3b5f78;
+$primary-hover: #314f63;
+
+$secondary: #a8573f;
+$secondary-hover: #8f4935;
+
+$accent: #3d8b87;
+$accent-hover: #32736f;
+
+$light: #fbfaf8;
 $extra-light: #ffffff;
-$dark: #1c1c1c;
+$dark: #202020;
 
 $font-family-base: "Inter", sans-serif;
 $headings-font-family: "Montserrat", sans-serif;
 
+$btn-font-weight: 500;
 $border-radius: 25px;
 $input-border-radius: 0.75rem;
 $card-border-color: none;

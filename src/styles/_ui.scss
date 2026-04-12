@@ -4,11 +4,6 @@
 
 .hamburger {
   color: $dark;
-
-  // &:hover,
-  // &:focus {
-  //   color: $primary-hover;
-  // }
 }
 
 .btn-icon {
@@ -20,7 +15,28 @@
   border-radius: 50%;
 }
 
-.logout-button {
-  text-transform: uppercase;
-  font-weight: 700;
+.btn-accent {
+  background-color: $accent;
+  border-color: $accent;
+  color: #fff;
+}
+
+.btn-accent:hover,
+.btn-accent:focus {
+  background-color: $accent-hover;
+  border-color: $accent-hover;
+  color: #fff;
+}
+
+.btn-outline-accent {
+  color: $accent;
+  border-color: $accent;
+  background-color: transparent;
+}
+
+.btn-outline-accent:hover,
+.btn-outline-accent:focus {
+  background-color: $accent;
+  border-color: $accent;
+  color: #fff;
 }

@@ -73,10 +73,7 @@ export default function Home() {
             </p>
 
             <div className="d-flex justify-content-center gap-2 flex-wrap">
-              {/* <Link to="/venues" className="btn btn-primary">
-                Browse venues
-              </Link> */}
-              <Link to="/register" className="btn btn-outline-primary">
+              <Link to="/register" className="btn btn-secondary">
                 Get started
               </Link>
             </div>
@@ -93,7 +90,7 @@ export default function Home() {
             </p>
           </div>
 
-          <Link to="/venues" className="btn btn-outline-primary">
+          <Link to="/venues" className="btn btn-outline-accent">
             View all venues
           </Link>
         </div>
@@ -110,7 +107,7 @@ export default function Home() {
           <div className="card-body p-4 p-lg-5 text-center">
             <h2 className="h4 mb-3">Venue Manager Info</h2>
             <p className="text-muted mb-4">Launch your venues etc.</p>
-            <Link to="/register" className="btn btn-primary ">
+            <Link to="/register" className="btn btn-secondary">
               Register
             </Link>
           </div>

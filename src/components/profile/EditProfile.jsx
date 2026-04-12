@@ -144,7 +144,7 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
             <div className="d-flex justify-content-end mt-2">
               <button
                 type="button"
-                className="btn btn-outline-primary btn-sm"
+                className="btn btn-outline-danger btn-sm"
                 onClick={handleRemoveAvatar}
               >
                 Remove avatar
@@ -172,7 +172,7 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
             <div className="d-flex justify-content-end mt-2">
               <button
                 type="button"
-                className="btn btn-outline-primary btn-sm"
+                className="btn btn-outline-danger btn-sm"
                 onClick={handleRemoveBanner}
               >
                 Remove banner

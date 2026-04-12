@@ -233,35 +233,37 @@ export default function EditBookingForm({
                 <div className="form-text">Max guests: {maxGuests}</div>
               )}
             </div>
+
+            {!showDeleteConfirm && (
+              <div className="d-flex justify-content-end mt-2">
+                <button
+                  type="button"
+                  className="btn btn-outline-danger btn-sm"
+                  onClick={() => setShowDeleteConfirm(true)}
+                  disabled={isSubmitting || isDeleting}
+                >
+                  Delete booking
+                </button>
+              </div>
+            )}
           </div>
 
-          <div className="d-flex flex-column flex-sm-row gap-2">
+          <div className="d-flex gap-2 justify-content-center justify-content-lg-end">
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              onClick={onCancel}
+              disabled={isSubmitting || isDeleting}
+            >
+              Cancel
+            </button>
+
             <button
               type="submit"
               className="btn btn-primary"
               disabled={isSubmitting || isDeleting}
             >
               {isSubmitting ? "Saving..." : "Save changes"}
-            </button>
-
-            {!showDeleteConfirm && (
-              <button
-                type="button"
-                className="btn btn-outline-danger"
-                onClick={() => setShowDeleteConfirm(true)}
-                disabled={isSubmitting || isDeleting}
-              >
-                Delete booking
-              </button>
-            )}
-
-            <button
-              type="button"
-              className="btn btn-outline-secondary"
-              onClick={onCancel}
-              disabled={isSubmitting || isDeleting}
-            >
-              Cancel
             </button>
           </div>
         </form>
