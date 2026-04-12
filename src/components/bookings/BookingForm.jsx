@@ -2,12 +2,18 @@ import { useState } from "react";
 import { createBooking } from "../../api/bookings/createBooking";
 import Message from "../common/Message";
 
+function getTodayAsDateInput() {
+  return new Date().toISOString().split("T")[0];
+}
+
 export default function BookingForm({ venueId, maxGuests }) {
   const initialValues = {
     dateFrom: "",
     dateTo: "",
     guests: 1,
   };
+
+  const today = getTodayAsDateInput();
 
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
@@ -16,21 +22,21 @@ export default function BookingForm({ venueId, maxGuests }) {
 
   function validate(formValues) {
     const newErrors = {};
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const todayDate = new Date();
+    todayDate.setHours(0, 0, 0, 0);
 
-    const from = formValues.dateFrom ? new Date(formValues.dateFrom) : null;
-    const to = formValues.dateTo ? new Date(formValues.dateTo) : null;
+    const fromDate = formValues.dateFrom ? new Date(formValues.dateFrom) : null;
+    const toDate = formValues.dateTo ? new Date(formValues.dateTo) : null;
 
     if (!formValues.dateFrom) {
       newErrors.dateFrom = "Please select a check-in date";
-    } else if (from < today) {
+    } else if (fromDate < todayDate) {
       newErrors.dateFrom = "Check-in date cannot be in the past";
     }
 
     if (!formValues.dateTo) {
       newErrors.dateTo = "Please select a check-out date";
-    } else if (from && to <= from) {
+    } else if (fromDate && toDate <= fromDate) {
       newErrors.dateTo = "Check-out must be after check-in";
     }
 
@@ -99,7 +105,7 @@ export default function BookingForm({ venueId, maxGuests }) {
   }
 
   return (
-    <div className="card shadow-sm mt-4">
+    <div className="card shadow-sm mt-4 border-0">
       <div className="card-body p-4">
         <h2 className="h5 mb-4">Book this venue</h2>
 
@@ -129,7 +135,8 @@ export default function BookingForm({ venueId, maxGuests }) {
                 }`}
                 value={values.dateFrom}
                 onChange={handleChange}
-                min={new Date().toISOString().split("T")[0]}
+                min={today}
+                required
               />
               {errors.dateFrom && (
                 <div className="invalid-feedback">{errors.dateFrom}</div>
@@ -147,7 +154,8 @@ export default function BookingForm({ venueId, maxGuests }) {
                 className={`form-control ${errors.dateTo ? "is-invalid" : ""}`}
                 value={values.dateTo}
                 onChange={handleChange}
-                min={values.dateFrom || new Date().toISOString().split("T")[0]}
+                min={values.dateFrom || today}
+                required
               />
               {errors.dateTo && (
                 <div className="invalid-feedback">{errors.dateTo}</div>
@@ -167,6 +175,7 @@ export default function BookingForm({ venueId, maxGuests }) {
                 className={`form-control ${errors.guests ? "is-invalid" : ""}`}
                 value={values.guests}
                 onChange={handleChange}
+                required
               />
               {errors.guests ? (
                 <div className="invalid-feedback">{errors.guests}</div>

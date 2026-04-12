@@ -206,7 +206,7 @@ export default function Venues() {
         {canShowLess && (
           <button
             type="button"
-            className="btn btn-outline-accent"
+            className="btn btn-outline-primary"
             onClick={handleShowLess}
           >
             Show less
@@ -216,7 +216,7 @@ export default function Venues() {
         {hasMore && (
           <button
             type="button"
-            className="btn btn-outline-accent"
+            className="btn btn-primary"
             onClick={handleLoadMore}
           >
             Load more

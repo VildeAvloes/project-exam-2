@@ -196,7 +196,7 @@ export default function Register() {
 
                 <div className="d-flex justify-content-center">
                   <button
-                    className="btn btn-primary w-50"
+                    className="btn btn-secondary w-50"
                     type="submit"
                     disabled={loading}
                   >

@@ -90,7 +90,7 @@ export default function Home() {
             </p>
           </div>
 
-          <Link to="/venues" className="btn btn-outline-accent">
+          <Link to="/venues" className="btn btn-outline-primary">
             View all venues
           </Link>
         </div>

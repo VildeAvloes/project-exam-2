@@ -1,0 +1,26 @@
+.venue-card {
+  border: 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: $extra-light;
+  color: $dark;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.venue-card:hover,
+.venue-card:focus {
+  transform: translateY(-4px);
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.08);
+  color: $dark;
+}
+
+.venue-card-image {
+  object-fit: cover;
+}
+
+.venue-card-image,
+.venue-card-image-placeholder {
+  height: 220px;
+}

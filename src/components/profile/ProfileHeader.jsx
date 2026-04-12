@@ -38,7 +38,7 @@ export default function ProfileHeader({ auth, onEdit }) {
           </p>
 
           <div className="d-flex justify-content-center">
-            <button type="button" className="btn btn-primary" onClick={onEdit}>
+            <button type="button" className="btn btn-accent" onClick={onEdit}>
               Edit profile
             </button>
           </div>

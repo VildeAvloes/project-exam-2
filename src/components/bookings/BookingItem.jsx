@@ -34,7 +34,7 @@ function getBookingStatus(dateFrom, dateTo) {
 
 function getStatusClass(status) {
   if (status === "Upcoming") return "text-bg-secondary";
-  if (status === "Active") return "text-bg-success";
+  if (status === "Active") return "text-bg-primary";
   return "text-bg-secondary";
 }
 
@@ -112,19 +112,12 @@ export default function BookingItem({ booking, onEdit }) {
 
             <div className="d-flex gap-2 justify-content-center justify-content-lg-end">
               {venueId && (
-                <Link
-                  to={`/venue/${venueId}`}
-                  className="btn btn-outline-accent"
-                >
+                <Link to={`/venue/${venueId}`} className="btn btn-primary">
                   View venue
                 </Link>
               )}
 
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={onEdit}
-              >
+              <button type="button" className="btn btn-accent" onClick={onEdit}>
                 Edit booking
               </button>
             </div>

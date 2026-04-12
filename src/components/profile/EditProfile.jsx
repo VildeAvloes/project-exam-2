@@ -183,13 +183,13 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
           <div className="d-flex gap-2 justify-content-center justify-content-lg-end">
             <button
               type="button"
-              className="btn btn-outline-primary"
+              className="btn btn-outline-accent"
               onClick={onCancel}
             >
               Cancel
             </button>
 
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-accent">
               Save changes
             </button>
           </div>

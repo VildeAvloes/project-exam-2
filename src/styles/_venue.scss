@@ -1,0 +1,39 @@
+.venue-hero-card {
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: $extra-light;
+}
+
+.venue-hero-image,
+.venue-hero-image-placeholder {
+  min-height: 320px;
+}
+
+.venue-hero-image {
+  object-fit: cover;
+}
+
+.venue-amenity {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  background-color: rgba(61, 139, 135, 0.16);
+  color: $accent;
+  font-weight: 500;
+  font-size: 0.875rem;
+  border: 1px solid rgba(61, 139, 135, 0.28);
+}
+
+.venue-amenity__icon {
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+@media (min-width: 992px) {
+  .venue-hero-image,
+  .venue-hero-image-placeholder {
+    min-height: 500px;
+  }
+}
