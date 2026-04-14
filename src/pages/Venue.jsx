@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { FaWifi, FaParking, FaCoffee, FaPaw } from "react-icons/fa";
 import { getVenueById } from "../api/venues/getVenueById";
 import Loader from "../components/common/Loader";
@@ -8,16 +8,24 @@ import BookingForm from "../components/bookings/BookingForm";
 
 export default function Venue() {
   const { id } = useParams();
+  const location = useLocation();
 
-  const [venue, setVenue] = useState(null);
+  const previewVenue = location.state?.previewVenue || null;
+  const isPreview = Boolean(previewVenue);
+
+  const [venue, setVenue] = useState(previewVenue);
   const [status, setStatus] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!isPreview);
 
   useEffect(() => {
-    document.title = "Holidaze | Venue";
-  }, []);
+    document.title = isPreview
+      ? "Holidaze | Venue Preview"
+      : "Holidaze | Venue";
+  }, [isPreview]);
 
   useEffect(() => {
+    if (isPreview) return;
+
     async function loadVenue() {
       try {
         const data = await getVenueById(id);
@@ -35,7 +43,7 @@ export default function Venue() {
     }
 
     loadVenue();
-  }, [id]);
+  }, [id, isPreview]);
 
   if (loading) {
     return <Loader text="Loading venue..." />;
@@ -62,7 +70,6 @@ export default function Venue() {
   const city = venue.location?.city || "Unknown city";
   const country = venue.location?.country || "";
   const locationText = country ? `${city}, ${country}` : city;
-  const venueRating = venue.rating > 0 ? venue.rating : "No ratings yet";
 
   const amenities = [
     { label: "WiFi", value: venue.meta?.wifi, icon: FaWifi },
@@ -73,27 +80,47 @@ export default function Venue() {
 
   return (
     <section className="container py-5">
+      {isPreview && (
+        <div className="mb-4">
+          <Message
+            variant="info"
+            title="Preview mode"
+            message="This is a preview of your venue before saving."
+            center={false}
+          />
+        </div>
+      )}
+
       <div className="row g-4 align-items-start">
         <div className="col-12 col-lg-7">
-          {image ? (
-            <img
-              src={image}
-              alt={imageAlt}
-              className="img-fluid w-100 venue-hero-image rounded"
-            />
-          ) : (
-            <div className="rounded venue-hero-image-placeholder" />
-          )}
+          <div className="venue-hero-card card shadow-sm border-0">
+            {image ? (
+              <img
+                src={image}
+                alt={imageAlt}
+                className="img-fluid w-100 venue-hero-image"
+              />
+            ) : (
+              <div className="venue-image-fallback rounded venue-hero-image-placeholder" />
+            )}
+          </div>
         </div>
 
         <div className="col-12 col-lg-5">
-          <div className=" h-100">
-            <div className="p-4 p-lg-5">
+          <div className="card shadow-sm border-0 h-100">
+            <div className="card-body p-4 p-lg-5">
+              <p className="text-uppercase text-muted fw-semibold small mb-2">
+                Venue
+              </p>
+
               <h1 className="mb-3">{venue.name}</h1>
+
               <p className="text-muted mb-4">{locationText}</p>
+
               <p className="mb-4">{venue.description}</p>
+
               <div className="d-flex align-items-end gap-2 mb-4">
-                <span className="h3 mb-0 text-primary">${venue.price}</span>
+                <span className="h3 mb-0 venue-price">${venue.price}</span>
                 <span className="text-muted mb-1">/ night</span>
               </div>
 
@@ -105,45 +132,41 @@ export default function Venue() {
 
                 <div>
                   <p className="small text-muted mb-1">Rating</p>
-                  <p className="mb-0 fw-semibold">{venueRating}</p>
+                  <p className="mb-0 fw-semibold">{venue.rating ?? 0}</p>
                 </div>
               </div>
 
-              <div>
-                <h2 className="h6 mb-3">Amenities</h2>
+              {amenities.length > 0 && (
+                <div>
+                  <h2 className="h6 mb-3">Amenities</h2>
 
-                <div className="d-flex flex-wrap gap-2">
-                  {amenities.length > 0 ? (
-                    <>
-                      <ul className="venue-amenities list-unstyled d-flex flex-wrap gap-2 mb-0">
-                        {amenities.map((item) => {
-                          const Icon = item.icon;
+                  <ul className="venue-amenities list-unstyled d-flex flex-wrap gap-2 mb-0">
+                    {amenities.map((item) => {
+                      const Icon = item.icon;
 
-                          return (
-                            <li key={item.label} className="venue-amenity">
-                              <Icon
-                                className="venue-amenity__icon"
-                                aria-hidden="true"
-                              />
-                              <span>{item.label}</span>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </>
-                  ) : (
-                    <p className="text-muted">No current listed amenities</p>
-                  )}
+                      return (
+                        <li key={item.label} className="venue-amenity">
+                          <Icon
+                            className="venue-amenity__icon"
+                            aria-hidden="true"
+                          />
+                          <span>{item.label}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-4">
-        <BookingForm venueId={venue.id} maxGuests={venue.maxGuests} />
-      </div>
+      {!isPreview && (
+        <div className="mt-4">
+          <BookingForm venueId={venue.id} maxGuests={venue.maxGuests} />
+        </div>
+      )}
     </section>
   );
 }

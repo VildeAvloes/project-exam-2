@@ -9,6 +9,7 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
 import Venues from "./pages/Venues";
+import ManageVenue from "./pages/ManageVenue";
 
 export default function App() {
   return (
@@ -22,6 +23,9 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/manager/venues/new" element={<ManageVenue />} />
+        <Route path="/manager/venues/:id" element={<ManageVenue />} />
+        <Route path="/manager/venues/preview" element={<Venue />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Layout>

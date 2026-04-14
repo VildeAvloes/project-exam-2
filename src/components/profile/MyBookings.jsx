@@ -130,21 +130,19 @@ export default function MyBookings({ auth }) {
   }
 
   return (
-    <div className="card shadow">
-      <div className="card-body p-4">
-        <h2 className="h5 mb-3">My bookings</h2>
+    <div className="p-4">
+      <h2 className="h5 mb-3">My bookings</h2>
 
-        <BookingList
-          bookings={bookings}
-          editingBookingId={editingBookingId}
-          updatingBookingId={updatingBookingId}
-          deletingBookingId={deletingBookingId}
-          onEdit={handleEditBooking}
-          onCancelEdit={handleCancelEdit}
-          onSave={handleUpdateBooking}
-          onDelete={handleDeleteBooking}
-        />
-      </div>
+      <BookingList
+        bookings={bookings}
+        editingBookingId={editingBookingId}
+        updatingBookingId={updatingBookingId}
+        deletingBookingId={deletingBookingId}
+        onEdit={handleEditBooking}
+        onCancelEdit={handleCancelEdit}
+        onSave={handleUpdateBooking}
+        onDelete={handleDeleteBooking}
+      />
     </div>
   );
 }

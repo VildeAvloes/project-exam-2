@@ -5,6 +5,7 @@ import ProfileHeader from "../components/profile/ProfileHeader";
 import EditProfile from "../components/profile/EditProfile";
 import Loader from "../components/common/Loader";
 import MyBookings from "../components/profile/MyBookings";
+import MyVenues from "../components/venues/MyVenues";
 
 export default function Profile() {
   const { auth, setAuth, loading } = useAuth();
@@ -41,7 +42,11 @@ export default function Profile() {
           )}
 
           <div className="mt-4">
-            <MyBookings auth={auth} />
+            {auth.venueManager ? (
+              <MyVenues auth={auth} />
+            ) : (
+              <MyBookings auth={auth} />
+            )}
           </div>
         </div>
       </div>
