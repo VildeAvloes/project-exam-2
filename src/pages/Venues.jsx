@@ -32,9 +32,11 @@ export default function Venues() {
   useEffect(() => {
     async function loadVenues() {
       try {
+        setLoading(true);
+  
         const data = await getVenues();
         setVenues(data);
-
+  
         if (!data.length) {
           setStatus({
             type: "info",
@@ -54,7 +56,7 @@ export default function Venues() {
         setLoading(false);
       }
     }
-
+  
     loadVenues();
   }, []);
 
