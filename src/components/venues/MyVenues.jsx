@@ -38,10 +38,10 @@ export default function MyVenues({ auth }) {
         <h2 className="h5 mb-0">My venues</h2>
 
         <button
-          className="btn btn-secondary btn-sm"
+          className="btn btn-secondary "
           onClick={() => navigate("/manager/venues/new")}
         >
-          Create venue
+          Create new venue
         </button>
       </div>
 
@@ -74,7 +74,7 @@ export default function MyVenues({ auth }) {
               </div>
 
               <button
-                className="btn btn-outline-accent btn-sm"
+                className="btn btn-accent"
                 onClick={() => navigate(`/manager/venues/${venue.id}`)}
               >
                 Manage

@@ -7,6 +7,8 @@ import { deleteVenue } from "../api/venues/deleteVenue";
 import Loader from "../components/common/Loader";
 import Message from "../components/common/Message";
 import VenueForm from "../components/venues/VenueForm";
+import VenueBookingsList from "../components/venues/VenueBookingList";
+import VenuePreview from "../components/venues/VenuePreview";
 
 export default function ManageVenue() {
   const { id } = useParams();
@@ -17,6 +19,9 @@ export default function ManageVenue() {
   const [venue, setVenue] = useState(null);
   const [loading, setLoading] = useState(isEdit);
   const [status, setStatus] = useState(null);
+
+  const [isPreview, setIsPreview] = useState(false);
+  const [previewData, setPreviewData] = useState(null);
 
   useEffect(() => {
     document.title = isEdit
@@ -29,7 +34,7 @@ export default function ManageVenue() {
 
     async function loadVenue() {
       try {
-        const data = await getVenueById(id);
+        const data = await getVenueById(id, "?_bookings=true");
         setVenue(data);
       } catch (error) {
         setStatus({
@@ -49,10 +54,14 @@ export default function ManageVenue() {
     try {
       if (isEdit) {
         await updateVenue(id, data);
+        const updated = await getVenueById(id, "?_bookings=true");
+        setVenue(updated);
       } else {
         const created = await createVenue(data);
         navigate(`/manager/venues/${created.id}`);
       }
+
+      setIsPreview(false);
 
       setStatus({
         type: "success",
@@ -77,29 +86,54 @@ export default function ManageVenue() {
     }
   }
 
-  if (loading) return <Loader text="Loading venue..." />;
+  function handlePreview(data) {
+    setPreviewData(data);
+    setIsPreview(true);
+  }
+
+  if (loading) {
+    return <Loader text="Loading venue..." />;
+  }
 
   return (
     <section className="container py-5">
       <div className="row justify-content-center">
-        <div className="col-12 col-lg-8">
+        <div className="col-12 col-xl-10">
           <h1 className="mb-4">{isEdit ? "Manage venue" : "Create venue"}</h1>
 
           {status && (
-            <Message
-              variant={status.type === "error" ? "danger" : status.type}
-              title={status.title}
-              message={status.message}
-              center={false}
+            <div className="mb-4">
+              <Message
+                variant={status.type === "error" ? "danger" : status.type}
+                title={status.title}
+                message={status.message}
+                center={false}
+              />
+            </div>
+          )}
+
+          {/* 🔁 SWITCH */}
+          {!isPreview ? (
+            <VenueForm
+              venue={venue}
+              onSave={handleSave}
+              onDelete={isEdit ? handleDelete : null}
+              onCancel={() => navigate("/profile")}
+              onPreview={handlePreview}
+            />
+          ) : (
+            <VenuePreview
+              venue={previewData}
+              onBack={() => setIsPreview(false)}
+              onSave={handleSave}
             />
           )}
 
-          <VenueForm
-            venue={venue}
-            onSave={handleSave}
-            onDelete={isEdit ? handleDelete : null}
-            onCancel={() => navigate("/profile")}
-          />
+          {isEdit && !isPreview && (
+            <div className="mt-4">
+              <VenueBookingsList bookings={venue?.bookings || []} />
+            </div>
+          )}
         </div>
       </div>
     </section>

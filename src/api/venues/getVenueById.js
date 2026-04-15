@@ -1,22 +1,17 @@
 import { BASE_URL } from "../constants";
 
-export async function getVenueById(id) {
-  const url = `${BASE_URL}/holidaze/venues/${id}?_bookings=true`;
+export async function getVenueById(id, query = "") {
+  const url = `${BASE_URL}/holidaze/venues/${id}${query}`;
 
   try {
     const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch venue");
-    }
-
     const json = await response.json();
-    console.log("json:", json);
-    console.log("json.data:", json.data);
+    if (!response.ok) {
+      throw new Error(json.errors?.[0]?.message || "Failed to fetch venue");
+    }
 
     return json.data;
   } catch (error) {
-    console.error(error);
     return [];
   }
 }

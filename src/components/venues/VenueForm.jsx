@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import Message from "../common/Message";
-import { useNavigate } from "react-router-dom";
 
-export default function VenueForm({ venue, onSave, onDelete, onCancel }) {
-  const navigate = useNavigate();
+export default function VenueForm({
+  venue,
+  onSave,
+  onDelete,
+  onCancel,
+  onPreview,
+}) {
   const isEdit = Boolean(venue);
 
   const initialValues = {
@@ -149,15 +153,7 @@ export default function VenueForm({ venue, onSave, onDelete, onCancel }) {
       return;
     }
 
-    navigate("/manager/venues/preview", {
-      state: {
-        previewVenue: {
-          ...buildPayload(values),
-          rating: venue?.rating ?? 0,
-          id: venue?.id ?? "preview",
-        },
-      },
-    });
+    onPreview(buildPayload(values));
   }
 
   async function handleSubmit(event) {

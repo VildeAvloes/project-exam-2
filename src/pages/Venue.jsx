@@ -98,7 +98,7 @@ export default function Venue() {
               <img
                 src={image}
                 alt={imageAlt}
-                className="img-fluid w-100 venue-hero-image"
+                className="img-fluid w-100 venue-hero-image rounded"
               />
             ) : (
               <div className="venue-image-fallback rounded venue-hero-image-placeholder" />
