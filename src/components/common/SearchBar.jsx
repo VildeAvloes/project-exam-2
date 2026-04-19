@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { FiSearch } from "react-icons/fi";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useSearch } from "../../contexts/SearchContext";
 
@@ -34,14 +35,14 @@ export default function SearchBar() {
   }
 
   return (
-    <div className="bg-light py-3">
+    <div className="searchbar-wrap bg-light py-3">
       <div className="container">
         <form
           className="d-flex justify-content-center"
           onSubmit={handleSubmit}
           role="search"
         >
-          <div className="d-flex w-100 w-lg-50 gap-2">
+          <div className="d-flex w-100 searchbar-inner gap-2">
             <input
               className="form-control"
               type="search"
@@ -52,7 +53,7 @@ export default function SearchBar() {
             />
 
             <button className="btn btn-primary btn-icon" type="submit">
-              <span className="material-symbols-outlined">search</span>
+              <FiSearch />
             </button>
           </div>
         </form>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getVenues } from "../api/venues/getVenues";
+import { getFeaturedVenues } from "../api/venues/getFeaturedVenues";
 import VenueCard from "../components/venues/VenueCard";
 import Loader from "../components/common/Loader";
 import Message from "../components/common/Message";
@@ -17,7 +17,7 @@ export default function Home() {
   useEffect(() => {
     async function loadVenues() {
       try {
-        const data = await getVenues();
+        const data = await getFeaturedVenues();
         setVenues(data);
 
         if (!data.length) {
@@ -43,19 +43,17 @@ export default function Home() {
     loadVenues();
   }, []);
 
-  const featuredVenues = venues.slice(0, 6);
-
   if (loading) {
     return <Loader text="Loading venues..." />;
   }
 
-  if (status && status.type === "error") {
+  if (status?.type === "error") {
     return (
       <Message variant="danger" title={status.title} message={status.message} />
     );
   }
 
-  if (status && status.type === "info") {
+  if (status?.type === "info") {
     return (
       <Message variant="info" title={status.title} message={status.message} />
     );
@@ -63,30 +61,41 @@ export default function Home() {
 
   return (
     <>
-      <section className="container py-5">
-        <div className="row justify-content-center text-center">
-          <div className="col-12 col-lg-8">
-            <h1 className="display-5 mb-3">Find your next stay</h1>
-            <p className="lead text-muted mb-4">
-              Discover unique venues for weekends away, city breaks, and longer
-              stays.
-            </p>
+      <section className="py-5 py-lg-6">
+        <div className="container">
+          <div className="row justify-content-center text-center">
+            <div className="col-12 col-lg-8">
+              <p className="home-intro-txt text-uppercase fw-semibold mb-2">
+                Calm stays, better trips
+              </p>
 
-            <div className="d-flex justify-content-center gap-2 flex-wrap">
-              <Link to="/register" className="btn btn-secondary">
-                Get started
-              </Link>
+              <h1 className="display-4 mb-3">
+                Find your next stay with a little more ease
+              </h1>
+
+              <p className="lead text-muted mb-4">
+                Discover unique venues for weekends away, city breaks, and
+                longer stays — all in one simple place.
+              </p>
+
+              <div className="d-flex justify-content-center gap-2 flex-wrap">
+                <Link to="/register" className="btn btn-secondary">
+                  Get started
+                </Link>
+                <Link to="/venues" className="btn btn-outline-primary">
+                  View venues
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
-
       <section className="container pb-5">
         <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
           <div>
             <h2 className="h3 mb-1">Featured venues</h2>
             <p className="text-muted mb-0">
-              A small selection to get you started.
+              A curated selection to inspire your next trip.
             </p>
           </div>
 
@@ -96,19 +105,25 @@ export default function Home() {
         </div>
 
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-          {featuredVenues.map((venue) => (
+          {venues.map((venue) => (
             <VenueCard key={venue.id} venue={venue} />
           ))}
         </div>
       </section>
 
       <section className="container pb-5">
-        <div className="card shadow">
+        <div className="card shadow-sm border-0">
           <div className="card-body p-4 p-lg-5 text-center">
-            <h2 className="h4 mb-3">Venue Manager Info</h2>
-            <p className="text-muted mb-4">Launch your venues etc.</p>
-            <Link to="/register" className="btn btn-secondary">
-              Register
+            <p className="text-uppercase text-muted fw-semibold small mb-2">
+              Venue managers
+            </p>
+            <h2 className="h4 mb-3">Share places people want to return to</h2>
+            <p className="text-muted mb-4">
+              Create and manage your venues, stay on top of bookings, and
+              present your spaces in a clean, inviting way.
+            </p>
+            <Link to="/register" className="btn btn-accent">
+              Register as manager
             </Link>
           </div>
         </div>

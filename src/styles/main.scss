@@ -1,14 +1,8 @@
 @import "./_variables";
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
-@import "./_header";
-@import "./_footer";
+@import "./_layout";
+@import "./_button";
 @import "./_profile";
-@import "./card";
-@import "./venue";
-@import "./_ui";
-
-body {
-  background-color: $extra-light;
-  color: $dark;
-}
+@import "./_card";
+@import "./_venue";

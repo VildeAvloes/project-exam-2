@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { FiMenu, FiX, FiSearch } from "react-icons/fi";
 import SearchBar from "./SearchBar";
 import LogoutButton from "../LogoutButton";
 import { useAuth } from "../../contexts/AuthContext";
@@ -17,8 +18,8 @@ export default function Header() {
   }
 
   return (
-    <header>
-      <nav className="navbar navbar-expand-lg bg-light">
+    <header className="site-header">
+      <nav className="navbar navbar-expand-lg bg-light ">
         <div className="container">
           <Link className="navbar-brand logo" to="/" onClick={handleCloseMenu}>
             Holidaze
@@ -32,16 +33,14 @@ export default function Header() {
             aria-expanded={isOpen}
             aria-controls="mainNavbar"
           >
-            <span className="material-symbols-outlined hamburger">
-              {isOpen ? "close" : "menu"}
-            </span>
+            <span className="hamburger">{isOpen ? <FiX /> : <FiMenu />}</span>
           </button>
 
           <div
             className={`collapse navbar-collapse ${isOpen ? "show" : ""}`}
             id="mainNavbar"
           >
-            <div className="navbar-nav ms-lg-auto text-start">
+            <div className="navbar-nav ms-lg-auto text-start align-items-lg-center">
               <Link className="nav-link" to="/" onClick={handleCloseMenu}>
                 Home
               </Link>
@@ -55,6 +54,7 @@ export default function Header() {
               >
                 Contact
               </Link>
+
               {auth ? (
                 <>
                   <Link
@@ -64,10 +64,16 @@ export default function Header() {
                   >
                     {auth.name}
                   </Link>
-                  <LogoutButton />
+                  <div className="text-start ">
+                    <LogoutButton />
+                  </div>
                 </>
               ) : (
-                <Link to="/login" className="nav-link">
+                <Link
+                  to="/login"
+                  className="nav-link text-start"
+                  onClick={handleCloseMenu}
+                >
                   Log in
                 </Link>
               )}
