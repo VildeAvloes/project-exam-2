@@ -7,15 +7,10 @@ body {
   font-family: $headings-font-family;
   font-size: 2em;
   font-weight: 700;
-  letter-spacing: 3px;
+  letter-spacing: 6px;
   color: $dark;
   text-transform: lowercase;
   text-decoration: none;
-
-  &:hover,
-  &:focus {
-    color: $primary;
-  }
 }
 
 .nav-link {
