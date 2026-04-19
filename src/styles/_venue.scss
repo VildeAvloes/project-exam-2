@@ -1,3 +1,9 @@
+.venue-hero-card {
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background-color: $light;
+}
+
 .venue-hero-image,
 .venue-hero-image-placeholder {
   min-height: 320px;
@@ -5,6 +11,46 @@
 
 .venue-hero-image {
   object-fit: cover;
+  display: block;
+}
+
+.venue-hero-image-placeholder {
+  background-color: $light;
+}
+
+.venue-content {
+  padding-top: 0.5rem;
+}
+
+.venue-title {
+  font-family: $headings-font-family;
+  line-height: 1.15;
+}
+
+.venue-location {
+  color: $dark;
+  opacity: 0.75;
+}
+
+.venue-rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background-color: rgba(59, 95, 120, 0.1);
+  color: $primary;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.venue-description {
+  color: $dark;
+  opacity: 0.9;
+}
+
+.venue-price {
+  color: $secondary;
 }
 
 .venue-amenity {
@@ -23,6 +69,11 @@
 .venue-amenity__icon {
   font-size: 0.9rem;
   flex-shrink: 0;
+}
+
+.venue-booking-section {
+  border-radius: 1.25rem;
+  background-color: $extra-light;
 }
 
 @media (min-width: 992px) {

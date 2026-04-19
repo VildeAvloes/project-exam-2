@@ -1,12 +1,42 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { FiSliders, FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { getVenues } from "../api/venues/getVenues";
 import VenueCard from "../components/venues/VenueCard";
 import Loader from "../components/common/Loader";
 import Message from "../components/common/Message";
 import { useSearch } from "../contexts/SearchContext";
 
-const STEP = 12;
+const ITEMS_PER_PAGE = 12;
+
+function getPaginationItems(currentPage, totalPages) {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }
+
+  const pages = [];
+
+  pages.push(1);
+
+  if (currentPage > 3) {
+    pages.push("start-ellipsis");
+  }
+
+  const startPage = Math.max(2, currentPage - 1);
+  const endPage = Math.min(totalPages - 1, currentPage + 1);
+
+  for (let page = startPage; page <= endPage; page += 1) {
+    pages.push(page);
+  }
+
+  if (currentPage < totalPages - 2) {
+    pages.push("end-ellipsis");
+  }
+
+  pages.push(totalPages);
+
+  return pages;
+}
 
 export default function Venues() {
   const [searchParams] = useSearchParams();
@@ -16,7 +46,7 @@ export default function Venues() {
   const { setSearchInput } = useSearch();
 
   const [venues, setVenues] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(STEP);
+  const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState("az");
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -33,10 +63,10 @@ export default function Venues() {
     async function loadVenues() {
       try {
         setLoading(true);
-  
+
         const data = await getVenues();
         setVenues(data);
-  
+
         if (!data.length) {
           setStatus({
             type: "info",
@@ -56,12 +86,12 @@ export default function Venues() {
         setLoading(false);
       }
     }
-  
+
     loadVenues();
   }, []);
 
   useEffect(() => {
-    setVisibleCount(STEP);
+    setCurrentPage(1);
   }, [query, sortOrder]);
 
   const filteredVenues = useMemo(() => {
@@ -99,17 +129,18 @@ export default function Venues() {
     return copy;
   }, [filteredVenues, sortOrder]);
 
-  const visibleVenues = sortedVenues.slice(0, visibleCount);
-  const hasMore = visibleCount < sortedVenues.length;
-  const canShowLess = visibleCount > STEP;
+  const totalPages = Math.ceil(sortedVenues.length / ITEMS_PER_PAGE);
 
-  function handleLoadMore() {
-    setVisibleCount((prev) => prev + STEP);
-  }
+  const paginatedVenues = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
 
-  function handleShowLess() {
-    setVisibleCount(STEP);
-  }
+    return sortedVenues.slice(startIndex, endIndex);
+  }, [sortedVenues, currentPage]);
+
+  const paginationItems = useMemo(() => {
+    return getPaginationItems(currentPage, totalPages);
+  }, [currentPage, totalPages]);
 
   function handleSortChange(event) {
     setSortOrder(event.target.value);
@@ -120,17 +151,34 @@ export default function Venues() {
     navigate("/venues");
   }
 
+  function handlePageChange(pageNumber) {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function handlePreviousPage() {
+    if (currentPage > 1) {
+      handlePageChange(currentPage - 1);
+    }
+  }
+
+  function handleNextPage() {
+    if (currentPage < totalPages) {
+      handlePageChange(currentPage + 1);
+    }
+  }
+
   if (loading) {
     return <Loader text="Loading venues..." />;
   }
 
-  if (status && status.type === "error") {
+  if (status?.type === "error") {
     return (
       <Message variant="danger" title={status.title} message={status.message} />
     );
   }
 
-  if (status && status.type === "info") {
+  if (status?.type === "info") {
     return (
       <Message variant="info" title={status.title} message={status.message} />
     );
@@ -138,11 +186,13 @@ export default function Venues() {
 
   if (!sortedVenues.length && query.trim()) {
     return (
-      <Message
-        variant="info"
-        title="No matching venues"
-        message={`No venues matched "${query}". Try a different search.`}
-      />
+      <section className="container py-5">
+        <Message
+          variant="info"
+          title="No matching venues"
+          message={`No venues matched "${query}". Try a different search.`}
+        />
+      </section>
     );
   }
 
@@ -161,70 +211,122 @@ export default function Venues() {
         </div>
       </div>
 
-      <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
-        <div>
-          <p className="mb-0 text-muted">
-            Showing {visibleVenues.length} of {sortedVenues.length} venues
-          </p>
+      <div className="venues-toolbar border-0  mb-4">
+        <div className=" p-3 p-lg-4">
+          <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+              <p className="mb-0 text-muted">
+                Showing page {currentPage} of {totalPages || 1}
+              </p>
 
-          {query.trim() && (
-            <div className="d-flex align-items-center gap-2 flex-wrap mt-1">
-              <p className="mb-0 small text-muted">Results for "{query}"</p>
+              <p className="mb-0 text-muted small mt-1">
+                {sortedVenues.length} venues found
+              </p>
 
-              <button
-                type="button"
-                className="btn btn-sm btn-outline-secondary"
-                onClick={handleClearSearch}
-              >
-                Clear search
-              </button>
+              {query.trim() && (
+                <div className="d-flex align-items-center gap-2 flex-wrap mt-2">
+                  <span className="venues-search-tag">
+                    Results for "{query}"
+                  </span>
+
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={handleClearSearch}
+                  >
+                    <FiX />
+                    <span>Clear search</span>
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        <div className="d-flex align-items-center gap-2">
-          <label htmlFor="sortOrder" className="form-label mb-0">
-            Sort
-          </label>
-          <select
-            id="sortOrder"
-            className="form-select"
-            value={sortOrder}
-            onChange={handleSortChange}
-          >
-            <option value="az">A–Z</option>
-            <option value="za">Z–A</option>
-          </select>
+            <div className="d-flex align-items-center gap-2 venues-sort-wrap">
+              <label
+                htmlFor="sortOrder"
+                className="form-label mb-0 d-inline-flex align-items-center gap-2"
+              >
+                <FiSliders />
+                <span>Sort</span>
+              </label>
+
+              <select
+                id="sortOrder"
+                className="form-select venues-sort-select"
+                value={sortOrder}
+                onChange={handleSortChange}
+              >
+                <option value="az">A–Z</option>
+                <option value="za">Z–A</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
-        {visibleVenues.map((venue) => (
+        {paginatedVenues.map((venue) => (
           <VenueCard key={venue.id} venue={venue} />
         ))}
       </div>
 
-      <div className="d-flex justify-content-center gap-2 mt-5 flex-wrap">
-        {canShowLess && (
-          <button
-            type="button"
-            className="btn btn-outline-primary"
-            onClick={handleShowLess}
-          >
-            Show less
-          </button>
-        )}
+      {totalPages > 1 && (
+        <nav
+          className="d-flex justify-content-center mt-5"
+          aria-label="Venue pagination"
+        >
+          <div className="venues-pagination">
+            <button
+              type="button"
+              className="venues-page-btn venues-page-btn--nav"
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
+            >
+              <FiChevronLeft />
+              <span>Prev</span>
+            </button>
 
-        {hasMore && (
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleLoadMore}
-          >
-            Load more
-          </button>
-        )}
-      </div>
+            {paginationItems.map((item, index) => {
+              if (typeof item !== "number") {
+                return (
+                  <span
+                    key={`${item}-${index}`}
+                    className="venues-pagination-ellipsis"
+                  >
+                    ...
+                  </span>
+                );
+              }
+
+              const isActive = item === currentPage;
+
+              return (
+                <button
+                  key={item}
+                  type="button"
+                  className={`venues-page-btn ${
+                    isActive ? "venues-page-btn--active" : ""
+                  }`}
+                  onClick={() => handlePageChange(item)}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  {item}
+                </button>
+              );
+            })}
+
+            <button
+              type="button"
+              className="venues-page-btn venues-page-btn--nav"
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+            >
+              <span>Next</span>
+              <FiChevronRight />
+            </button>
+          </div>
+        </nav>
+      )}
     </section>
   );
 }

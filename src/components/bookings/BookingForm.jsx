@@ -6,7 +6,7 @@ function getTodayAsDateInput() {
   return new Date().toISOString().split("T")[0];
 }
 
-export default function BookingForm({ venueId, maxGuests }) {
+export default function BookingForm({ venueId, maxGuests, embedded = false }) {
   const initialValues = {
     dateFrom: "",
     dateTo: "",
@@ -104,98 +104,104 @@ export default function BookingForm({ venueId, maxGuests }) {
     }
   }
 
+  const formContent = (
+    <>
+      {!embedded && <h2 className="h5 mb-4">Book this venue</h2>}
+
+      {status && (
+        <div className="mb-3">
+          <Message
+            variant={status.type === "error" ? "danger" : status.type}
+            title={status.title}
+            message={status.message}
+            center={false}
+          />
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} noValidate>
+        <div className="row g-3">
+          <div className="col-12 col-md-6">
+            <label className="form-label" htmlFor="dateFrom">
+              Check-in
+            </label>
+            <input
+              id="dateFrom"
+              name="dateFrom"
+              type="date"
+              className={`form-control ${errors.dateFrom ? "is-invalid" : ""}`}
+              value={values.dateFrom}
+              onChange={handleChange}
+              min={today}
+              required
+            />
+            {errors.dateFrom && (
+              <div className="invalid-feedback">{errors.dateFrom}</div>
+            )}
+          </div>
+
+          <div className="col-12 col-md-6">
+            <label className="form-label" htmlFor="dateTo">
+              Check-out
+            </label>
+            <input
+              id="dateTo"
+              name="dateTo"
+              type="date"
+              className={`form-control ${errors.dateTo ? "is-invalid" : ""}`}
+              value={values.dateTo}
+              onChange={handleChange}
+              min={values.dateFrom || today}
+              required
+            />
+            {errors.dateTo && (
+              <div className="invalid-feedback">{errors.dateTo}</div>
+            )}
+          </div>
+
+          <div className="col-12">
+            <label className="form-label" htmlFor="guests">
+              Guests
+            </label>
+            <input
+              id="guests"
+              name="guests"
+              type="number"
+              min="1"
+              max={maxGuests}
+              className={`form-control ${errors.guests ? "is-invalid" : ""}`}
+              value={values.guests}
+              onChange={handleChange}
+              required
+            />
+            {errors.guests ? (
+              <div className="invalid-feedback">{errors.guests}</div>
+            ) : (
+              <div className="form-text">Max guests: {maxGuests}</div>
+            )}
+          </div>
+        </div>
+
+        <div className="d-flex justify-content-end mt-4">
+          <button
+            type="submit"
+            className="btn btn-secondary"
+            disabled={loading}
+          >
+            {loading ? "Booking..." : "Book now"}
+          </button>
+        </div>
+      </form>
+    </>
+  );
+
+  if (embedded) {
+    return formContent;
+  }
+
   return (
     <div className="card shadow-sm mt-4 border-0">
-      <div className="card-body p-4">
-        <h2 className="h5 mb-4">Book this venue</h2>
-
-        {status && (
-          <div className="mb-3">
-            <Message
-              variant={status.type === "error" ? "danger" : status.type}
-              title={status.title}
-              message={status.message}
-              center={false}
-            />
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} noValidate>
-          <div className="row g-3">
-            <div className="col-12 col-md-6">
-              <label className="form-label" htmlFor="dateFrom">
-                Check-in
-              </label>
-              <input
-                id="dateFrom"
-                name="dateFrom"
-                type="date"
-                className={`form-control ${
-                  errors.dateFrom ? "is-invalid" : ""
-                }`}
-                value={values.dateFrom}
-                onChange={handleChange}
-                min={today}
-                required
-              />
-              {errors.dateFrom && (
-                <div className="invalid-feedback">{errors.dateFrom}</div>
-              )}
-            </div>
-
-            <div className="col-12 col-md-6">
-              <label className="form-label" htmlFor="dateTo">
-                Check-out
-              </label>
-              <input
-                id="dateTo"
-                name="dateTo"
-                type="date"
-                className={`form-control ${errors.dateTo ? "is-invalid" : ""}`}
-                value={values.dateTo}
-                onChange={handleChange}
-                min={values.dateFrom || today}
-                required
-              />
-              {errors.dateTo && (
-                <div className="invalid-feedback">{errors.dateTo}</div>
-              )}
-            </div>
-
-            <div className="col-12">
-              <label className="form-label" htmlFor="guests">
-                Guests
-              </label>
-              <input
-                id="guests"
-                name="guests"
-                type="number"
-                min="1"
-                max={maxGuests}
-                className={`form-control ${errors.guests ? "is-invalid" : ""}`}
-                value={values.guests}
-                onChange={handleChange}
-                required
-              />
-              {errors.guests ? (
-                <div className="invalid-feedback">{errors.guests}</div>
-              ) : (
-                <div className="form-text">Max guests: {maxGuests}</div>
-              )}
-            </div>
-          </div>
-
-          <div className="d-flex justify-content-end mt-4">
-            <button
-              type="submit"
-              className="btn btn-secondary"
-              disabled={loading}
-            >
-              {loading ? "Booking..." : "Book now"}
-            </button>
-          </div>
-        </form>
-      </div>
+      <div className="card-body p-4">{formContent}</div>
     </div>
   );
 }

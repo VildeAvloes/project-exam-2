@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { FiArrowRight } from "react-icons/fi";
 
 export default function VenueCard({ venue }) {
   const image = venue.media?.[0]?.url;
@@ -12,7 +13,7 @@ export default function VenueCard({ venue }) {
     <div className="col">
       <Link
         to={`/venue/${venue.id}`}
-        className="card venue-card h-100 shadow-sm text-decoration-none"
+        className="card venue-card h-100 text-decoration-none"
       >
         {image ? (
           <img
@@ -21,24 +22,27 @@ export default function VenueCard({ venue }) {
             className="card-img-top venue-card-image"
           />
         ) : (
-          <div className="bg-light d-flex align-items-center justify-content-center venue-card-image-placeholder">
-            <span className="text-muted">No image available</span>
+          <div className="venue-card-image-placeholder d-flex align-items-center justify-content-center">
+            <span className="text-muted small">No image</span>
           </div>
         )}
 
         <div className="card-body d-flex flex-column">
           <div className="mb-3">
-            <p className="h5 text-dark mb-2">{venue.name}</p>
-            <p className="text-muted mb-2">{location}</p>
+            <h3 className="venue-card-title mb-1">{venue.name}</h3>
+            <p className="venue-card-location mb-0">{location}</p>
           </div>
 
-          <div className="mt-auto d-flex justify-content-between align-items-center ">
-            <p className="mb-0 fw-semibold text-primary">
-              ${venue.price}{" "}
-              <span className="fw-normal text-muted">/ night</span>
+          <div className="mt-auto d-flex justify-content-between align-items-center">
+            <p className="venue-card-price mb-0">
+              ${venue.price}
+              <span className="text-muted"> / night</span>
             </p>
 
-            <span className="fw-semibold">View venue</span>
+            <span className="venue-card-cta">
+              View
+              <FiArrowRight />
+            </span>
           </div>
         </div>
       </Link>

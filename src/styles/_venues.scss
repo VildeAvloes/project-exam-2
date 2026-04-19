@@ -1,0 +1,78 @@
+.venues-toolbar {
+  background-color: $extra-light;
+}
+
+.venues-search-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background-color: rgba(61, 139, 135, 0.12);
+  color: $accent;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.venues-sort-wrap {
+  min-width: 220px;
+}
+
+.venues-sort-select {
+  max-width: 140px;
+}
+
+.venues-pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.venues-page-btn {
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+
+  background-color: transparent;
+  color: $dark;
+
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: $light;
+    border-color: rgba(0, 0, 0, 0.12);
+  }
+}
+
+.venues-page-btn--active {
+  background-color: $primary;
+  color: white;
+  border-color: $primary;
+}
+
+.venues-page-btn--nav {
+  padding: 0 0.75rem;
+  min-width: auto;
+  gap: 0.3rem;
+}
+
+.venues-pagination-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  color: $dark;
+  opacity: 0.5;
+  font-weight: 600;
+}
