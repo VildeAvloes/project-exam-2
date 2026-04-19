@@ -124,15 +124,13 @@ export default function EditBookingForm({
   }
 
   return (
-    <article className="card shadow-sm border-0">
+    <article className="card shadow-sm border-0 booking-edit-form">
       <div className="card-body p-4">
-        <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
-          <div>
-            <p className="text-uppercase text-muted fw-semibold small mb-1">
-              Editing booking
-            </p>
-            <h3 className="h5 mb-0">{booking?.venue?.name || "Venue"}</h3>
-          </div>
+        <div className="mb-3">
+          <p className="text-uppercase text-muted fw-semibold small mb-1">
+            Edit
+          </p>
+          <h3 className="h5 mb-0">{booking?.venue?.name || "Venue"}</h3>
         </div>
 
         {status && (
@@ -247,7 +245,7 @@ export default function EditBookingForm({
             <div className="d-flex justify-content-end mb-4">
               <button
                 type="button"
-                className="btn btn-outline-danger btn-sm"
+                className="btn btn-outline-danger"
                 onClick={() => setShowDeleteConfirm(true)}
                 disabled={isSubmitting || isDeleting}
               >
@@ -256,7 +254,7 @@ export default function EditBookingForm({
             </div>
           )}
 
-          <div className="d-flex gap-2 justify-content-center justify-content-lg-end">
+          <div className="d-flex gap-2 justify-content-center justify-content-lg-end flex-wrap">
             <button
               type="button"
               className="btn btn-outline-accent"

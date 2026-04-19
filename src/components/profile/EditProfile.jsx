@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FiX } from "react-icons/fi";
 import { updateProfile } from "../../api/profile/updateProfile";
 import { saveAuth } from "../../utils/storage/saveAuth";
 import Loader from "../common/Loader";
@@ -93,34 +94,42 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="card shadow-sm">
-        <div className="card-body p-4 p-lg-5">
-          <Loader text="Updating profile..." />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="card shadow-sm">
+    <section className="card shadow-sm border-0">
       <div className="card-body p-4 p-lg-5">
         <div className="d-flex justify-content-between align-items-center mb-4">
-          <h2 className="h5 mb-0">Edit profile</h2>
+          <div>
+            <p className="text-uppercase text-muted fw-semibold small mb-1">
+              Edit
+            </p>
+            <h2 className="h5 mb-0">Update profile images</h2>
+          </div>
 
-          <button type="button" className="btn btn-icon" onClick={onCancel}>
-            <span className="material-symbols-outlined">close</span>
+          <button
+            type="button"
+            className="btn btn-icon"
+            onClick={onCancel}
+            aria-label="Close edit profile"
+          >
+            <FiX />
           </button>
         </div>
 
+        {loading && (
+          <div className="mb-4">
+            <Loader text="Updating profile..." />
+          </div>
+        )}
+
         {status && (
-          <Message
-            variant={status.type === "error" ? "danger" : status.type}
-            title={status.title}
-            message={status.message}
-            center={false}
-          />
+          <div className="mb-3">
+            <Message
+              variant={status.type === "error" ? "danger" : status.type}
+              title={status.title}
+              message={status.message}
+              center={false}
+            />
+          </div>
         )}
 
         <form onSubmit={handleSubmit}>
@@ -131,11 +140,11 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
 
             <input
               id="avatarUrl"
-              type="text"
+              type="url"
               className="form-control"
               value={avatarUrl}
-              onChange={(e) => {
-                setAvatarUrl(e.target.value);
+              onChange={(event) => {
+                setAvatarUrl(event.target.value);
                 setAvatarRemoved(false);
               }}
               placeholder="Paste image URL"
@@ -144,7 +153,7 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
             <div className="d-flex justify-content-end mt-2">
               <button
                 type="button"
-                className="btn btn-outline-danger btn-sm"
+                className="btn btn-outline-danger"
                 onClick={handleRemoveAvatar}
               >
                 Remove avatar
@@ -159,11 +168,11 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
 
             <input
               id="bannerUrl"
-              type="text"
+              type="url"
               className="form-control"
               value={bannerUrl}
-              onChange={(e) => {
-                setBannerUrl(e.target.value);
+              onChange={(event) => {
+                setBannerUrl(event.target.value);
                 setBannerRemoved(false);
               }}
               placeholder="Paste image URL"
@@ -172,7 +181,7 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
             <div className="d-flex justify-content-end mt-2">
               <button
                 type="button"
-                className="btn btn-outline-danger btn-sm"
+                className="btn btn-outline-danger"
                 onClick={handleRemoveBanner}
               >
                 Remove banner
@@ -180,21 +189,22 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
             </div>
           </div>
 
-          <div className="d-flex gap-2 justify-content-center justify-content-lg-end">
+          <div className="d-flex gap-2 justify-content-center justify-content-lg-end flex-wrap">
             <button
               type="button"
               className="btn btn-outline-accent"
               onClick={onCancel}
+              disabled={loading}
             >
               Cancel
             </button>
 
-            <button type="submit" className="btn btn-accent">
-              Save changes
+            <button type="submit" className="btn btn-accent" disabled={loading}>
+              {loading ? "Saving..." : "Save changes"}
             </button>
           </div>
         </form>
       </div>
-    </div>
+    </section>
   );
 }

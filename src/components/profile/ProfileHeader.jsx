@@ -3,15 +3,15 @@ export default function ProfileHeader({ auth, onEdit }) {
   const bannerUrl = auth.banner?.url || auth.banner || "";
 
   return (
-    <div className="card shadow overflow-hidden">
+    <section className="card shadow-sm border-0 profile-header overflow-hidden">
       {bannerUrl ? (
         <img
           src={bannerUrl}
           alt={`${auth.name} banner`}
-          className="profile-banner  img-fluid"
+          className="profile-banner img-fluid"
         />
       ) : (
-        <div className="profile-banner bg-primary-subtle"></div>
+        <div className="profile-banner profile-banner--fallback" />
       )}
 
       <div className="card-body p-4 p-lg-5">
@@ -23,19 +23,21 @@ export default function ProfileHeader({ auth, onEdit }) {
               className="profile-avatar rounded-circle img-fluid mb-3"
             />
           ) : (
-            <div className="profile-avatar rounded-circle bg-secondary-subtle d-inline-flex align-items-center justify-content-center mb-3">
-              <span className="fs-2 text-secondary">
+            <div className="profile-avatar profile-avatar--fallback rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
+              <span className="profile-avatar--initial">
                 {auth.name?.charAt(0).toUpperCase()}
               </span>
             </div>
           )}
 
-          <h1 className="h4 mb-1">{auth.name}</h1>
-          <p className="text-muted mb-2">{auth.email}</p>
-          <p className="mb-4">
-            <span className="fw-semibold">Account type:</span>{" "}
-            {auth.venueManager ? "Venue Manager" : "Customer"}
-          </p>
+          <h1 className="h3 mb-1">{auth.name}</h1>
+          <p className="text-muted mb-3">{auth.email}</p>
+
+          <div className="d-flex justify-content-center mb-4">
+            <span className="profile-account-badge">
+              {auth.venueManager ? "Venue Manager" : "Customer"}
+            </span>
+          </div>
 
           <div className="d-flex justify-content-center">
             <button type="button" className="btn btn-accent" onClick={onEdit}>
@@ -44,6 +46,6 @@ export default function ProfileHeader({ auth, onEdit }) {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -130,8 +130,11 @@ export default function MyBookings({ auth }) {
   }
 
   return (
-    <div className="p-4">
-      <h2 className="h5 mb-3">My bookings</h2>
+    <section className="py-5">
+      <div className="mb-4">
+        <h2 className="h4 mb-1">My bookings</h2>
+        <p className="text-muted mb-0">View, update, or remove your stays.</p>
+      </div>
 
       <BookingList
         bookings={bookings}
@@ -143,6 +146,6 @@ export default function MyBookings({ auth }) {
         onSave={handleUpdateBooking}
         onDelete={handleDeleteBooking}
       />
-    </div>
+    </section>
   );
 }

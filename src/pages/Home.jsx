@@ -61,7 +61,7 @@ export default function Home() {
 
   return (
     <>
-      <section className="py-5 py-lg-6">
+      <section className="py-5 ">
         <div className="container">
           <div className="row justify-content-center text-center">
             <div className="col-12 col-lg-8">
@@ -90,7 +90,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="container pb-5">
+      <section className="container py-5 ">
         <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
           <div>
             <h2 className="h3 mb-1">Featured venues</h2>
@@ -111,7 +111,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="container pb-5">
+      <section className="container py-5">
         <div className="card shadow-sm border-0">
           <div className="card-body p-4 p-lg-5 text-center">
             <p className="text-uppercase text-muted fw-semibold small mb-2">

@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
-import Message from "../common/Message";
+import { useState } from "react";
+import Message from "../../common/Message";
 
 export default function VenueForm({
   venue,
+  values,
+  setValues,
   onSave,
   onDelete,
   onCancel,
@@ -10,51 +12,10 @@ export default function VenueForm({
 }) {
   const isEdit = Boolean(venue);
 
-  const initialValues = {
-    name: "",
-    description: "",
-    price: 1,
-    maxGuests: 1,
-    imageUrl: "",
-    imageAlt: "",
-    address: "",
-    city: "",
-    zip: "",
-    country: "",
-    continent: "",
-    wifi: false,
-    parking: false,
-    breakfast: false,
-    pets: false,
-  };
-
-  const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-
-  useEffect(() => {
-    if (!venue) return;
-
-    setValues({
-      name: venue.name || "",
-      description: venue.description || "",
-      price: venue.price || 1,
-      maxGuests: venue.maxGuests || 1,
-      imageUrl: venue.media?.[0]?.url || "",
-      imageAlt: venue.media?.[0]?.alt || "",
-      address: venue.location?.address || "",
-      city: venue.location?.city || "",
-      zip: venue.location?.zip || "",
-      country: venue.location?.country || "",
-      continent: venue.location?.continent || "",
-      wifi: venue.meta?.wifi || false,
-      parking: venue.meta?.parking || false,
-      breakfast: venue.meta?.breakfast || false,
-      pets: venue.meta?.pets || false,
-    });
-  }, [venue]);
 
   function validate(formValues) {
     const newErrors = {};
@@ -94,27 +55,6 @@ export default function VenueForm({
     return newErrors;
   }
 
-  function handleChange(event) {
-    const { name, value, type, checked } = event.target;
-
-    setValues((prev) => ({
-      ...prev,
-      [name]:
-        type === "checkbox"
-          ? checked
-          : name === "price" || name === "maxGuests"
-            ? Number(value)
-            : value,
-    }));
-
-    setErrors((prev) => ({
-      ...prev,
-      [name]: undefined,
-    }));
-
-    setStatus(null);
-  }
-
   function buildPayload(formValues) {
     return {
       name: formValues.name.trim(),
@@ -145,6 +85,27 @@ export default function VenueForm({
     };
   }
 
+  function handleChange(event) {
+    const { name, value, type, checked } = event.target;
+
+    setValues((prev) => ({
+      ...prev,
+      [name]:
+        type === "checkbox"
+          ? checked
+          : name === "price" || name === "maxGuests"
+            ? Number(value)
+            : value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: undefined,
+    }));
+
+    setStatus(null);
+  }
+
   function handlePreview() {
     const validationErrors = validate(values);
     setErrors(validationErrors);
@@ -153,7 +114,9 @@ export default function VenueForm({
       return;
     }
 
-    onPreview(buildPayload(values));
+    if (!onPreview) return;
+
+    onPreview();
   }
 
   async function handleSubmit(event) {
@@ -184,6 +147,8 @@ export default function VenueForm({
   }
 
   async function handleConfirmDelete() {
+    if (!onDelete) return;
+
     setStatus(null);
 
     const result = await onDelete();
@@ -201,9 +166,14 @@ export default function VenueForm({
   }
 
   return (
-    <div className="card shadow-sm border-0">
-      <div className="card-body p-4">
-        <h2 className="h5 mb-4">{isEdit ? "Edit venue" : "Create venue"}</h2>
+    <section className="card shadow-sm border-0">
+      <div className="card-body p-4 p-lg-5">
+        <div className="mb-4">
+          <p className="text-uppercase text-muted fw-semibold small mb-2">
+            {isEdit ? "Edit" : "Create"}
+          </p>
+          <h2 className="h4 mb-0">{isEdit ? `${values.name}` : "New venue"}</h2>
+        </div>
 
         {status && (
           <div className="mb-3">
@@ -250,7 +220,7 @@ export default function VenueForm({
 
         <form onSubmit={handleSubmit} noValidate>
           <div className="mb-4">
-            <h3 className="h6 mb-3">Basic details</h3>
+            <h3 className="h6 mb-3">Details</h3>
 
             <div className="mb-3">
               <label className="form-label" htmlFor="name">
@@ -571,6 +541,6 @@ export default function VenueForm({
           </div>
         </form>
       </div>
-    </div>
+    </section>
   );
 }

@@ -33,9 +33,9 @@ function getBookingStatus(dateFrom, dateTo) {
 }
 
 function getStatusClass(status) {
-  if (status === "Upcoming") return "text-bg-secondary";
-  if (status === "Active") return "text-bg-primary";
-  return "text-bg-secondary";
+  if (status === "Upcoming") return "booking-status upcoming";
+  if (status === "Active") return "booking-status active";
+  return "booking-status past";
 }
 
 export default function BookingItem({ booking, onEdit }) {
@@ -49,7 +49,7 @@ export default function BookingItem({ booking, onEdit }) {
   const status = getBookingStatus(booking?.dateFrom, booking?.dateTo);
 
   return (
-    <article className="card shadow-sm booking-item">
+    <article className="card shadow-sm border-0 booking-item">
       <div className="row g-0">
         <div className="col-12 col-md-4 col-lg-3">
           {image ? (
@@ -59,21 +59,19 @@ export default function BookingItem({ booking, onEdit }) {
               className="img-fluid w-100 h-100 booking-item__image"
             />
           ) : (
-            <div className="booking-item__image-placeholder d-flex align-items-center justify-content-center h-100 bg-light">
+            <div className="booking-item__image-placeholder d-flex align-items-center justify-content-center h-100">
               <span className="text-muted">No image available</span>
             </div>
           )}
         </div>
 
         <div className="col-12 col-md-8 col-lg-9">
-          <div className="card-body h-100 d-flex flex-column">
+          <div className="card-body h-100 d-flex flex-column p-4">
             <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3 mb-3">
               <div>
                 <div className="d-flex align-items-center gap-2 flex-wrap mb-2">
                   <h3 className="h5 mb-0">{venue?.name || "Untitled venue"}</h3>
-                  <span className={`badge ${getStatusClass(status)}`}>
-                    {status}
-                  </span>
+                  <span className={getStatusClass(status)}>{status}</span>
                 </div>
 
                 <p className="text-muted mb-0">
@@ -82,7 +80,7 @@ export default function BookingItem({ booking, onEdit }) {
               </div>
             </div>
 
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4">
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4 ">
               <div>
                 <p className="small text-muted mb-1">From</p>
                 <p className="mb-0 fw-semibold">
@@ -110,9 +108,12 @@ export default function BookingItem({ booking, onEdit }) {
               </div>
             </div>
 
-            <div className="d-flex gap-2 justify-content-center justify-content-lg-end">
+            <div className="d-flex gap-2 justify-content-center justify-content-lg-end flex-wrap mt-auto">
               {venueId && (
-                <Link to={`/venue/${venueId}`} className="btn btn-primary">
+                <Link
+                  to={`/venue/${venueId}`}
+                  className="btn btn-outline-primary"
+                >
                   View venue
                 </Link>
               )}

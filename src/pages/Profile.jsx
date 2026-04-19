@@ -5,7 +5,7 @@ import ProfileHeader from "../components/profile/ProfileHeader";
 import EditProfile from "../components/profile/EditProfile";
 import Loader from "../components/common/Loader";
 import MyBookings from "../components/profile/MyBookings";
-import MyVenues from "../components/venues/MyVenues";
+import MyVenues from "../components/venues/manager/MyVenues";
 
 export default function Profile() {
   const { auth, setAuth, loading } = useAuth();
@@ -16,7 +16,7 @@ export default function Profile() {
   }, []);
 
   if (loading) {
-    return <Loader text="Loading profile.." />;
+    return <Loader text="Loading profile..." />;
   }
 
   if (!auth) {
@@ -26,9 +26,7 @@ export default function Profile() {
   return (
     <section className="container py-5">
       <div className="row justify-content-center">
-        <div className="col-12 col-lg-10 col-xl-8">
-          <h1 className="mb-4 text-center">Profile</h1>
-
+        <div className="col-12 col-xl-10">
           <ProfileHeader auth={auth} onEdit={() => setIsEditing(true)} />
 
           {isEditing && (
@@ -41,13 +39,11 @@ export default function Profile() {
             </div>
           )}
 
-          <div className="mt-4">
-            {auth.venueManager ? (
-              <MyVenues auth={auth} />
-            ) : (
-              <MyBookings auth={auth} />
-            )}
-          </div>
+          {auth.venueManager ? (
+            <MyVenues auth={auth} />
+          ) : (
+            <MyBookings auth={auth} />
+          )}
         </div>
       </div>
     </section>
