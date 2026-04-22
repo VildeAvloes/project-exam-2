@@ -15,6 +15,8 @@ export default function SearchBar() {
 
     if (location.pathname === "/venues") {
       setSearchInput(queryFromUrl);
+    } else {
+      setSearchInput("");
     }
   }, [location.pathname, searchParams, setSearchInput]);
 

@@ -23,3 +23,15 @@
   border-color: $accent;
   color: #fff;
 }
+
+.auth-link {
+  color: $primary;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+    color: $primary-hover;
+  }
+}

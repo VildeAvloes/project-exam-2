@@ -65,6 +65,7 @@ export default function Venues() {
         setLoading(true);
 
         const data = await getVenues();
+        console.log("venues:", data);
         setVenues(data);
 
         if (!data.length) {
@@ -215,10 +216,6 @@ export default function Venues() {
         <div className=" p-3 p-lg-4">
           <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
-              <p className="mb-0 text-muted">
-                Showing page {currentPage} of {totalPages || 1}
-              </p>
-
               <p className="mb-0 text-muted small mt-1">
                 {sortedVenues.length} venues found
               </p>

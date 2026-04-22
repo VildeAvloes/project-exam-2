@@ -4,11 +4,16 @@ import { getFeaturedVenues } from "../api/venues/getFeaturedVenues";
 import VenueCard from "../components/venues/VenueCard";
 import Loader from "../components/common/Loader";
 import Message from "../components/common/Message";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Home() {
+  const { auth } = useAuth();
+
   const [venues, setVenues] = useState([]);
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const registerLink = auth ? "/profile" : "/register";
 
   useEffect(() => {
     document.title = "Holidaze | Home";
@@ -79,8 +84,8 @@ export default function Home() {
               </p>
 
               <div className="d-flex justify-content-center gap-2 flex-wrap">
-                <Link to="/register" className="btn btn-secondary">
-                  Get started
+                <Link to={registerLink} className="btn btn-secondary">
+                  {auth ? "Go to profile" : "Get started"}
                 </Link>
                 <Link to="/venues" className="btn btn-outline-primary">
                   View venues
@@ -90,6 +95,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       <section className="container py-5 ">
         <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
           <div>
@@ -122,8 +128,8 @@ export default function Home() {
               Create and manage your venues, stay on top of bookings, and
               present your spaces in a clean, inviting way.
             </p>
-            <Link to="/register" className="btn btn-accent">
-              Register as manager
+            <Link to={registerLink} className="btn btn-accent">
+              {auth ? "Go to profile" : "Register as manager"}
             </Link>
           </div>
         </div>

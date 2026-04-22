@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { registerUser } from "../api/auth/register";
 import Message from "../components/common/Message";
+import { useAuth } from "../contexts/AuthContext";
+import Loader from "../components/common/Loader";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { auth, loading: authLoading } = useAuth();
 
   const initialValues = {
     name: "",
@@ -16,7 +19,6 @@ export default function Register() {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -49,18 +51,20 @@ export default function Register() {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: undefined,
+    }));
+
+    setStatus(null);
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
     setStatus(null);
-    setIsSubmitted(false);
-
-    console.log("📝 Register values:", values);
 
     const validationErrors = validate(values);
-    console.log("❌ Validation errors:", validationErrors);
-
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) {
@@ -70,30 +74,36 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const result = await registerUser(values);
-      console.log("✅ Register response:", result);
+      await registerUser(values);
 
-      setIsSubmitted(true);
       setValues(initialValues);
+      setErrors({});
 
       setStatus({
         type: "success",
-        message: "Register successful. Redirecting...",
+        title: "Registration successful",
+        message: "Your account has been created. Redirecting to login...",
       });
 
       setTimeout(() => {
         navigate("/login");
       }, 1200);
     } catch (error) {
-      console.error("❌ Register error:", error);
       setStatus({
         type: "error",
-        title: "Login failed",
+        title: "Register failed",
         message: error.message || "Something went wrong.",
       });
     } finally {
       setLoading(false);
     }
+  }
+  if (authLoading) {
+    return <Loader text="Checking session..." />;
+  }
+
+  if (auth) {
+    return <Navigate to="/profile" replace />;
   }
 
   return (
@@ -102,26 +112,22 @@ export default function Register() {
         <div className="col-12 col-md-8 col-lg-6">
           <div className="text-center mb-4">
             <h1 className="mb-3">Register</h1>
-            {!isSubmitted ? (
-              <p className="text-muted mb-0">
-                Create an account to book venues or manage your own.
-              </p>
-            ) : (
-              <div className="alert alert-success mb-0" role="alert">
-                Your account has been created. Redirecting to login...
-              </div>
-            )}
+            <p className="text-muted mb-0">
+              Create an account to book venues or manage your own.
+            </p>
           </div>
 
-          <div className="card shadow">
+          <div className="card shadow-sm border-0">
             <div className="card-body p-4 p-lg-5">
               {status && (
-                <Message
-                  variant={status.type === "error" ? "danger" : status.type}
-                  title={status.title}
-                  message={status.message}
-                  center={false}
-                />
+                <div className="mb-4">
+                  <Message
+                    variant={status.type === "error" ? "danger" : status.type}
+                    title={status.title}
+                    message={status.message}
+                    center={false}
+                  />
+                </div>
               )}
 
               <form onSubmit={handleSubmit} noValidate>
@@ -194,7 +200,7 @@ export default function Register() {
                   </label>
                 </div>
 
-                <div className="d-flex justify-content-center">
+                <div className="d-flex justify-content-center mb-4">
                   <button
                     className="btn btn-secondary w-50"
                     type="submit"
@@ -203,6 +209,13 @@ export default function Register() {
                     {loading ? "Registering..." : "Register"}
                   </button>
                 </div>
+
+                <p className="text-center text-muted mb-0">
+                  Already have an account?{" "}
+                  <Link to="/login" className="auth-link">
+                    Log in
+                  </Link>
+                </p>
               </form>
             </div>
           </div>
