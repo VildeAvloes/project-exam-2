@@ -242,7 +242,7 @@ export default function EditBookingForm({
           </div>
 
           {!showDeleteConfirm && (
-            <div className="d-flex justify-content-end mb-4">
+            <div className="d-flex justify-content-center justify-content-lg-end mb-4">
               <button
                 type="button"
                 className="btn btn-outline-danger"

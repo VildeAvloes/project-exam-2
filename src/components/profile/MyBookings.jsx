@@ -1,10 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getBookingsByProfile } from "../../api/bookings/getBookingsByProfile";
 import Loader from "../common/Loader";
 import Message from "../common/Message";
 import BookingList from "../bookings/BookingList";
 import { updateBooking } from "../../api/bookings/updateBooking";
 import { deleteBooking } from "../../api/bookings/deleteBooking";
+
+function isPastBooking(booking) {
+  const today = new Date();
+  const end = new Date(booking.dateTo);
+
+  return today > end;
+}
 
 export default function MyBookings({ auth }) {
   const [bookings, setBookings] = useState([]);
@@ -31,11 +38,7 @@ export default function MyBookings({ auth }) {
           auth.apiKey
         );
 
-        const sortedBookings = [...data].sort(
-          (a, b) => new Date(a.dateFrom) - new Date(b.dateFrom)
-        );
-
-        setBookings(sortedBookings);
+        setBookings(data);
       } catch (error) {
         setStatus({
           type: "error",
@@ -49,6 +52,18 @@ export default function MyBookings({ auth }) {
 
     loadBookings();
   }, [auth]);
+
+  const upcomingBookings = useMemo(() => {
+    return bookings
+      .filter((booking) => !isPastBooking(booking))
+      .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom));
+  }, [bookings]);
+
+  const pastBookings = useMemo(() => {
+    return bookings
+      .filter((booking) => isPastBooking(booking))
+      .sort((a, b) => new Date(b.dateFrom) - new Date(a.dateFrom));
+  }, [bookings]);
 
   async function handleUpdateBooking(bookingId, updatedValues) {
     try {
@@ -136,16 +151,37 @@ export default function MyBookings({ auth }) {
         <p className="text-muted mb-0">View, update, or remove your stays.</p>
       </div>
 
-      <BookingList
-        bookings={bookings}
-        editingBookingId={editingBookingId}
-        updatingBookingId={updatingBookingId}
-        deletingBookingId={deletingBookingId}
-        onEdit={handleEditBooking}
-        onCancelEdit={handleCancelEdit}
-        onSave={handleUpdateBooking}
-        onDelete={handleDeleteBooking}
-      />
+      <div className="mb-5">
+        <h3 className="h5 mb-3">Upcoming bookings</h3>
+        <BookingList
+          bookings={upcomingBookings}
+          emptyTitle="No upcoming bookings"
+          emptyMessage="You don’t have any upcoming stays."
+          editingBookingId={editingBookingId}
+          updatingBookingId={updatingBookingId}
+          deletingBookingId={deletingBookingId}
+          onEdit={handleEditBooking}
+          onCancelEdit={handleCancelEdit}
+          onSave={handleUpdateBooking}
+          onDelete={handleDeleteBooking}
+        />
+      </div>
+
+      <div>
+        <h3 className="h5 mb-3">Past bookings</h3>
+        <BookingList
+          bookings={pastBookings}
+          emptyTitle="No past bookings"
+          emptyMessage="Your completed stays will appear here."
+          editingBookingId={editingBookingId}
+          updatingBookingId={updatingBookingId}
+          deletingBookingId={deletingBookingId}
+          onEdit={handleEditBooking}
+          onCancelEdit={handleCancelEdit}
+          onSave={handleUpdateBooking}
+          onDelete={handleDeleteBooking}
+        />
+      </div>
     </section>
   );
 }

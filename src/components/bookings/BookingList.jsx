@@ -4,6 +4,8 @@ import Message from "../common/Message";
 
 export default function BookingList({
   bookings = [],
+  emptyTitle = "No bookings yet",
+  emptyMessage = "You haven’t made any bookings yet.",
   editingBookingId,
   updatingBookingId,
   deletingBookingId,
@@ -16,8 +18,8 @@ export default function BookingList({
     return (
       <Message
         variant="info"
-        title="No bookings yet"
-        message="You haven’t made any bookings yet."
+        title={emptyTitle}
+        message={emptyMessage}
         center={false}
       />
     );

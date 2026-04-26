@@ -39,11 +39,8 @@ export default function Profile() {
             </div>
           )}
 
-          {auth.venueManager ? (
-            <MyVenues auth={auth} />
-          ) : (
-            <MyBookings auth={auth} />
-          )}
+          {auth.venueManager && <MyVenues auth={auth} />}
+          <MyBookings auth={auth} />
         </div>
       </div>
     </section>
