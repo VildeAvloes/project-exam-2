@@ -1,0 +1,150 @@
+.venue-media-field {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 1rem;
+  background-color: $light;
+}
+
+.venue-gallery {
+  width: 100%;
+  display: block;
+}
+
+.venue-gallery__main {
+  width: 100%;
+  display: block;
+}
+
+.venue-gallery__main-image {
+  width: 100%;
+  height: auto;
+  min-height: 320px;
+  object-fit: cover;
+  display: block;
+}
+
+.venue-gallery__main,
+.venue-gallery__thumb {
+  border: 0;
+  padding: 0;
+  background: none;
+  overflow: hidden;
+  cursor: pointer;
+  display: block;
+}
+
+.venue-gallery__main {
+  width: 100%;
+  border-radius: 1.25rem;
+}
+
+.venue-gallery__main-image,
+.venue-hero-image-placeholder {
+  width: 100%;
+  min-height: 320px;
+  object-fit: cover;
+  display: block;
+  background-color: $light;
+}
+
+.venue-gallery__thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.venue-gallery__thumb {
+  border-radius: 1rem;
+}
+
+.venue-gallery__thumb-image {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  display: block;
+}
+
+.venue-gallery--single {
+  display: block;
+}
+
+.venue-gallery--single .venue-gallery__main {
+  width: 100%;
+}
+
+.venue-gallery--single .venue-gallery__main-image {
+  width: 100%;
+  min-height: 320px;
+}
+
+.venue-gallery--single .venue-gallery__thumbs {
+  display: none;
+}
+
+.venue-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  background-color: rgba(0, 0, 0, 0.86);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.venue-lightbox__image {
+  max-width: min(100%, 1100px);
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 1rem;
+}
+
+.venue-lightbox__close,
+.venue-lightbox__nav {
+  position: absolute;
+  border: 0;
+  border-radius: 999px;
+  background-color: white;
+  color: $dark;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.venue-lightbox__close {
+  top: 1.5rem;
+  right: 1.5rem;
+}
+
+.venue-lightbox__nav--prev {
+  left: 1.5rem;
+}
+
+.venue-lightbox__nav--next {
+  right: 1.5rem;
+}
+
+.venue-gallery__single {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: none;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.venue-gallery__single-image {
+  display: block;
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+@media (min-width: 992px) {
+  .venue-gallery__single-image {
+    height: 500px;
+  }
+}

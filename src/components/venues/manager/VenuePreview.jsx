@@ -1,4 +1,5 @@
 import { FaWifi, FaParking, FaCoffee, FaPaw } from "react-icons/fa";
+import VenueGallery from "../VenueGallery";
 
 export default function VenuePreview({ venue, onBack, onSave }) {
   const image = venue.media?.[0]?.url || "";
@@ -27,15 +28,7 @@ export default function VenuePreview({ venue, onBack, onSave }) {
 
       <div className="row g-4 align-items-start">
         <div className="col-12 col-lg-7">
-          {image ? (
-            <img
-              src={image}
-              alt={imageAlt}
-              className="img-fluid rounded-4 w-100 venue-hero-image"
-            />
-          ) : (
-            <div className="venue-hero-image-placeholder rounded-4" />
-          )}
+          <VenueGallery media={venue.media || []} fallbackAlt={venue.name} />
         </div>
 
         <div className="col-12 col-lg-5">

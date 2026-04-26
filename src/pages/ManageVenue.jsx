@@ -15,8 +15,12 @@ const initialVenueValues = {
   description: "",
   price: 1,
   maxGuests: 1,
-  imageUrl: "",
-  imageAlt: "",
+  media: [
+    {
+      url: "",
+      alt: "",
+    },
+  ],
   address: "",
   city: "",
   zip: "",
@@ -36,8 +40,17 @@ function mapVenueToFormValues(venue) {
     description: venue.description || "",
     price: venue.price || 1,
     maxGuests: venue.maxGuests || 1,
-    imageUrl: venue.media?.[0]?.url || "",
-    imageAlt: venue.media?.[0]?.alt || "",
+    media: venue.media?.length
+      ? venue.media.map((image) => ({
+          url: image.url || "",
+          alt: image.alt || "",
+        }))
+      : [
+          {
+            url: "",
+            alt: "",
+          },
+        ],
     address: venue.location?.address || "",
     city: venue.location?.city || "",
     zip: venue.location?.zip || "",
@@ -56,14 +69,12 @@ function buildVenuePayload(formValues) {
     description: formValues.description.trim(),
     price: Number(formValues.price),
     maxGuests: Number(formValues.maxGuests),
-    media: formValues.imageUrl.trim()
-      ? [
-          {
-            url: formValues.imageUrl.trim(),
-            alt: formValues.imageAlt.trim() || formValues.name.trim(),
-          },
-        ]
-      : [],
+    media: formValues.media
+      .filter((image) => image.url.trim())
+      .map((image) => ({
+        url: image.url.trim(),
+        alt: image.alt.trim() || formValues.name.trim(),
+      })),
     meta: {
       wifi: formValues.wifi,
       parking: formValues.parking,

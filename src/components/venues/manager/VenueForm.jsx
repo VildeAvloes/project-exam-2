@@ -44,13 +44,15 @@ export default function VenueForm({
       newErrors.country = "Country is required";
     }
 
-    if (formValues.imageUrl.trim()) {
-      try {
-        new URL(formValues.imageUrl);
-      } catch {
-        newErrors.imageUrl = "Please enter a valid image URL";
+    formValues.media.forEach((image, index) => {
+      if (image.url.trim()) {
+        try {
+          new URL(image.url);
+        } catch {
+          newErrors.media = `Image ${index + 1} must have a valid URL`;
+        }
       }
-    }
+    });
 
     return newErrors;
   }
@@ -61,14 +63,12 @@ export default function VenueForm({
       description: formValues.description.trim(),
       price: Number(formValues.price),
       maxGuests: Number(formValues.maxGuests),
-      media: formValues.imageUrl.trim()
-        ? [
-            {
-              url: formValues.imageUrl.trim(),
-              alt: formValues.imageAlt.trim() || formValues.name.trim(),
-            },
-          ]
-        : [],
+      media: formValues.media
+        .filter((image) => image.url.trim())
+        .map((image) => ({
+          url: image.url.trim(),
+          alt: image.alt.trim() || formValues.name.trim(),
+        })),
       meta: {
         wifi: formValues.wifi,
         parking: formValues.parking,
@@ -83,6 +83,39 @@ export default function VenueForm({
         continent: formValues.continent.trim(),
       },
     };
+  }
+
+  function handleMediaChange(index, field, value) {
+    setValues((prev) => ({
+      ...prev,
+      media: prev.media.map((image, imageIndex) =>
+        imageIndex === index ? { ...image, [field]: value } : image
+      ),
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      media: undefined,
+    }));
+
+    setStatus(null);
+  }
+
+  function handleAddImage() {
+    setValues((prev) => ({
+      ...prev,
+      media: [...prev.media, { url: "", alt: "" }],
+    }));
+  }
+
+  function handleRemoveImage(index) {
+    setValues((prev) => ({
+      ...prev,
+      media:
+        prev.media.length > 1
+          ? prev.media.filter((_, imageIndex) => imageIndex !== index)
+          : [{ url: "", alt: "" }],
+    }));
   }
 
   function handleChange(event) {
@@ -303,41 +336,84 @@ export default function VenueForm({
           </div>
 
           <div className="mb-4">
-            <h3 className="h6 mb-3">Image</h3>
+            <div className="d-flex justify-content-between align-items-center gap-3 mb-3">
+              <h3 className="h6 mb-0">Images</h3>
 
-            <div className="mb-3">
-              <label className="form-label" htmlFor="imageUrl">
-                Image URL
-              </label>
-              <input
-                id="imageUrl"
-                name="imageUrl"
-                type="url"
-                className={`form-control ${
-                  errors.imageUrl ? "is-invalid" : ""
-                }`}
-                value={values.imageUrl}
-                onChange={handleChange}
-                placeholder="https://example.com/image.jpg"
-              />
-              {errors.imageUrl && (
-                <div className="invalid-feedback">{errors.imageUrl}</div>
-              )}
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                onClick={handleAddImage}
+                disabled={loading}
+              >
+                Add image
+              </button>
             </div>
 
-            <div>
-              <label className="form-label" htmlFor="imageAlt">
-                Image alt text
-              </label>
-              <input
-                id="imageAlt"
-                name="imageAlt"
-                className="form-control"
-                value={values.imageAlt}
-                onChange={handleChange}
-                placeholder="Exterior view of the venue"
-              />
+            {errors.media && (
+              <div className="text-danger small mb-3">{errors.media}</div>
+            )}
+
+            <div className="d-flex flex-column gap-3">
+              {values.media.map((image, index) => (
+                <div key={index} className="venue-media-field p-3">
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <p className="fw-semibold mb-0">
+                      {index === 0 ? "Main image" : `Image ${index + 1}`}
+                    </p>
+
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger"
+                      onClick={() => handleRemoveImage(index)}
+                      disabled={loading}
+                    >
+                      Remove
+                    </button>
+                  </div>
+
+                  <div className="mb-3">
+                    <label
+                      className="form-label"
+                      htmlFor={`media-url-${index}`}
+                    >
+                      Image URL
+                    </label>
+                    <input
+                      id={`media-url-${index}`}
+                      type="url"
+                      className="form-control"
+                      value={image.url}
+                      onChange={(event) =>
+                        handleMediaChange(index, "url", event.target.value)
+                      }
+                      placeholder="https://example.com/image.jpg"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      className="form-label"
+                      htmlFor={`media-alt-${index}`}
+                    >
+                      Image alt text
+                    </label>
+                    <input
+                      id={`media-alt-${index}`}
+                      className="form-control"
+                      value={image.alt}
+                      onChange={(event) =>
+                        handleMediaChange(index, "alt", event.target.value)
+                      }
+                      placeholder="Exterior view of the venue"
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
+
+            <p className="form-text mt-2 mb-0">
+              The first image will be used as the main image.
+            </p>
           </div>
 
           <div className="mb-4">

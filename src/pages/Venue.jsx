@@ -6,6 +6,7 @@ import { getVenueById } from "../api/venues/getVenueById";
 import Loader from "../components/common/Loader";
 import Message from "../components/common/Message";
 import BookingForm from "../components/bookings/BookingForm";
+import VenueGallery from "../components/venues/VenueGallery";
 
 export default function Venue() {
   const { id } = useParams();
@@ -58,8 +59,6 @@ export default function Venue() {
     );
   }
 
-  const image = venue.media?.[0]?.url || "";
-  const imageAlt = venue.media?.[0]?.alt || venue.name || "Venue image";
   const city = venue.location?.city || "Unknown city";
   const country = venue.location?.country || "";
   const locationText = country ? `${city}, ${country}` : city;
@@ -75,19 +74,7 @@ export default function Venue() {
     <section className="container py-5">
       <div className="row g-4 align-items-start">
         <div className="col-12 col-lg-7">
-          <div className="venue-hero-card">
-            {image ? (
-              <img
-                src={image}
-                alt={imageAlt}
-                className="img-fluid w-100 venue-hero-image"
-              />
-            ) : (
-              <div className="venue-hero-image-placeholder d-flex align-items-center justify-content-center">
-                <span className="text-muted">No image available</span>
-              </div>
-            )}
-          </div>
+          <VenueGallery media={venue.media || []} fallbackAlt={venue.name} />
         </div>
 
         <div className="col-12 col-lg-5">
