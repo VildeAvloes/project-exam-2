@@ -206,29 +206,6 @@ export default function Contact() {
           </div>
         </div>
       </section>
-      <section className="container py-5">
-        <div className="row justify-content-center">
-          <div className="col-12 col-lg-8 col-xl-6">
-            <div className="text-center">
-              <p className="text-uppercase text-muted fw-semibold small mb-2">
-                We're here to help
-              </p>
-
-              <p className="h5 mb-3">Questions, feedback, or just saying hi?</p>
-
-              <p className="mb-4">
-                Whether you're planning a stay or managing a venue, we’ll do our
-                best to get back to you as soon as possible.
-              </p>
-
-              <div className="d-flex justify-content-center gap-4 flex-wrap small text-muted">
-                <span>📧 support@holidaze.no</span>
-                <span>📍 Oslo, Norway</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

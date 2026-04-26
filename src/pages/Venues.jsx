@@ -201,10 +201,7 @@ export default function Venues() {
     <section className="container py-5">
       <div className="row justify-content-center text-center mb-5">
         <div className="col-12 col-lg-8">
-          <p className="text-uppercase text-muted fw-semibold mb-2">
-            Browse venues
-          </p>
-          <h1 className="mb-3">Find the right stay for your next trip</h1>
+          <h1 className="mb-3">Browse venues</h1>
           <p className="text-muted mb-0">
             Explore all available venues and discover places that match your
             plans.

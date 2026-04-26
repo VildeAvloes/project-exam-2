@@ -18,23 +18,23 @@ export default function Venue() {
     document.title = "Holidaze | Venue";
   }, []);
 
-  useEffect(() => {
-    async function loadVenue() {
-      try {
-        const data = await getVenueById(id);
-        setVenue(data);
-        setStatus(null);
-      } catch (error) {
-        setStatus({
-          type: "error",
-          title: "Something went wrong",
-          message: error.message || "Failed to load venue.",
-        });
-      } finally {
-        setLoading(false);
-      }
+  async function loadVenue() {
+    try {
+      const data = await getVenueById(id, "?_bookings=true");
+      setVenue(data);
+      setStatus(null);
+    } catch (error) {
+      setStatus({
+        type: "error",
+        title: "Something went wrong",
+        message: error.message || "Failed to load venue.",
+      });
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     loadVenue();
   }, [id]);
 
@@ -91,13 +91,8 @@ export default function Venue() {
         </div>
 
         <div className="col-12 col-lg-5">
-          <div className="venue-content">
-            <p className="text-uppercase text-muted fw-semibold small mb-2">
-              Venue
-            </p>
-
-            <h1 className="venue-title mb-3">{venue.name}</h1>
-
+          <div className="pt-3">
+            <h1 className=" mb-3">{venue.name}</h1>
             <div className="d-flex flex-wrap align-items-center gap-3 mb-4">
               <p className="venue-location mb-0 d-inline-flex align-items-center gap-2">
                 <FiMapPin />
@@ -166,6 +161,8 @@ export default function Venue() {
             <BookingForm
               venueId={venue.id}
               maxGuests={venue.maxGuests}
+              bookings={venue.bookings || []}
+              onBookingCreated={loadVenue}
               embedded
             />
           </div>

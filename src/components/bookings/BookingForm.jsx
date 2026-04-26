@@ -1,65 +1,107 @@
 import { useState } from "react";
+import { DayPicker } from "react-day-picker";
 import { createBooking } from "../../api/bookings/createBooking";
 import Message from "../common/Message";
 
-function getTodayAsDateInput() {
-  return new Date().toISOString().split("T")[0];
+function getToday() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today;
 }
 
-export default function BookingForm({ venueId, maxGuests, embedded = false }) {
+function toDateInputValue(date) {
+  if (!date) return "";
+  return date.toISOString().split("T")[0];
+}
+
+function toApiDate(date) {
+  return new Date(date).toISOString();
+}
+
+function getDisabledBookingRanges(bookings = []) {
+  return bookings
+    .filter((booking) => booking.dateFrom && booking.dateTo)
+    .map((booking) => ({
+      from: new Date(booking.dateFrom),
+      to: new Date(booking.dateTo),
+    }));
+}
+
+export default function BookingForm({
+  venueId,
+  maxGuests,
+  bookings = [],
+  onBookingCreated,
+  embedded = false,
+}) {
   const initialValues = {
-    dateFrom: "",
-    dateTo: "",
     guests: 1,
   };
 
-  const today = getTodayAsDateInput();
+  const today = getToday();
+  const disabledDates = [
+    { before: today },
+    ...getDisabledBookingRanges(bookings),
+  ];
 
+  const [selectedRange, setSelectedRange] = useState();
+  const [showCalendar, setShowCalendar] = useState(false);
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  function validate(formValues) {
+  function validate() {
     const newErrors = {};
-    const todayDate = new Date();
-    todayDate.setHours(0, 0, 0, 0);
 
-    const fromDate = formValues.dateFrom ? new Date(formValues.dateFrom) : null;
-    const toDate = formValues.dateTo ? new Date(formValues.dateTo) : null;
-
-    if (!formValues.dateFrom) {
+    if (!selectedRange?.from) {
       newErrors.dateFrom = "Please select a check-in date";
-    } else if (fromDate < todayDate) {
-      newErrors.dateFrom = "Check-in date cannot be in the past";
     }
 
-    if (!formValues.dateTo) {
+    if (!selectedRange?.to) {
       newErrors.dateTo = "Please select a check-out date";
-    } else if (fromDate && toDate <= fromDate) {
+    }
+
+    if (
+      selectedRange?.from &&
+      selectedRange?.to &&
+      selectedRange.to <= selectedRange.from
+    ) {
       newErrors.dateTo = "Check-out must be after check-in";
     }
 
-    if (!formValues.guests || Number(formValues.guests) < 1) {
+    if (!values.guests || Number(values.guests) < 1) {
       newErrors.guests = "Guests must be at least 1";
-    } else if (Number(formValues.guests) > maxGuests) {
+    } else if (Number(values.guests) > maxGuests) {
       newErrors.guests = `Guests cannot exceed ${maxGuests}`;
     }
 
     return newErrors;
   }
 
-  function handleChange(event) {
-    const { name, value } = event.target;
+  function handleGuestsChange(event) {
+    const { value } = event.target;
 
     setValues((prev) => ({
       ...prev,
-      [name]: name === "guests" ? Number(value) : value,
+      guests: Number(value),
     }));
 
     setErrors((prev) => ({
       ...prev,
-      [name]: undefined,
+      guests: undefined,
+    }));
+
+    setStatus(null);
+  }
+
+  function handleRangeSelect(range) {
+    setSelectedRange(range);
+
+    setErrors((prev) => ({
+      ...prev,
+      dateFrom: undefined,
+      dateTo: undefined,
     }));
 
     setStatus(null);
@@ -69,7 +111,7 @@ export default function BookingForm({ venueId, maxGuests, embedded = false }) {
     event.preventDefault();
     setStatus(null);
 
-    const validationErrors = validate(values);
+    const validationErrors = validate();
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) {
@@ -80,19 +122,25 @@ export default function BookingForm({ venueId, maxGuests, embedded = false }) {
 
     try {
       await createBooking({
-        dateFrom: values.dateFrom,
-        dateTo: values.dateTo,
+        dateFrom: toApiDate(selectedRange.from),
+        dateTo: toApiDate(selectedRange.to),
         guests: Number(values.guests),
         venueId,
       });
 
       setStatus({
         type: "success",
-        message: "Booking created successfully.",
+        title: "Booking created",
+        message: "Your booking was created successfully.",
       });
 
+      setSelectedRange(undefined);
       setValues(initialValues);
       setErrors({});
+
+      if (onBookingCreated) {
+        onBookingCreated();
+      }
     } catch (error) {
       setStatus({
         type: "error",
@@ -120,66 +168,68 @@ export default function BookingForm({ venueId, maxGuests, embedded = false }) {
       )}
 
       <form onSubmit={handleSubmit} noValidate>
-        <div className="row g-3">
-          <div className="col-12 col-md-6">
-            <label className="form-label" htmlFor="dateFrom">
-              Check-in
-            </label>
-            <input
-              id="dateFrom"
-              name="dateFrom"
-              type="date"
-              className={`form-control ${errors.dateFrom ? "is-invalid" : ""}`}
-              value={values.dateFrom}
-              onChange={handleChange}
-              min={today}
-              required
-            />
-            {errors.dateFrom && (
-              <div className="invalid-feedback">{errors.dateFrom}</div>
-            )}
-          </div>
+        <div className="mb-4">
+          <label className="form-label d-block">Dates</label>
 
-          <div className="col-12 col-md-6">
-            <label className="form-label" htmlFor="dateTo">
-              Check-out
-            </label>
-            <input
-              id="dateTo"
-              name="dateTo"
-              type="date"
-              className={`form-control ${errors.dateTo ? "is-invalid" : ""}`}
-              value={values.dateTo}
-              onChange={handleChange}
-              min={values.dateFrom || today}
-              required
-            />
-            {errors.dateTo && (
-              <div className="invalid-feedback">{errors.dateTo}</div>
-            )}
-          </div>
+          <button
+            type="button"
+            className={`booking-date-toggle ${
+              errors.dateFrom || errors.dateTo
+                ? "booking-date-toggle--invalid"
+                : ""
+            }`}
+            onClick={() => setShowCalendar((prev) => !prev)}
+          >
+            {selectedRange?.from && selectedRange?.to
+              ? `${toDateInputValue(selectedRange.from)} – ${toDateInputValue(
+                  selectedRange.to
+                )}`
+              : selectedRange?.from
+                ? `${toDateInputValue(selectedRange.from)} – Select check-out`
+                : "Select check-in and check-out dates"}
+          </button>
 
-          <div className="col-12">
-            <label className="form-label" htmlFor="guests">
-              Guests
-            </label>
-            <input
-              id="guests"
-              name="guests"
-              type="number"
-              min="1"
-              max={maxGuests}
-              className={`form-control ${errors.guests ? "is-invalid" : ""}`}
-              value={values.guests}
-              onChange={handleChange}
-              required
-            />
-            {errors.guests ? (
-              <div className="invalid-feedback">{errors.guests}</div>
-            ) : (
-              <div className="form-text">Max guests: {maxGuests}</div>
-            )}
-          </div>
+          {showCalendar && (
+            <div className="booking-calendar mt-3">
+              <DayPicker
+                mode="range"
+                selected={selectedRange}
+                onSelect={handleRangeSelect}
+                disabled={disabledDates}
+                excludeDisabled
+                min={1}
+                numberOfMonths={1}
+              />
+            </div>
+          )}
+
+          {(errors.dateFrom || errors.dateTo) && (
+            <div className="text-danger small mt-2">
+              {errors.dateFrom || errors.dateTo}
+            </div>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label className="form-label" htmlFor="guests">
+            Guests
+          </label>
+          <input
+            id="guests"
+            name="guests"
+            type="number"
+            min="1"
+            max={maxGuests}
+            className={`form-control ${errors.guests ? "is-invalid" : ""}`}
+            value={values.guests}
+            onChange={handleGuestsChange}
+            required
+          />
+          {errors.guests ? (
+            <div className="invalid-feedback">{errors.guests}</div>
+          ) : (
+            <div className="form-text">Max guests: {maxGuests}</div>
+          )}
         </div>
 
         <div className="d-flex justify-content-end mt-4">
