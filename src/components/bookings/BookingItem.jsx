@@ -56,10 +56,10 @@ export default function BookingItem({ booking, onEdit }) {
             <img
               src={image}
               alt={imageAlt}
-              className="img-fluid w-100 h-100 booking-item__image"
+              className="img-fluid w-100 h-100 booking-item-image"
             />
           ) : (
-            <div className="booking-item__image-placeholder d-flex align-items-center justify-content-center h-100">
+            <div className="booking-item-image d-flex align-items-center justify-content-center h-100">
               <span className="text-muted">No image available</span>
             </div>
           )}
@@ -108,7 +108,7 @@ export default function BookingItem({ booking, onEdit }) {
               </div>
             </div>
 
-            <div className="d-flex gap-2 justify-content-center justify-content-lg-end flex-wrap mt-auto">
+            <div className="d-flex gap-2 justify-content-center justify-content-md-end flex-wrap mt-auto">
               {venueId && (
                 <Link
                   to={`/venue/${venueId}`}

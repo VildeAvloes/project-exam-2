@@ -15,12 +15,8 @@
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.08);
 }
 
-.venue-card-image,
-.venue-card-image-placeholder {
-  height: 220px;
-}
-
 .venue-card-image {
+  height: 220px;
   object-fit: cover;
   transition: transform 0.3s ease;
 }
@@ -29,12 +25,7 @@
   transform: scale(1.03);
 }
 
-.venue-card-image-placeholder {
-  background-color: $light;
-}
-
 .venue-card-title {
-  font-family: $headings-font-family;
   font-size: 1.1rem;
   font-weight: 600;
   color: $dark;
@@ -46,21 +37,14 @@
   opacity: 0.7;
 }
 
-.venue-card-price {
-  font-weight: 600;
-  color: $primary;
-}
-
 .venue-card-cta {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-
   font-size: 0.85rem;
   font-weight: 600;
   color: $dark;
   opacity: 0.7;
-
   transition:
     transform 0.2s ease,
     opacity 0.2s ease;

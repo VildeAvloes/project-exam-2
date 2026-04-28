@@ -1,33 +1,19 @@
-.profile-header {
-  border-radius: 1.25rem;
-  background-color: $extra-light;
-}
-
-.profile-banner {
+.banner {
   width: 100%;
   height: 220px;
   object-fit: cover;
   display: block;
+  background-color: $primary-opacity;
 }
 
-.profile-banner--fallback {
-  background-color: #3b5f781f;
-}
-
-.profile-avatar {
+.avatar {
   width: 110px;
   height: 110px;
   object-fit: cover;
+  background-color: $accent-opacity;
 }
 
-.profile-avatar--fallback {
-  width: 110px;
-  height: 110px;
-  background-color: rgba(61, 139, 135, 0.141);
-  border: 4px solid $extra-light;
-}
-
-.profile-avatar--initial {
+.avatar-initial {
   font-size: 2rem;
   font-weight: 700;
   color: $accent;
@@ -38,26 +24,24 @@
   align-items: center;
   padding: 0.5rem 0.9rem;
   border-radius: 999px;
-  background-color: rgba(61, 139, 135, 0.12);
+  background-color: $accent-opacity;
   color: $accent;
   font-weight: 600;
   font-size: 0.9rem;
 }
 
-.booking-item {
+.booking-item,
+.venue-item {
   border-radius: 1.25rem;
   overflow: hidden;
   background-color: $extra-light;
 }
 
-.booking-item__image {
+.booking-item-image,
+.venue-item-image {
   min-height: 220px;
   object-fit: cover;
   display: block;
-}
-
-.booking-item__image-placeholder {
-  min-height: 220px;
   background-color: $light;
 }
 
@@ -71,37 +55,16 @@
 }
 
 .upcoming {
-  background-color: rgba(168, 87, 63, 0.12);
+  background-color: $secondary-opacity;
   color: $secondary;
 }
 
 .active {
-  background-color: rgba(61, 139, 135, 0.14);
+  background-color: $accent-opacity;
   color: $accent;
 }
 
 .past {
-  background-color: rgba(59, 95, 120, 0.12);
+  background-color: $primary-opacity;
   color: $primary;
-}
-
-.booking-edit-form {
-  border-radius: 1.25rem;
-}
-
-.venue-item {
-  border-radius: 1.25rem;
-  overflow: hidden;
-  background-color: $extra-light;
-}
-
-.venue-item__image {
-  min-height: 220px;
-  object-fit: cover;
-  display: block;
-}
-
-.venue-item__image-placeholder {
-  min-height: 220px;
-  background-color: $light;
 }

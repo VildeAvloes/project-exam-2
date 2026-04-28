@@ -70,7 +70,7 @@ export default function Home() {
         <div className="container">
           <div className="row justify-content-center text-center">
             <div className="col-12 col-lg-8">
-              <p className="home-intro-txt text-uppercase fw-semibold mb-2">
+              <p className="home-intro text-uppercase fw-semibold mb-2">
                 Calm stays, better trips
               </p>
 

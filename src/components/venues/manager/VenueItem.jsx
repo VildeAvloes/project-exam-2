@@ -1,4 +1,7 @@
+import { Link } from "react-router-dom";
+
 export default function VenueItem({ venue, onManage }) {
+  const venueId = venue?.id || venue?._id;
   const image = venue?.media?.[0]?.url;
   const imageAlt = venue?.media?.[0]?.alt || venue?.name || "Venue image";
 
@@ -14,10 +17,10 @@ export default function VenueItem({ venue, onManage }) {
             <img
               src={image}
               alt={imageAlt}
-              className="img-fluid w-100 h-100 venue-item__image"
+              className="img-fluid w-100 h-100 venue-item-image"
             />
           ) : (
-            <div className="venue-item__image-placeholder d-flex align-items-center justify-content-center h-100">
+            <div className="venue-item-image d-flex align-items-center justify-content-center h-100">
               <span className="text-muted">No image available</span>
             </div>
           )}
@@ -47,14 +50,24 @@ export default function VenueItem({ venue, onManage }) {
               </div>
             </div>
 
-            <div className="d-flex justify-content-center justify-content-lg-end mt-auto">
-              <button
-                type="button"
-                className="btn btn-accent"
-                onClick={onManage}
-              >
-                Manage venue
-              </button>
+            <div className="d-flex justify-content-center justify-content-md-end mt-auto">
+              <div className="d-flex gap-2 justify-content-center justify-content-md-end flex-wrap mt-auto">
+                {venueId && (
+                  <Link
+                    to={`/venue/${venueId}`}
+                    className="btn btn-outline-primary"
+                  >
+                    View venue
+                  </Link>
+                )}
+                <button
+                  type="button"
+                  className="btn btn-accent"
+                  onClick={onManage}
+                >
+                  Manage venue
+                </button>
+              </div>
             </div>
           </div>
         </div>

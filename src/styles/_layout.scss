@@ -1,6 +1,14 @@
 body {
+  font-family: $font-family-base;
   background-color: $extra-light;
   color: $dark;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: $headings-font-family;
 }
 
 .logo {
@@ -31,7 +39,6 @@ body {
   padding: 0.5rem 0;
   cursor: pointer;
   opacity: 0.7;
-
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 3px;
@@ -84,7 +91,7 @@ body {
   border-radius: 50%;
 }
 
-.home-intro-txt {
+.home-intro {
   color: $accent;
   letter-spacing: 0.08em;
 }

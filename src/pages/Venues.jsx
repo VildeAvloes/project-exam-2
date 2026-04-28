@@ -209,7 +209,7 @@ export default function Venues() {
         </div>
       </div>
 
-      <div className="venues-toolbar border-0  mb-4">
+      <div className="border-0  mb-4">
         <div className=" p-3 p-lg-4">
           <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>

@@ -124,7 +124,7 @@ export default function EditBookingForm({
   }
 
   return (
-    <article className="card shadow-sm border-0 booking-edit-form">
+    <article className="card shadow-sm border-0 ">
       <div className="card-body p-4">
         <div className="mb-3">
           <p className="text-uppercase text-muted fw-semibold small mb-1">
@@ -242,7 +242,7 @@ export default function EditBookingForm({
           </div>
 
           {!showDeleteConfirm && (
-            <div className="d-flex justify-content-center justify-content-lg-end mb-4">
+            <div className="d-flex justify-content-center justify-content-md-end mb-4">
               <button
                 type="button"
                 className="btn btn-outline-danger"
@@ -254,7 +254,7 @@ export default function EditBookingForm({
             </div>
           )}
 
-          <div className="d-flex gap-2 justify-content-center justify-content-lg-end flex-wrap">
+          <div className="d-flex gap-2 justify-content-center justify-content-md-end flex-wrap">
             <button
               type="button"
               className="btn btn-outline-accent"

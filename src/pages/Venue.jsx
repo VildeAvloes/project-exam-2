@@ -79,9 +79,9 @@ export default function Venue() {
 
         <div className="col-12 col-lg-5">
           <div className="pt-3">
-            <h1 className=" mb-3">{venue.name}</h1>
+            <h1 className="mb-3">{venue.name}</h1>
             <div className="d-flex flex-wrap align-items-center gap-3 mb-4">
-              <p className="venue-location mb-0 d-inline-flex align-items-center gap-2">
+              <p className="mb-0 d-inline-flex align-items-center gap-2">
                 <FiMapPin />
                 <span>{locationText}</span>
               </p>
@@ -92,10 +92,10 @@ export default function Venue() {
               </span>
             </div>
 
-            <p className="venue-description mb-4">{venue.description}</p>
+            <p className="mb-4">{venue.description}</p>
 
-            <div className="d-flex align-items-end gap-2 mb-4">
-              <span className="h3 mb-0 venue-price">${venue.price}</span>
+            <div className="d-flex align-items-end gap-2 mb-4 ">
+              <span className="h3 mb-0 text-secondary">${venue.price}</span>
               <span className="text-muted mb-1">/ night</span>
             </div>
 
@@ -118,7 +118,7 @@ export default function Venue() {
                     return (
                       <li key={item.label} className="venue-amenity">
                         <Icon
-                          className="venue-amenity__icon"
+                          className="venue-amenity-icon"
                           aria-hidden="true"
                         />
                         <span>{item.label}</span>
@@ -133,7 +133,7 @@ export default function Venue() {
       </div>
 
       <div className="mt-5">
-        <div className="card shadow-sm border-0 venue-booking-section">
+        <div className="card shadow-sm border-0 ">
           <div className="card-body p-4 p-lg-5">
             <div className="mb-4 text-center text-lg-start">
               <p className="text-uppercase text-muted fw-semibold small mb-2">

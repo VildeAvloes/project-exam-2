@@ -3,7 +3,7 @@ export default function ProfileHeader({ auth, onEdit }) {
   const bannerUrl = auth.banner?.url || auth.banner || "";
 
   return (
-    <section className="card shadow-sm border-0 profile-header overflow-hidden">
+    <section className="card shadow-sm border-0 rounded overflow-hidden">
       {bannerUrl ? (
         <img
           src={bannerUrl}
@@ -11,7 +11,7 @@ export default function ProfileHeader({ auth, onEdit }) {
           className="profile-banner img-fluid"
         />
       ) : (
-        <div className="profile-banner profile-banner--fallback" />
+        <div className="banner banner-color" />
       )}
 
       <div className="card-body p-4 p-lg-5">
@@ -20,11 +20,11 @@ export default function ProfileHeader({ auth, onEdit }) {
             <img
               src={avatarUrl}
               alt={`${auth.name} avatar`}
-              className="profile-avatar rounded-circle img-fluid mb-3"
+              className="avatar rounded-circle img-fluid mb-3"
             />
           ) : (
-            <div className="profile-avatar profile-avatar--fallback rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
-              <span className="profile-avatar--initial">
+            <div className="avatar rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
+              <span className="avatar-initial">
                 {auth.name?.charAt(0).toUpperCase()}
               </span>
             </div>

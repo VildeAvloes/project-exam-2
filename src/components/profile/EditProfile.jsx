@@ -189,7 +189,7 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
             </div>
           </div>
 
-          <div className="d-flex gap-2 justify-content-center justify-content-lg-end flex-wrap">
+          <div className="d-flex gap-2 justify-content-center justify-content-md-end flex-wrap">
             <button
               type="button"
               className="btn btn-outline-accent"

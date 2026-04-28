@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FiMenu, FiX, FiSearch } from "react-icons/fi";
+import { FiMenu, FiX } from "react-icons/fi";
 import SearchBar from "./SearchBar";
 import LogoutButton from "../LogoutButton";
 import { useAuth } from "../../contexts/AuthContext";

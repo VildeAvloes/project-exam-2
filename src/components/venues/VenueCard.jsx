@@ -22,7 +22,7 @@ export default function VenueCard({ venue }) {
             className="card-img-top venue-card-image"
           />
         ) : (
-          <div className="venue-card-image-placeholder d-flex align-items-center justify-content-center">
+          <div className="venue-card-image d-flex align-items-center justify-content-center bg-light">
             <span className="text-muted small">No image</span>
           </div>
         )}
@@ -34,7 +34,7 @@ export default function VenueCard({ venue }) {
           </div>
 
           <div className="mt-auto d-flex justify-content-between align-items-center">
-            <p className="venue-card-price mb-0">
+            <p className="fw-semibold text-primary mb-0">
               ${venue.price}
               <span className="text-muted"> / night</span>
             </p>

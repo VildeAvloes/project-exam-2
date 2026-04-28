@@ -1,13 +1,9 @@
-.venues-toolbar {
-  background-color: $extra-light;
-}
-
 .venues-search-tag {
   display: inline-flex;
   align-items: center;
   padding: 0.45rem 0.8rem;
   border-radius: 999px;
-  background-color: rgba(61, 139, 135, 0.12);
+  background-color: $accent-opacity;
   color: $accent;
   font-size: 0.875rem;
   font-weight: 500;
@@ -33,20 +29,15 @@
   min-width: 2.5rem;
   height: 2.5rem;
   padding: 0;
-
   border-radius: 999px;
   border: 1px solid rgba(0, 0, 0, 0.08);
-
   background-color: transparent;
   color: $dark;
-
   font-size: 0.9rem;
   font-weight: 500;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   transition: all 0.15s ease;
 
   &:hover {
