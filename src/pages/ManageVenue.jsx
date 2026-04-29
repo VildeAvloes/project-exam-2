@@ -9,6 +9,7 @@ import Message from "../components/common/Message";
 import VenueForm from "../components/venues/manager/VenueForm";
 import VenueBookingsList from "../components/venues/manager/VenueBookingList";
 import VenuePreview from "../components/venues/manager/VenuePreview";
+import { useAuth } from "../contexts/AuthContext";
 
 const initialVenueValues = {
   name: "",
@@ -102,6 +103,7 @@ export default function ManageVenue() {
   const [loading, setLoading] = useState(isEdit);
   const [status, setStatus] = useState(null);
   const [isPreview, setIsPreview] = useState(false);
+  const { auth } = useAuth();
 
   useEffect(() => {
     document.title = isEdit
@@ -219,7 +221,7 @@ export default function ManageVenue() {
             />
           ) : (
             <VenuePreview
-              venue={buildVenuePayload(draftValues)}
+              venue={{ ...buildVenuePayload(draftValues), owner: auth }}
               onBack={() => setIsPreview(false)}
               onSave={handleSave}
             />

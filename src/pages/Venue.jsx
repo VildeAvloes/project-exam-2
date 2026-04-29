@@ -21,7 +21,7 @@ export default function Venue() {
 
   async function loadVenue() {
     try {
-      const data = await getVenueById(id, "?_bookings=true");
+      const data = await getVenueById(id, "?_bookings=true&_owner=true");
       setVenue(data);
       setStatus(null);
     } catch (error) {
@@ -62,6 +62,8 @@ export default function Venue() {
   const city = venue.location?.city || "Unknown city";
   const country = venue.location?.country || "";
   const locationText = country ? `${city}, ${country}` : city;
+  const owner = venue.owner;
+  const ownerAvatar = owner?.avatar?.url || owner?.avatar || "";
 
   const amenities = [
     { label: "WiFi", value: venue.meta?.wifi, icon: FaWifi },
@@ -91,6 +93,27 @@ export default function Venue() {
                 <span>{venue.rating ?? 0}</span>
               </span>
             </div>
+
+            {owner && (
+              <div className="venue-host d-flex align-items-center gap-3 mb-4 py-3">
+                {ownerAvatar ? (
+                  <img
+                    src={ownerAvatar}
+                    alt={`${owner.name} avatar`}
+                    className="venue-host-avatar"
+                  />
+                ) : (
+                  <div className="venue-host-avatar venue-host-avatar--fallback d-flex align-items-center justify-content-center">
+                    <span>{owner.name?.charAt(0).toUpperCase()}</span>
+                  </div>
+                )}
+
+                <div>
+                  <p className="small text-muted mb-1">Hosted by</p>
+                  <p className="fw-semibold mb-0">{owner.name}</p>
+                </div>
+              </div>
+            )}
 
             <p className="mb-4">{venue.description}</p>
 

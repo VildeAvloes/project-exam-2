@@ -2,12 +2,12 @@ import { FaWifi, FaParking, FaCoffee, FaPaw } from "react-icons/fa";
 import VenueGallery from "../VenueGallery";
 
 export default function VenuePreview({ venue, onBack, onSave }) {
-  const image = venue.media?.[0]?.url || "";
-  const imageAlt = venue.media?.[0]?.alt || venue.name;
-
   const location = [venue.location?.city, venue.location?.country]
     .filter(Boolean)
     .join(", ");
+
+  const owner = venue.owner;
+  const ownerAvatar = owner?.avatar?.url || owner?.avatar || "";
 
   const amenities = [
     { label: "WiFi", value: venue.meta?.wifi, icon: FaWifi },
@@ -35,6 +35,27 @@ export default function VenuePreview({ venue, onBack, onSave }) {
           <div>
             <h1 className="h3 mb-2">{venue.name}</h1>
             <p className="text-muted mb-3">{location}</p>
+
+            {owner && (
+              <div className="venue-host d-flex align-items-center gap-3 mb-4 py-3">
+                {ownerAvatar ? (
+                  <img
+                    src={ownerAvatar}
+                    alt={`${owner.name} avatar`}
+                    className="venue-host-avatar"
+                  />
+                ) : (
+                  <div className="venue-host-avatar venue-host-avatar--fallback d-flex align-items-center justify-content-center">
+                    <span>{owner.name?.charAt(0).toUpperCase()}</span>
+                  </div>
+                )}
+
+                <div>
+                  <p className="small text-muted mb-1">Hosted by</p>
+                  <p className="fw-semibold mb-0">{owner.name}</p>
+                </div>
+              </div>
+            )}
 
             <p className="mb-4">{venue.description}</p>
 
