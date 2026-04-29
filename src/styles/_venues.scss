@@ -10,11 +10,28 @@
 }
 
 .venues-sort-wrap {
-  min-width: 220px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid $primary-opacity;
+  border-radius: 999px;
+  background-color: white;
 }
 
 .venues-sort-select {
-  max-width: 140px;
+  border: none;
+  background: transparent;
+  font-family: $font-family-base;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.venues-sort-select:focus {
+  box-shadow: none;
 }
 
 .venues-pagination {

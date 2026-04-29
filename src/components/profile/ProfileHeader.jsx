@@ -8,7 +8,7 @@ export default function ProfileHeader({ auth, onEdit }) {
         <img
           src={bannerUrl}
           alt={`${auth.name} banner`}
-          className="profile-banner img-fluid"
+          className="banner img-fluid"
         />
       ) : (
         <div className="banner banner-color" />

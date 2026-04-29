@@ -47,7 +47,7 @@ export default function Venues() {
 
   const [venues, setVenues] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortOrder, setSortOrder] = useState("az");
+  const [sortOrder, setSortOrder] = useState("recommended");
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -65,7 +65,6 @@ export default function Venues() {
         setLoading(true);
 
         const data = await getVenues();
-        console.log("venues:", data);
         setVenues(data);
 
         if (!data.length) {
@@ -118,14 +117,17 @@ export default function Venues() {
   const sortedVenues = useMemo(() => {
     const copy = [...filteredVenues];
 
-    copy.sort((a, b) => {
-      const nameA = a.name?.toLowerCase() || "";
-      const nameB = b.name?.toLowerCase() || "";
+    if (sortOrder === "price-low") {
+      copy.sort((a, b) => Number(a.price || 0) - Number(b.price || 0));
+    }
 
-      return sortOrder === "za"
-        ? nameB.localeCompare(nameA)
-        : nameA.localeCompare(nameB);
-    });
+    if (sortOrder === "price-high") {
+      copy.sort((a, b) => Number(b.price || 0) - Number(a.price || 0));
+    }
+
+    if (sortOrder === "rating-high") {
+      copy.sort((a, b) => Number(b.rating || 0) - Number(a.rating || 0));
+    }
 
     return copy;
   }, [filteredVenues, sortOrder]);
@@ -241,7 +243,6 @@ export default function Venues() {
                 className="form-label mb-0 d-inline-flex align-items-center gap-2"
               >
                 <FiSliders />
-                <span>Sort</span>
               </label>
 
               <select
@@ -250,8 +251,10 @@ export default function Venues() {
                 value={sortOrder}
                 onChange={handleSortChange}
               >
-                <option value="az">A–Z</option>
-                <option value="za">Z–A</option>
+                <option value="recommended">Recommended</option>
+                <option value="price-low">Price: low to high</option>
+                <option value="price-high">Price: high to low</option>
+                <option value="rating-high">Rating: high to low</option>
               </select>
             </div>
           </div>
