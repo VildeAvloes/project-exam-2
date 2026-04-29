@@ -8,11 +8,10 @@ export default function VenueGallery({
   const images = media.filter((image) => image?.url);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-  const isSingle = images.length === 1;
 
   if (!images.length) {
     return (
-      <div className="venue-hero-image-placeholder d-flex align-items-center justify-content-center">
+      <div className="venue-image-placeholder d-flex align-items-center justify-content-center bg-light rounded">
         <span className="text-muted">No image available</span>
       </div>
     );
@@ -39,64 +38,48 @@ export default function VenueGallery({
 
   return (
     <>
-      <div
-        className={`venue-gallery ${isSingle ? "venue-gallery--single" : ""}`}
-      >
-        {isSingle ? (
-          <button
-            type="button"
-            className="venue-gallery__single"
-            onClick={() => openGallery(0)}
-          >
-            <img
-              src={images[0].url}
-              alt={images[0].alt || fallbackAlt}
-              className="venue-gallery__single-image"
-            />
-          </button>
-        ) : (
-          <>
-            <button
-              type="button"
-              className="venue-gallery__main"
-              onClick={() => openGallery(0)}
-            >
-              <img
-                src={images[0].url}
-                alt={images[0].alt || fallbackAlt}
-                className="venue-gallery__main-image"
-              />
-            </button>
+      <div className="w-100">
+        <button
+          type="button"
+          className="venue-gallery__main rounded"
+          onClick={() => openGallery(0)}
+        >
+          <img
+            src={images[0].url}
+            alt={images[0].alt || fallbackAlt}
+            className="venue-gallery__main-image"
+          />
+        </button>
 
-            <div className="venue-gallery__thumbs">
-              {images.slice(1, 5).map((image, index) => {
-                const realIndex = index + 1;
+        {images.length > 1 && (
+          <div className="venue-gallery__thumbs">
+            {images.slice(1, 4).map((image, index) => {
+              const realIndex = index + 1;
 
-                return (
-                  <button
-                    key={`${image.url}-${realIndex}`}
-                    type="button"
-                    className="venue-gallery__thumb"
-                    onClick={() => openGallery(realIndex)}
-                  >
-                    <img
-                      src={image.url}
-                      alt={image.alt || fallbackAlt}
-                      className="venue-gallery__thumb-image"
-                    />
-                  </button>
-                );
-              })}
-            </div>
-          </>
+              return (
+                <button
+                  key={`${image.url}-${realIndex}`}
+                  type="button"
+                  className="venue-gallery__thumb rounded"
+                  onClick={() => openGallery(realIndex)}
+                >
+                  <img
+                    src={image.url}
+                    alt={image.alt || fallbackAlt}
+                    className="venue-gallery__thumb-image"
+                  />
+                </button>
+              );
+            })}
+          </div>
         )}
       </div>
 
       {isOpen && (
-        <div className="venue-lightbox" role="dialog" aria-modal="true">
+        <div className="venue-gallery-modal" role="dialog" aria-modal="true">
           <button
             type="button"
-            className="venue-lightbox__close"
+            className="venue-gallery-modal__close"
             onClick={closeGallery}
             aria-label="Close image gallery"
           >
@@ -106,7 +89,7 @@ export default function VenueGallery({
           {images.length > 1 && (
             <button
               type="button"
-              className="venue-lightbox__nav venue-lightbox__nav--prev"
+              className="venue-gallery-modal__nav venue-gallery-modal__nav--prev"
               onClick={showPrevious}
               aria-label="Previous image"
             >
@@ -117,13 +100,13 @@ export default function VenueGallery({
           <img
             src={activeImage.url}
             alt={activeImage.alt || fallbackAlt}
-            className="venue-lightbox__image"
+            className="venue-gallery-modal__image rounded"
           />
 
           {images.length > 1 && (
             <button
               type="button"
-              className="venue-lightbox__nav venue-lightbox__nav--next"
+              className="venue-gallery-modal__nav venue-gallery-modal__nav--next"
               onClick={showNext}
               aria-label="Next image"
             >
