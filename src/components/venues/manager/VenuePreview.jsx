@@ -1,4 +1,5 @@
-import { FaWifi, FaParking, FaCoffee, FaPaw } from "react-icons/fa";
+import { FaWifi, FaParking, FaCoffee, FaPaw, FaStar } from "react-icons/fa";
+import { FiMapPin, FiUsers } from "react-icons/fi";
 import VenueGallery from "../VenueGallery";
 
 export default function VenuePreview({ venue, onBack, onSave }) {
@@ -32,9 +33,19 @@ export default function VenuePreview({ venue, onBack, onSave }) {
         </div>
 
         <div className="col-12 col-lg-5">
-          <div>
+          <div className="pt-3">
             <h1 className="h3 mb-2">{venue.name}</h1>
-            <p className="text-muted mb-3">{location}</p>
+            <div className="d-flex flex-wrap align-items-center gap-3 mb-4">
+              <p className="mb-0 d-inline-flex align-items-center gap-2">
+                <FiMapPin />
+                <span>{location}</span>
+              </p>
+
+              <span className="venue-rating-badge">
+                <FaStar aria-hidden="true" />
+                <span>{venue.rating ?? 0}</span>
+              </span>
+            </div>
 
             {owner && (
               <div className="venue-host d-flex align-items-center gap-3 mb-4 py-3">
@@ -59,10 +70,18 @@ export default function VenuePreview({ venue, onBack, onSave }) {
 
             <p className="mb-4">{venue.description}</p>
 
-            <p className="fw-semibold mb-4">
-              ${venue.price}{" "}
-              <span className="text-muted fw-normal">/ night</span>
-            </p>
+            <div className="d-flex align-items-end gap-2 mb-4 ">
+              <span className="h3 mb-0 text-secondary">${venue.price}</span>
+              <span className="text-muted mb-1">/ night</span>
+            </div>
+
+            <div className="mb-4">
+              <p className="small text-muted mb-1">Max guests</p>
+              <p className="mb-0 fw-semibold d-inline-flex align-items-center gap-2">
+                <FiUsers />
+                <span>{venue.maxGuests}</span>
+              </p>
+            </div>
 
             {amenities.length > 0 && (
               <ul className="venue-amenities list-unstyled d-flex flex-wrap gap-2 mb-0">

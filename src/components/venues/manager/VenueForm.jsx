@@ -36,6 +36,10 @@ export default function VenueForm({
       newErrors.maxGuests = "Max guests must be at least 1";
     }
 
+    if (Number(formValues.rating) < 0 || Number(formValues.rating) > 5) {
+      newErrors.rating = "Rating must be between 0 and 5";
+    }
+
     if (!formValues.city.trim()) {
       newErrors.city = "City is required";
     }
@@ -63,6 +67,7 @@ export default function VenueForm({
       description: formValues.description.trim(),
       price: Number(formValues.price),
       maxGuests: Number(formValues.maxGuests),
+      rating: Number(formValues.rating),
       media: formValues.media
         .filter((image) => image.url.trim())
         .map((image) => ({
@@ -78,9 +83,7 @@ export default function VenueForm({
       location: {
         address: formValues.address.trim(),
         city: formValues.city.trim(),
-        zip: formValues.zip.trim(),
         country: formValues.country.trim(),
-        continent: formValues.continent.trim(),
       },
     };
   }
@@ -126,7 +129,7 @@ export default function VenueForm({
       [name]:
         type === "checkbox"
           ? checked
-          : name === "price" || name === "maxGuests"
+          : name === "price" || name === "maxGuests" || name === "rating"
             ? Number(value)
             : value,
     }));
@@ -205,7 +208,7 @@ export default function VenueForm({
           <p className="text-uppercase text-muted fw-semibold small mb-2">
             {isEdit ? "Edit" : "Create"}
           </p>
-          <h2 className="h4 mb-0">{isEdit ? `${values.name}` : "New venue"}</h2>
+          <h2 className="h4 mb-0">{isEdit ? values.name : "New venue"}</h2>
         </div>
 
         {status && (
@@ -293,7 +296,7 @@ export default function VenueForm({
             </div>
 
             <div className="row g-3">
-              <div className="col-12 col-md-6">
+              <div className="col-12 col-md-4">
                 <label className="form-label" htmlFor="price">
                   Price per night
                 </label>
@@ -312,7 +315,7 @@ export default function VenueForm({
                 )}
               </div>
 
-              <div className="col-12 col-md-6">
+              <div className="col-12 col-md-4">
                 <label className="form-label" htmlFor="maxGuests">
                   Max guests
                 </label>
@@ -330,6 +333,28 @@ export default function VenueForm({
                 />
                 {errors.maxGuests && (
                   <div className="invalid-feedback">{errors.maxGuests}</div>
+                )}
+              </div>
+
+              <div className="col-12 col-md-4">
+                <label className="form-label" htmlFor="rating">
+                  Rating
+                </label>
+                <input
+                  id="rating"
+                  name="rating"
+                  type="number"
+                  min="0"
+                  max="5"
+                  step="1"
+                  className={`form-control ${
+                    errors.rating ? "is-invalid" : ""
+                  }`}
+                  value={values.rating}
+                  onChange={handleChange}
+                />
+                {errors.rating && (
+                  <div className="invalid-feedback">{errors.rating}</div>
                 )}
               </div>
             </div>
@@ -451,19 +476,6 @@ export default function VenueForm({
               </div>
 
               <div className="col-12 col-md-6">
-                <label className="form-label" htmlFor="zip">
-                  Zip code
-                </label>
-                <input
-                  id="zip"
-                  name="zip"
-                  className="form-control"
-                  value={values.zip}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="col-12 col-md-6">
                 <label className="form-label" htmlFor="country">
                   Country
                 </label>
@@ -481,19 +493,6 @@ export default function VenueForm({
                   <div className="invalid-feedback">{errors.country}</div>
                 )}
               </div>
-
-              <div className="col-12 col-md-6">
-                <label className="form-label" htmlFor="continent">
-                  Continent
-                </label>
-                <input
-                  id="continent"
-                  name="continent"
-                  className="form-control"
-                  value={values.continent}
-                  onChange={handleChange}
-                />
-              </div>
             </div>
           </div>
 
@@ -501,69 +500,28 @@ export default function VenueForm({
             <h3 className="h6 mb-3">Amenities</h3>
 
             <div className="row g-3">
-              <div className="col-12 col-sm-6">
-                <div className="form-check">
-                  <input
-                    id="wifi"
-                    name="wifi"
-                    type="checkbox"
-                    className="form-check-input"
-                    checked={values.wifi}
-                    onChange={handleChange}
-                  />
-                  <label className="form-check-label" htmlFor="wifi">
-                    WiFi
-                  </label>
+              {[
+                ["wifi", "WiFi"],
+                ["parking", "Parking"],
+                ["breakfast", "Breakfast"],
+                ["pets", "Pets allowed"],
+              ].map(([name, label]) => (
+                <div className="col-12 col-sm-6" key={name}>
+                  <div className="form-check">
+                    <input
+                      id={name}
+                      name={name}
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={values[name]}
+                      onChange={handleChange}
+                    />
+                    <label className="form-check-label" htmlFor={name}>
+                      {label}
+                    </label>
+                  </div>
                 </div>
-              </div>
-
-              <div className="col-12 col-sm-6">
-                <div className="form-check">
-                  <input
-                    id="parking"
-                    name="parking"
-                    type="checkbox"
-                    className="form-check-input"
-                    checked={values.parking}
-                    onChange={handleChange}
-                  />
-                  <label className="form-check-label" htmlFor="parking">
-                    Parking
-                  </label>
-                </div>
-              </div>
-
-              <div className="col-12 col-sm-6">
-                <div className="form-check">
-                  <input
-                    id="breakfast"
-                    name="breakfast"
-                    type="checkbox"
-                    className="form-check-input"
-                    checked={values.breakfast}
-                    onChange={handleChange}
-                  />
-                  <label className="form-check-label" htmlFor="breakfast">
-                    Breakfast
-                  </label>
-                </div>
-              </div>
-
-              <div className="col-12 col-sm-6">
-                <div className="form-check">
-                  <input
-                    id="pets"
-                    name="pets"
-                    type="checkbox"
-                    className="form-check-input"
-                    checked={values.pets}
-                    onChange={handleChange}
-                  />
-                  <label className="form-check-label" htmlFor="pets">
-                    Pets allowed
-                  </label>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 

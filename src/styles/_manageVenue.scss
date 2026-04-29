@@ -1,0 +1,13 @@
+.booking-customer-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.booking-customer-avatar--fallback {
+  background-color: $accent-opacity;
+  color: $accent;
+  font-weight: 700;
+}

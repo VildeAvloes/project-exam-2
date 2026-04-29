@@ -47,6 +47,10 @@ export default function BookingItem({ booking, onEdit }) {
     .filter(Boolean)
     .join(", ");
   const status = getBookingStatus(booking?.dateFrom, booking?.dateTo);
+  const nights = getNights(booking?.dateFrom, booking?.dateTo);
+  const pricePerNight = Number(venue?.price || 0);
+  const totalPrice = nights * pricePerNight;
+  const canEdit = status !== "Past";
 
   return (
     <article className="card shadow-sm border-0 booking-item">
@@ -80,7 +84,7 @@ export default function BookingItem({ booking, onEdit }) {
               </div>
             </div>
 
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4 ">
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-5 g-3 mb-4 ">
               <div>
                 <p className="small text-muted mb-1">From</p>
                 <p className="mb-0 fw-semibold">
@@ -102,9 +106,12 @@ export default function BookingItem({ booking, onEdit }) {
 
               <div>
                 <p className="small text-muted mb-1">Nights</p>
-                <p className="mb-0 fw-semibold">
-                  {getNights(booking?.dateFrom, booking?.dateTo)}
-                </p>
+                <p className="mb-0 fw-semibold">{nights}</p>
+              </div>
+
+              <div>
+                <p className="small text-muted mb-1">Total price</p>
+                <p className="mb-0 fw-semibold">${totalPrice}</p>
               </div>
             </div>
 
@@ -118,9 +125,15 @@ export default function BookingItem({ booking, onEdit }) {
                 </Link>
               )}
 
-              <button type="button" className="btn btn-accent" onClick={onEdit}>
-                Edit booking
-              </button>
+              {canEdit && (
+                <button
+                  type="button"
+                  className="btn btn-accent"
+                  onClick={onEdit}
+                >
+                  Edit booking
+                </button>
+              )}
             </div>
           </div>
         </div>

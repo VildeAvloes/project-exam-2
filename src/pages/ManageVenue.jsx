@@ -11,27 +11,37 @@ import VenueBookingsList from "../components/venues/manager/VenueBookingList";
 import VenuePreview from "../components/venues/manager/VenuePreview";
 import { useAuth } from "../contexts/AuthContext";
 
+const emptyMediaItem = {
+  url: "",
+  alt: "",
+};
+
 const initialVenueValues = {
   name: "",
   description: "",
   price: 1,
   maxGuests: 1,
-  media: [
-    {
-      url: "",
-      alt: "",
-    },
-  ],
+  rating: 0,
+  media: [emptyMediaItem],
   address: "",
   city: "",
-  zip: "",
   country: "",
-  continent: "",
   wifi: false,
   parking: false,
   breakfast: false,
   pets: false,
 };
+
+function getMediaValues(media = []) {
+  if (!media.length) {
+    return [emptyMediaItem];
+  }
+
+  return media.map((image) => ({
+    url: image.url || "",
+    alt: image.alt || "",
+  }));
+}
 
 function mapVenueToFormValues(venue) {
   if (!venue) return initialVenueValues;
@@ -41,22 +51,11 @@ function mapVenueToFormValues(venue) {
     description: venue.description || "",
     price: venue.price || 1,
     maxGuests: venue.maxGuests || 1,
-    media: venue.media?.length
-      ? venue.media.map((image) => ({
-          url: image.url || "",
-          alt: image.alt || "",
-        }))
-      : [
-          {
-            url: "",
-            alt: "",
-          },
-        ],
+    rating: venue.rating ?? 0,
+    media: getMediaValues(venue.media),
     address: venue.location?.address || "",
     city: venue.location?.city || "",
-    zip: venue.location?.zip || "",
     country: venue.location?.country || "",
-    continent: venue.location?.continent || "",
     wifi: venue.meta?.wifi || false,
     parking: venue.meta?.parking || false,
     breakfast: venue.meta?.breakfast || false,
@@ -70,6 +69,7 @@ function buildVenuePayload(formValues) {
     description: formValues.description.trim(),
     price: Number(formValues.price),
     maxGuests: Number(formValues.maxGuests),
+    rating: Number(formValues.rating),
     media: formValues.media
       .filter((image) => image.url.trim())
       .map((image) => ({
@@ -85,9 +85,7 @@ function buildVenuePayload(formValues) {
     location: {
       address: formValues.address.trim(),
       city: formValues.city.trim(),
-      zip: formValues.zip.trim(),
       country: formValues.country.trim(),
-      continent: formValues.continent.trim(),
     },
   };
 }
@@ -95,6 +93,7 @@ function buildVenuePayload(formValues) {
 export default function ManageVenue() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { auth } = useAuth();
 
   const isEdit = Boolean(id);
 
@@ -103,7 +102,6 @@ export default function ManageVenue() {
   const [loading, setLoading] = useState(isEdit);
   const [status, setStatus] = useState(null);
   const [isPreview, setIsPreview] = useState(false);
-  const { auth } = useAuth();
 
   useEffect(() => {
     document.title = isEdit
@@ -112,14 +110,16 @@ export default function ManageVenue() {
   }, [isEdit]);
 
   useEffect(() => {
-    if (!isEdit) {
-      setDraftValues(initialVenueValues);
-      setLoading(false);
-      return;
-    }
-
     async function loadVenue() {
+      if (!isEdit) {
+        setDraftValues(initialVenueValues);
+        setLoading(false);
+        return;
+      }
+
       try {
+        setLoading(true);
+
         const data = await getVenueById(id, "?_bookings=true");
         setVenue(data);
         setDraftValues(mapVenueToFormValues(data));
@@ -128,7 +128,7 @@ export default function ManageVenue() {
         setStatus({
           type: "error",
           title: "Failed to load venue",
-          message: error.message,
+          message: error.message || "Something went wrong.",
         });
       } finally {
         setLoading(false);
@@ -142,12 +142,13 @@ export default function ManageVenue() {
     try {
       if (isEdit) {
         await updateVenue(id, data);
-        const updated = await getVenueById(id, "?_bookings=true");
-        setVenue(updated);
-        setDraftValues(mapVenueToFormValues(updated));
+
+        const updatedVenue = await getVenueById(id, "?_bookings=true");
+        setVenue(updatedVenue);
+        setDraftValues(mapVenueToFormValues(updatedVenue));
       } else {
-        const created = await createVenue(data);
-        navigate(`/manager/venues/${created.id}`);
+        const createdVenue = await createVenue(data);
+        navigate(`/manager/venues/${createdVenue.id}`);
       }
 
       setIsPreview(false);
@@ -155,13 +156,16 @@ export default function ManageVenue() {
       setStatus({
         type: "success",
         message: isEdit
-          ? "Venue updated successfully"
-          : "Venue created successfully",
+          ? "Venue updated successfully."
+          : "Venue created successfully.",
       });
 
       return { success: true };
     } catch (error) {
-      return { success: false, message: error.message };
+      return {
+        success: false,
+        message: error.message || "Failed to save venue.",
+      };
     }
   }
 
@@ -171,12 +175,23 @@ export default function ManageVenue() {
       navigate("/profile");
       return { success: true };
     } catch (error) {
-      return { success: false, message: error.message };
+      return {
+        success: false,
+        message: error.message || "Failed to delete venue.",
+      };
     }
   }
 
   function handlePreview() {
     setIsPreview(true);
+  }
+
+  function handleCancel() {
+    navigate("/profile");
+  }
+
+  function handleBackFromPreview() {
+    setIsPreview(false);
   }
 
   if (loading) {
@@ -187,6 +202,13 @@ export default function ManageVenue() {
     <section className="container py-5">
       <div className="row justify-content-center">
         <div className="col-12 col-xl-10">
+          <button
+            type="button"
+            className="btn btn-outline-primary mb-4"
+            onClick={() => navigate("/profile")}
+          >
+            Back to profile
+          </button>
           <div className="mb-4">
             <h1 className="h3 mb-1">
               {isEdit ? "Manage venue" : "Create venue"}
@@ -209,27 +231,30 @@ export default function ManageVenue() {
             </div>
           )}
 
-          {!isPreview ? (
+          {isPreview ? (
+            <VenuePreview
+              venue={{ ...buildVenuePayload(draftValues), owner: auth }}
+              onBack={handleBackFromPreview}
+              onSave={handleSave}
+            />
+          ) : (
             <VenueForm
               venue={venue}
               values={draftValues}
               setValues={setDraftValues}
               onSave={handleSave}
               onDelete={isEdit ? handleDelete : null}
-              onCancel={() => navigate("/profile")}
+              onCancel={handleCancel}
               onPreview={handlePreview}
-            />
-          ) : (
-            <VenuePreview
-              venue={{ ...buildVenuePayload(draftValues), owner: auth }}
-              onBack={() => setIsPreview(false)}
-              onSave={handleSave}
             />
           )}
 
           {isEdit && !isPreview && (
             <div className="mt-5">
-              <VenueBookingsList bookings={venue?.bookings || []} />
+              <VenueBookingsList
+                bookings={venue?.bookings || []}
+                price={venue?.price || 0}
+              />
             </div>
           )}
         </div>
