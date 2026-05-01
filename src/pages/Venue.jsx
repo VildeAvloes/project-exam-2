@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaWifi, FaParking, FaCoffee, FaPaw, FaStar } from "react-icons/fa";
 import { FiMapPin, FiUsers } from "react-icons/fi";
@@ -19,7 +19,7 @@ export default function Venue() {
     document.title = "Holidaze | Venue";
   }, []);
 
-  async function loadVenue() {
+  const loadVenue = useCallback(async () => {
     try {
       const data = await getVenueById(id, "?_bookings=true&_owner=true");
       setVenue(data);
@@ -33,11 +33,11 @@ export default function Venue() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [id]);
 
   useEffect(() => {
     loadVenue();
-  }, [id]);
+  }, [loadVenue]);
 
   if (loading) {
     return <Loader text="Loading venue..." />;
