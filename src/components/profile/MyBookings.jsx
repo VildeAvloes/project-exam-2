@@ -135,12 +135,14 @@ export default function MyBookings({ auth }) {
 
   if (status?.type === "error") {
     return (
-      <Message
-        variant="danger"
-        title={status.title}
-        message={status.message}
-        center={false}
-      />
+      <div aria-live="polite">
+        <Message
+          variant="danger"
+          title={status.title}
+          message={status.message}
+          center={false}
+        />
+      </div>
     );
   }
 

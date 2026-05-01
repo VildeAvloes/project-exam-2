@@ -74,7 +74,7 @@ export default function BookingItem({ booking, onEdit }) {
             <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3 mb-3">
               <div>
                 <div className="d-flex align-items-center gap-2 flex-wrap mb-2">
-                  <h3 className="h5 mb-0">{venue?.name || "Untitled venue"}</h3>
+                  <h4 className="h5 mb-0">{venue?.name || "Untitled venue"}</h4>
                   <span className={getStatusClass(status)}>{status}</span>
                 </div>
 

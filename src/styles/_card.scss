@@ -37,6 +37,19 @@
   opacity: 0.7;
 }
 
+.venue-card-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: $primary;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  background-color: $primary-opacity;
+  border: 1px solid $primary-opacity;
+}
+
 .venue-card-cta {
   display: inline-flex;
   align-items: center;

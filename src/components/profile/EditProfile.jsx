@@ -122,7 +122,7 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
         )}
 
         {status && (
-          <div className="mb-3">
+          <div className="mb-3" aria-live="polite">
             <Message
               variant={status.type === "error" ? "danger" : status.type}
               title={status.title}

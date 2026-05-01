@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { FiArrowRight } from "react-icons/fi";
+import { FaStar } from "react-icons/fa";
 
 export default function VenueCard({ venue }) {
   const image = venue.media?.[0]?.url;
@@ -29,7 +30,15 @@ export default function VenueCard({ venue }) {
 
         <div className="card-body d-flex flex-column">
           <div className="mb-3">
-            <h3 className="venue-card-title mb-1">{venue.name}</h3>
+            <div className="d-flex justify-content-between align-items-start mb-1">
+              <h3 className="venue-card-title mb-0">{venue.name}</h3>
+              <div className="d-flex align-items-center gap-2">
+                <span className="venue-card-rating">
+                  <FaStar aria-hidden="true" />
+                  <span>{venue.rating ?? 0}</span>
+                </span>
+              </div>
+            </div>
             <p className="venue-card-location mb-0">{location}</p>
           </div>
 

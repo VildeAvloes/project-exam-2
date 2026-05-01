@@ -221,7 +221,7 @@ export default function ManageVenue() {
           </div>
 
           {status && (
-            <div className="mb-4">
+            <div className="mb-4" aria-live="polite">
               <Message
                 variant={status.type === "error" ? "danger" : status.type}
                 title={status.title}

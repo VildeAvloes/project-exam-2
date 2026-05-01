@@ -212,7 +212,7 @@ export default function VenueForm({
         </div>
 
         {status && (
-          <div className="mb-3">
+          <div className="mb-3" aria-live="polite">
             <Message
               variant="danger"
               title={status.title}

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import { createBooking } from "../../api/bookings/createBooking";
 import Message from "../common/Message";
+import { useAuth } from "../../contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 function getToday() {
   const today = new Date();
@@ -27,13 +29,28 @@ function getDisabledBookingRanges(bookings = []) {
     }));
 }
 
+function getNights(dateFrom, dateTo) {
+  if (!dateFrom || !dateTo) return 0;
+
+  const start = new Date(dateFrom);
+  const end = new Date(dateTo);
+
+  const diffMs = end - start;
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+  return Math.max(diffDays, 0);
+}
+
 export default function BookingForm({
   venueId,
   maxGuests,
   bookings = [],
   onBookingCreated,
+  price,
   embedded = false,
 }) {
+  const { auth } = useAuth();
+  const isLoggedIn = Boolean(auth?.accessToken);
   const initialValues = {
     guests: 1,
   };
@@ -157,12 +174,22 @@ export default function BookingForm({
       {!embedded && <h2 className="h5 mb-4">Book this venue</h2>}
 
       {status && (
-        <div className="mb-3">
+        <div className="mb-3" aria-live="polite">
           <Message
             variant={status.type === "error" ? "danger" : status.type}
             title={status.title}
             message={status.message}
             center={false}
+          />
+        </div>
+      )}
+
+      {!isLoggedIn && (
+        <div classname="mb-3">
+          <Message
+            variant="info"
+            title="Login required"
+            message="Please log in to book this venue."
           />
         </div>
       )}
@@ -232,14 +259,29 @@ export default function BookingForm({
           )}
         </div>
 
+        {selectedRange?.from && selectedRange?.to && (
+          <div className="mb-4">
+            <p className="small text-muted mb-1">Total price</p>
+            <p className="h5 mb-0">
+              ${getNights(selectedRange.from, selectedRange.to) * price}
+            </p>
+          </div>
+        )}
+
         <div className="d-flex justify-content-end mt-4">
-          <button
-            type="submit"
-            className="btn btn-secondary"
-            disabled={loading}
-          >
-            {loading ? "Booking..." : "Book now"}
-          </button>
+          {isLoggedIn ? (
+            <button
+              type="submit"
+              className="btn btn-secondary"
+              disabled={loading}
+            >
+              {loading ? "Booking..." : "Book now"}
+            </button>
+          ) : (
+            <Link to="/login" className="btn btn-secondary">
+              Log in to book
+            </Link>
+          )}
         </div>
       </form>
     </>

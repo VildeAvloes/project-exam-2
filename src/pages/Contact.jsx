@@ -104,7 +104,7 @@ export default function Contact() {
             <div className="card shadow-sm border-0">
               <div className="card-body p-4 p-lg-5">
                 {status && (
-                  <div className="mb-4">
+                  <div className="mb-4" aria-live="polite">
                     <Message
                       variant={status.type === "error" ? "danger" : status.type}
                       title={status.title}

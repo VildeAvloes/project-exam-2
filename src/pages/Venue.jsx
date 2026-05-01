@@ -172,6 +172,7 @@ export default function Venue() {
               venueId={venue.id}
               maxGuests={venue.maxGuests}
               bookings={venue.bookings || []}
+              price={venue.price}
               onBookingCreated={loadVenue}
               embedded
             />
