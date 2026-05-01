@@ -58,7 +58,7 @@ This project uses the official [Noroff API V2](https://docs.noroff.dev/docs/v2/h
 
 ## :rocket: Live Version
 
-[Holidaze](https://example.com)
+[Holidaze](https://holidaze-pe2-va.netlify.app)
 
 <br><br>
 
@@ -143,7 +143,7 @@ npm run format
 - React Icons
 - Prettier
 - Google Fonts
-- GitHub pages
+- Netlify
 - Noroff API
 
 <br><br>
