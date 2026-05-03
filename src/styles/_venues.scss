@@ -3,7 +3,7 @@
   align-items: center;
   padding: 0.45rem 0.8rem;
   border-radius: 999px;
-  background-color: $accent-opacity;
+  background-color: $accent-bg-subtle;
   color: $accent;
   font-size: 0.875rem;
   font-weight: 500;
@@ -14,7 +14,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.4rem 0.6rem;
-  border: 1px solid $primary-opacity;
+  border: 1px solid $primary-bg-subtle;
   border-radius: 999px;
   background-color: white;
 }

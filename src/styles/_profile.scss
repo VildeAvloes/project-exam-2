@@ -3,14 +3,14 @@
   height: 220px;
   object-fit: cover;
   display: block;
-  background-color: $primary-opacity;
+  background-color: $primary-bg-subtle;
 }
 
 .avatar {
   width: 110px;
   height: 110px;
   object-fit: cover;
-  background-color: $accent-opacity;
+  background-color: $accent-bg-subtle;
 }
 
 .avatar-initial {
@@ -24,7 +24,7 @@
   align-items: center;
   padding: 0.5rem 0.9rem;
   border-radius: 999px;
-  background-color: $accent-opacity;
+  background-color: $accent-bg-subtle;
   color: $accent;
   font-weight: 600;
   font-size: 0.9rem;
@@ -55,16 +55,16 @@
 }
 
 .upcoming {
-  background-color: $secondary-opacity;
+  background-color: $secondary-bg-subtle;
   color: $secondary;
 }
 
 .active {
-  background-color: $accent-opacity;
+  background-color: $accent-bg-subtle;
   color: $accent;
 }
 
 .past {
-  background-color: $primary-opacity;
+  background-color: $primary-bg-subtle;
   color: $primary;
 }

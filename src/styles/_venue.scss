@@ -4,16 +4,16 @@
   gap: 0.4rem;
   padding: 0.45rem 0.75rem;
   border-radius: 999px;
-  background-color: $primary-opacity;
+  background-color: $primary-bg-subtle;
   color: $primary;
   font-weight: 600;
   font-size: 0.9rem;
-  border: 1px solid $primary-opacity;
+  border: 1px solid $primary-bg-subtle;
 }
 
 .venue-host {
-  border-top: 1px solid $primary-opacity;
-  border-bottom: 1px solid $primary-opacity;
+  border-top: 1px solid $primary-bg-subtle;
+  border-bottom: 1px solid $primary-bg-subtle;
 }
 
 .venue-host-avatar {
@@ -25,7 +25,7 @@
 }
 
 .venue-host-avatar--fallback {
-  background-color: $accent-opacity;
+  background-color: $accent-bg-subtle;
   color: $accent;
   font-weight: 700;
 }
@@ -36,11 +36,11 @@
   gap: 0.45rem;
   padding: 0.55rem 0.85rem;
   border-radius: 999px;
-  background-color: $accent-opacity;
+  background-color: $accent-bg-subtle;
   color: $accent;
   font-weight: 500;
   font-size: 0.875rem;
-  border: 1px solid $accent-opacity;
+  border: 1px solid $accent-bg-subtle;
 }
 
 .venue-amenity-icon {
