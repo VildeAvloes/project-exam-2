@@ -35,7 +35,7 @@ export default function ProfileHeader({ auth, onEdit }) {
 
           <div className="d-flex justify-content-center mb-4">
             <span className="profile-account-badge">
-              {auth.venueManager ? "Venue Manager" : "Customer"}
+              {auth.venueManager ? "Venue Manager" : "Traveller"}
             </span>
           </div>
 
