@@ -1,17 +1,53 @@
 import { useState } from "react";
+import { DayPicker } from "react-day-picker";
 import Message from "../common/Message";
 
-function toDateInputValue(dateString) {
-  if (!dateString) return "";
-  return new Date(dateString).toISOString().split("T")[0];
+function getToday() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today;
 }
 
-function getTodayAsDateInput() {
-  return new Date().toISOString().split("T")[0];
+function toDateInputValue(date) {
+  if (!date) return "";
+  return new Date(date).toISOString().split("T")[0];
+}
+
+function toApiDate(date) {
+  const safeDate = new Date(date);
+  safeDate.setHours(12, 0, 0, 0);
+  return safeDate.toISOString();
+}
+
+function getNights(dateFrom, dateTo) {
+  if (!dateFrom || !dateTo) return 0;
+
+  const start = new Date(dateFrom);
+  const end = new Date(dateTo);
+  const diffMs = end - start;
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+  return Math.max(diffDays, 0);
+}
+
+function getDisabledBookingRanges(bookings = [], currentBookingId) {
+  return bookings
+    .filter((booking) => {
+      const bookingId = booking.id || booking._id;
+
+      return (
+        booking.dateFrom && booking.dateTo && bookingId !== currentBookingId
+      );
+    })
+    .map((booking) => ({
+      from: new Date(booking.dateFrom),
+      to: new Date(booking.dateTo),
+    }));
 }
 
 export default function EditBookingForm({
   booking,
+  bookings = [],
   isSubmitting = false,
   isDeleting = false,
   onCancel,
@@ -20,59 +56,81 @@ export default function EditBookingForm({
 }) {
   const bookingId = booking.id || booking._id;
   const maxGuests = booking?.venue?.maxGuests || 1;
-  const today = getTodayAsDateInput();
+  const price = Number(booking?.venue?.price || 0);
+  const today = getToday();
+
+  const disabledDates = [
+    { before: today },
+    ...getDisabledBookingRanges(bookings, bookingId),
+  ];
+
+  const initialRange = {
+    from: booking?.dateFrom ? new Date(booking.dateFrom) : undefined,
+    to: booking?.dateTo ? new Date(booking.dateTo) : undefined,
+  };
 
   const initialValues = {
-    dateFrom: toDateInputValue(booking?.dateFrom),
-    dateTo: toDateInputValue(booking?.dateTo),
     guests: booking?.guests || 1,
   };
 
+  const [selectedRange, setSelectedRange] = useState(initialRange);
+  const [showCalendar, setShowCalendar] = useState(false);
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  function validate(formValues) {
+  function validate() {
     const newErrors = {};
-    const todayDate = new Date();
-    todayDate.setHours(0, 0, 0, 0);
 
-    const fromDate = formValues.dateFrom ? new Date(formValues.dateFrom) : null;
-    const toDate = formValues.dateTo ? new Date(formValues.dateTo) : null;
-
-    if (!formValues.dateFrom) {
+    if (!selectedRange?.from) {
       newErrors.dateFrom = "Please select a check-in date";
-    } else if (fromDate < todayDate) {
-      newErrors.dateFrom = "Check-in date cannot be in the past";
     }
 
-    if (!formValues.dateTo) {
+    if (!selectedRange?.to) {
       newErrors.dateTo = "Please select a check-out date";
-    } else if (fromDate && toDate <= fromDate) {
+    }
+
+    if (
+      selectedRange?.from &&
+      selectedRange?.to &&
+      selectedRange.to <= selectedRange.from
+    ) {
       newErrors.dateTo = "Check-out date must be after check-in date";
     }
 
-    if (!formValues.guests || Number(formValues.guests) < 1) {
+    if (!values.guests || Number(values.guests) < 1) {
       newErrors.guests = "Guests must be at least 1";
-    } else if (Number(formValues.guests) > maxGuests) {
+    } else if (Number(values.guests) > maxGuests) {
       newErrors.guests = `Guests cannot exceed ${maxGuests}`;
     }
 
     return newErrors;
   }
 
-  function handleChange(event) {
-    const { name, value } = event.target;
+  function handleGuestsChange(event) {
+    const { value } = event.target;
 
     setValues((prev) => ({
       ...prev,
-      [name]: name === "guests" ? Number(value) : value,
+      guests: Number(value),
     }));
 
     setErrors((prev) => ({
       ...prev,
-      [name]: undefined,
+      guests: undefined,
+    }));
+
+    setStatus(null);
+  }
+
+  function handleRangeSelect(range) {
+    setSelectedRange(range);
+
+    setErrors((prev) => ({
+      ...prev,
+      dateFrom: undefined,
+      dateTo: undefined,
     }));
 
     setStatus(null);
@@ -82,7 +140,7 @@ export default function EditBookingForm({
     event.preventDefault();
     setStatus(null);
 
-    const validationErrors = validate(values);
+    const validationErrors = validate();
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) {
@@ -92,8 +150,8 @@ export default function EditBookingForm({
     setShowDeleteConfirm(false);
 
     const result = await onSave(bookingId, {
-      dateFrom: new Date(values.dateFrom).toISOString(),
-      dateTo: new Date(values.dateTo).toISOString(),
+      dateFrom: toApiDate(selectedRange.from),
+      dateTo: toApiDate(selectedRange.to),
       guests: Number(values.guests),
     });
 
@@ -123,8 +181,11 @@ export default function EditBookingForm({
     setShowDeleteConfirm(false);
   }
 
+  const nights = getNights(selectedRange?.from, selectedRange?.to);
+  const totalPrice = nights * price;
+
   return (
-    <article className="card shadow-sm border-0 ">
+    <article className="card shadow-sm border-0">
       <div className="card-body p-4">
         <div className="mb-3">
           <p className="text-uppercase text-muted fw-semibold small mb-1">
@@ -177,69 +238,80 @@ export default function EditBookingForm({
         )}
 
         <form onSubmit={handleSubmit} noValidate>
-          <div className="row g-3 mb-4">
-            <div className="col-12 col-md-4">
-              <label htmlFor={`dateFrom-${bookingId}`} className="form-label">
-                Check-in
-              </label>
-              <input
-                id={`dateFrom-${bookingId}`}
-                name="dateFrom"
-                type="date"
-                className={`form-control ${
-                  errors.dateFrom ? "is-invalid" : ""
-                }`}
-                value={values.dateFrom}
-                onChange={handleChange}
-                min={today}
-                required
-              />
-              {errors.dateFrom && (
-                <div className="invalid-feedback">{errors.dateFrom}</div>
-              )}
-            </div>
+          <div className="mb-4">
+            <label className="form-label d-block">Dates</label>
 
-            <div className="col-12 col-md-4">
-              <label htmlFor={`dateTo-${bookingId}`} className="form-label">
-                Check-out
-              </label>
-              <input
-                id={`dateTo-${bookingId}`}
-                name="dateTo"
-                type="date"
-                className={`form-control ${errors.dateTo ? "is-invalid" : ""}`}
-                value={values.dateTo}
-                onChange={handleChange}
-                min={values.dateFrom || today}
-                required
-              />
-              {errors.dateTo && (
-                <div className="invalid-feedback">{errors.dateTo}</div>
-              )}
-            </div>
+            <button
+              type="button"
+              className={`booking-date-toggle ${
+                errors.dateFrom || errors.dateTo
+                  ? "booking-date-toggle--invalid"
+                  : ""
+              }`}
+              onClick={() => setShowCalendar((prev) => !prev)}
+              aria-label="Select booking dates"
+              aria-expanded={showCalendar}
+            >
+              {selectedRange?.from && selectedRange?.to
+                ? `${toDateInputValue(selectedRange.from)} – ${toDateInputValue(
+                    selectedRange.to
+                  )}`
+                : selectedRange?.from
+                  ? `${toDateInputValue(selectedRange.from)} – Select check-out`
+                  : "Select check-in and check-out dates"}
+            </button>
 
-            <div className="col-12 col-md-4">
-              <label htmlFor={`guests-${bookingId}`} className="form-label">
-                Guests
-              </label>
-              <input
-                id={`guests-${bookingId}`}
-                name="guests"
-                type="number"
-                min="1"
-                max={maxGuests}
-                className={`form-control ${errors.guests ? "is-invalid" : ""}`}
-                value={values.guests}
-                onChange={handleChange}
-                required
-              />
-              {errors.guests ? (
-                <div className="invalid-feedback">{errors.guests}</div>
-              ) : (
-                <div className="form-text">Max guests: {maxGuests}</div>
-              )}
-            </div>
+            {showCalendar && (
+              <div className="booking-calendar mt-3">
+                <DayPicker
+                  mode="range"
+                  selected={selectedRange}
+                  onSelect={handleRangeSelect}
+                  disabled={disabledDates}
+                  excludeDisabled
+                  min={1}
+                  numberOfMonths={1}
+                />
+              </div>
+            )}
+
+            {(errors.dateFrom || errors.dateTo) && (
+              <div className="text-danger small mt-2">
+                {errors.dateFrom || errors.dateTo}
+              </div>
+            )}
           </div>
+
+          <div className="mb-4">
+            <label htmlFor={`guests-${bookingId}`} className="form-label">
+              Guests
+            </label>
+            <input
+              id={`guests-${bookingId}`}
+              name="guests"
+              type="number"
+              min="1"
+              max={maxGuests}
+              className={`form-control ${errors.guests ? "is-invalid" : ""}`}
+              value={values.guests}
+              onChange={handleGuestsChange}
+              required
+            />
+            {errors.guests ? (
+              <div className="invalid-feedback">{errors.guests}</div>
+            ) : (
+              <div className="form-text">Max guests: {maxGuests}</div>
+            )}
+          </div>
+
+          {selectedRange?.from && selectedRange?.to && (
+            <div className="mb-4">
+              <p className="small text-muted mb-1">
+                {nights} nights × ${price}
+              </p>
+              <p className="h5 mb-0">${totalPrice}</p>
+            </div>
+          )}
 
           {!showDeleteConfirm && (
             <div className="d-flex justify-content-center justify-content-md-end mb-4">

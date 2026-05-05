@@ -185,7 +185,7 @@ export default function BookingForm({
       )}
 
       {!isLoggedIn && (
-        <div classname="mb-3">
+        <div className="mb-3">
           <Message
             variant="info"
             title="Login required"

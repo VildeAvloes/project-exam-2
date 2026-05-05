@@ -35,6 +35,7 @@ export default function BookingList({
             <EditBookingForm
               key={bookingId}
               booking={booking}
+              bookings={booking.venue?.bookings || []}
               isSubmitting={updatingBookingId === bookingId}
               isDeleting={deletingBookingId === bookingId}
               onCancel={onCancelEdit}
