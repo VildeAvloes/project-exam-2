@@ -59,12 +59,12 @@
   background-color: $extra-light;
   color: $dark;
   text-align: left;
-}
 
-.booking-date-toggle:hover,
-.booking-date-toggle:focus {
-  border-color: $accent;
-  outline: none;
+  &:hover,
+  :focus {
+    border-color: $accent;
+    outline: none;
+  }
 }
 
 .booking-date-toggle--invalid {

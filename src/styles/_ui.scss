@@ -2,28 +2,39 @@
   background-color: $accent;
   border-color: $accent;
   color: #fff;
-}
 
-.btn-accent:hover,
-.btn-accent:focus {
-  background-color: $accent-hover;
-  border-color: $accent-hover;
-  color: #fff;
+  &:hover {
+    background-color: $accent-hover;
+    border-color: $accent-hover;
+    color: #fff;
+  }
+
+  &:focus-visible {
+    background-color: $accent-hover;
+    border-color: $accent-hover;
+    color: #fff;
+    box-shadow: 0 0 0 0.25rem rgba($accent, 0.5);
+  }
 }
 
 .btn-outline-accent {
   color: $accent;
   border-color: $accent;
   background-color: transparent;
-}
 
-.btn-outline-accent:hover,
-.btn-outline-accent:focus {
-  background-color: $accent;
-  border-color: $accent;
-  color: #fff;
-}
+  &:hover {
+    background-color: $accent;
+    border-color: $accent;
+    color: #fff;
+  }
 
+  &:focus-visible {
+    background-color: $accent;
+    border-color: $accent;
+    color: #fff;
+    box-shadow: 0 0 0 0.25rem rgba($accent, 0.5);
+  }
+}
 .auth-link {
   color: $primary;
   font-weight: 600;
@@ -32,6 +43,5 @@
   &:hover,
   &:focus {
     text-decoration: underline;
-    color: $primary-hover;
   }
 }
