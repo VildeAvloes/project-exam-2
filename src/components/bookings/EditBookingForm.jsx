@@ -309,7 +309,8 @@ export default function EditBookingForm({
               <p className="small text-muted mb-1">
                 {nights} nights × ${price}
               </p>
-              <p className="h5 mb-0">${totalPrice}</p>
+              <span className="visually-hidden">Total price</span>
+              <p className="h5 mb-0"> ${totalPrice}</p>
             </div>
           )}
 

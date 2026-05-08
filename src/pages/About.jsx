@@ -18,7 +18,7 @@ export default function About() {
               <h1 className="mb-3">About us</h1>
             </div>
 
-            <div>
+            <div className="text-center">
               <p className="lead text-muted mb-3">
                 Holidaze is built to make discovering and booking places feel
                 simple, intuitive, and a little more enjoyable.

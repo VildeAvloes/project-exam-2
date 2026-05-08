@@ -67,6 +67,8 @@ export default function BookingForm({
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
+  const nights = getNights(selectedRange?.from, selectedRange?.to);
+  const totalPrice = nights * price;
 
   function validate() {
     const newErrors = {};
@@ -261,10 +263,12 @@ export default function BookingForm({
 
         {selectedRange?.from && selectedRange?.to && (
           <div className="mb-4">
-            <p className="small text-muted mb-1">Total price</p>
-            <p className="h5 mb-0">
-              ${getNights(selectedRange.from, selectedRange.to) * price}
+            <p className="small text-muted mb-1">
+              {nights} nights × ${price}
             </p>
+
+            <span className="visually-hidden">Total price</span>
+            <p className="h5 mb-0">${totalPrice}</p>
           </div>
         )}
 

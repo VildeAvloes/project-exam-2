@@ -1,20 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Avatar from "../common/Avatar";
+import { DEFAULT_BANNER_URL } from "../../api/constants";
 
 export default function ProfileHeader({ auth, onEdit }) {
-  const avatarUrl = auth.avatar?.url || auth.avatar || "";
-  const bannerUrl = auth.banner?.url || auth.banner || "";
+  const avatarUrl = auth.avatar?.url || "";
 
-  const [hasValidBanner, setHasValidBanner] = useState(Boolean(bannerUrl));
+  const bannerUrl =
+    auth.banner?.url && auth.banner.url !== DEFAULT_BANNER_URL
+      ? auth.banner.url
+      : "";
+
+  const [bannerSrc, setBannerSrc] = useState(bannerUrl || DEFAULT_BANNER_URL);
+
+  useEffect(() => {
+    setBannerSrc(bannerUrl || DEFAULT_BANNER_URL);
+  }, [bannerUrl]);
 
   return (
     <section className="card shadow-sm border-0 rounded overflow-hidden">
-      {hasValidBanner ? (
+      {bannerUrl ? (
         <img
-          src={bannerUrl}
+          src={bannerSrc}
           alt={`${auth.name} banner`}
           className="banner img-fluid"
-          onError={() => setHasValidBanner(false)}
+          onError={() => setBannerSrc("")}
         />
       ) : (
         <div className="banner banner-color" />

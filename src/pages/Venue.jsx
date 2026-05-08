@@ -153,7 +153,7 @@ export default function Venue() {
       <div className="mt-5">
         <div className="card shadow-sm border-0 ">
           <div className="card-body p-4 p-lg-5">
-            <div className="mb-4 text-center text-lg-start">
+            <div className="mb-4 text-start">
               <p className="text-uppercase text-muted fw-semibold small mb-2">
                 Booking
               </p>

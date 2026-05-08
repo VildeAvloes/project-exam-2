@@ -1,29 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { DEFAULT_AVATAR_URL } from "../../api/constants";
 
-export default function Avatar({
-  src,
-  name = "User",
-  alt,
-  className = "",
-  fallbackClassName = "",
-}) {
+export default function Avatar({ src, name = "User", className = "" }) {
+  const realSrc = src && src !== DEFAULT_AVATAR_URL ? src : "";
   const [hasError, setHasError] = useState(false);
-  const initial = name?.charAt(0).toUpperCase() || "U";
 
-  if (!src || hasError) {
+  useEffect(() => {
+    setHasError(false);
+  }, [realSrc]);
+
+  if (!realSrc || hasError) {
     return (
       <div
-        className={`avatar-fallback d-inline-flex align-items-center justify-content-center ${className} ${fallbackClassName}`}
+        className={`${className} avatar-fallback d-inline-flex align-items-center justify-content-center`}
+        aria-label={`${name} avatar`}
       >
-        <span>{initial}</span>
+        <span className="avatar-initial">
+          {name?.charAt(0).toUpperCase() || "U"}
+        </span>
       </div>
     );
   }
 
   return (
     <img
-      src={src}
-      alt={alt || `${name} avatar`}
+      src={realSrc}
+      alt={`${name} avatar`}
       className={className}
       onError={() => setHasError(true)}
     />

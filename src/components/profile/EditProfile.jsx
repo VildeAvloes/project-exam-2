@@ -1,32 +1,31 @@
 import { useState } from "react";
 import { FiX } from "react-icons/fi";
 import { updateProfile } from "../../api/profile/updateProfile";
-import { saveAuth } from "../../utils/storage/saveAuth";
+
 import Loader from "../common/Loader";
 import Message from "../common/Message";
+import { DEFAULT_AVATAR_URL, DEFAULT_BANNER_URL } from "../../api/constants";
+import { saveAuth } from "../../utils/storage/saveAuth";
 
 export default function EditProfile({ auth, setAuth, onCancel }) {
-  const [avatarUrl, setAvatarUrl] = useState(
-    auth.avatar?.url || auth.avatar || ""
-  );
-  const [bannerUrl, setBannerUrl] = useState(
-    auth.banner?.url || auth.banner || ""
-  );
+  const initialAvatarUrl =
+    auth.avatar?.url === DEFAULT_AVATAR_URL ? "" : auth.avatar?.url || "";
 
-  const [avatarRemoved, setAvatarRemoved] = useState(false);
-  const [bannerRemoved, setBannerRemoved] = useState(false);
+  const initialBannerUrl =
+    auth.banner?.url === DEFAULT_BANNER_URL ? "" : auth.banner?.url || "";
+
+  const [avatarUrl, setAvatarUrl] = useState(initialAvatarUrl);
+  const [bannerUrl, setBannerUrl] = useState(initialBannerUrl);
 
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null);
 
   function handleRemoveAvatar() {
-    setAvatarUrl("");
-    setAvatarRemoved(true);
+    setAvatarUrl(DEFAULT_AVATAR_URL);
   }
 
   function handleRemoveBanner() {
-    setBannerUrl("");
-    setBannerRemoved(true);
+    setBannerUrl(DEFAULT_BANNER_URL);
   }
 
   async function handleSubmit(event) {
@@ -35,42 +34,23 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
     setStatus(null);
 
     try {
-      const payload = {};
-
-      if (!avatarRemoved && avatarUrl.trim()) {
-        payload.avatar = {
-          url: avatarUrl.trim(),
+      const payload = {
+        avatar: {
+          url: avatarUrl.trim() || DEFAULT_AVATAR_URL,
           alt: `${auth.name} avatar`,
-        };
-      }
-
-      if (!bannerRemoved && bannerUrl.trim()) {
-        payload.banner = {
-          url: bannerUrl.trim(),
+        },
+        banner: {
+          url: bannerUrl.trim() || DEFAULT_BANNER_URL,
           alt: `${auth.name} banner`,
-        };
-      }
+        },
+      };
 
-      if (Object.keys(payload).length > 0) {
-        await updateProfile(payload);
-      }
+      await updateProfile(payload);
 
       const updatedAuth = {
         ...auth,
-        avatar:
-          avatarRemoved || !avatarUrl.trim()
-            ? null
-            : {
-                url: avatarUrl.trim(),
-                alt: `${auth.name} avatar`,
-              },
-        banner:
-          bannerRemoved || !bannerUrl.trim()
-            ? null
-            : {
-                url: bannerUrl.trim(),
-                alt: `${auth.name} banner`,
-              },
+        avatar: payload.avatar,
+        banner: payload.banner,
       };
 
       saveAuth(updatedAuth);
@@ -80,9 +60,6 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
         type: "success",
         message: "Profile updated successfully.",
       });
-
-      setAvatarRemoved(false);
-      setBannerRemoved(false);
     } catch (err) {
       setStatus({
         type: "error",
@@ -145,7 +122,6 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
               value={avatarUrl}
               onChange={(event) => {
                 setAvatarUrl(event.target.value);
-                setAvatarRemoved(false);
               }}
               placeholder="Paste image URL"
             />
@@ -155,6 +131,7 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
                 type="button"
                 className="btn btn-outline-danger"
                 onClick={handleRemoveAvatar}
+                disabled={loading}
               >
                 Remove avatar
               </button>
@@ -173,7 +150,6 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
               value={bannerUrl}
               onChange={(event) => {
                 setBannerUrl(event.target.value);
-                setBannerRemoved(false);
               }}
               placeholder="Paste image URL"
             />
@@ -183,6 +159,7 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
                 type="button"
                 className="btn btn-outline-danger"
                 onClick={handleRemoveBanner}
+                disabled={loading}
               >
                 Remove banner
               </button>
