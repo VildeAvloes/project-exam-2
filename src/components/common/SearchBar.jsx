@@ -54,7 +54,11 @@ export default function SearchBar() {
               aria-label="Search venues"
             />
 
-            <button className="btn btn-primary btn-icon" type="submit">
+            <button
+              className="btn btn-primary btn-icon"
+              type="submit"
+              aria-label="Search"
+            >
               <FiSearch />
             </button>
           </div>

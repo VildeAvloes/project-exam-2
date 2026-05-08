@@ -1,3 +1,4 @@
+import Avatar from "../../common/Avatar";
 import Message from "../../common/Message";
 
 function formatDate(dateString) {
@@ -58,24 +59,16 @@ export default function VenueBookingsList({ bookings = [], price = 0 }) {
               <div className="card-body p-4">
                 <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-4">
                   <div className="d-flex align-items-center gap-3">
-                    {avatarUrl ? (
-                      <img
-                        src={avatarUrl}
-                        alt={`${customer?.name || "Guest"} avatar`}
-                        className="booking-customer-avatar"
-                      />
-                    ) : (
-                      <div className="booking-customer-avatar booking-customer-avatar--fallback d-flex align-items-center justify-content-center">
-                        <span>
-                          {customer?.name?.charAt(0).toUpperCase() || "G"}
-                        </span>
-                      </div>
-                    )}
+                    <Avatar
+                      src={avatarUrl}
+                      name={customer.name}
+                      className="booking-customer-avatar"
+                    />
 
                     <div>
                       <p className="small text-muted mb-1">Booked by</p>
                       <p className="mb-0 fw-semibold">
-                        {customer?.name || "Guest"}
+                        {customer?.name || "Traveler"}
                       </p>
                       <p className="text-muted small mb-0">
                         {customer?.email || "No email available"}

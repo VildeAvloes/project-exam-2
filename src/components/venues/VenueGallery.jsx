@@ -5,7 +5,10 @@ export default function VenueGallery({
   media = [],
   fallbackAlt = "Venue image",
 }) {
-  const images = media.filter((image) => image?.url);
+  const [failedImages, setFailedImages] = useState([]);
+  const images = media.filter(
+    (image) => image?.url && !failedImages.includes(image.url)
+  );
   const [activeIndex, setActiveIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -18,6 +21,10 @@ export default function VenueGallery({
   }
 
   const activeImage = images[activeIndex];
+
+  function handleImageError(url) {
+    setFailedImages((prev) => [...prev, url]);
+  }
 
   function openGallery(index) {
     setActiveIndex(index);
@@ -48,6 +55,7 @@ export default function VenueGallery({
             src={images[0].url}
             alt={images[0].alt || fallbackAlt}
             className="venue-gallery__main-image"
+            onError={() => handleImageError(images[0].url)}
           />
         </button>
 
@@ -67,6 +75,7 @@ export default function VenueGallery({
                     src={image.url}
                     alt={image.alt || fallbackAlt}
                     className="venue-gallery__thumb-image"
+                    onError={() => handleImageError(images[0].url)}
                   />
                 </button>
               );
@@ -101,6 +110,7 @@ export default function VenueGallery({
             src={activeImage.url}
             alt={activeImage.alt || fallbackAlt}
             className="venue-gallery-modal__image rounded"
+            onError={() => handleImageError(images[0].url)}
           />
 
           {images.length > 1 && (

@@ -7,6 +7,7 @@ import Loader from "../components/common/Loader";
 import Message from "../components/common/Message";
 import BookingForm from "../components/bookings/BookingForm";
 import VenueGallery from "../components/venues/VenueGallery";
+import Avatar from "../components/common/Avatar";
 
 export default function Venue() {
   const { id } = useParams();
@@ -90,24 +91,18 @@ export default function Venue() {
 
               <span className="venue-rating-badge">
                 <FaStar aria-hidden="true" />
+                <span className="visually-hidden">Rating:</span>
                 <span>{venue.rating ?? 0}</span>
               </span>
             </div>
 
             {owner && (
               <div className="venue-host d-flex align-items-center gap-3 mb-4 py-3">
-                {ownerAvatar ? (
-                  <img
-                    src={ownerAvatar}
-                    alt={`${owner.name} avatar`}
-                    className="venue-host-avatar"
-                  />
-                ) : (
-                  <div className="venue-host-avatar venue-host-avatar--fallback d-flex align-items-center justify-content-center">
-                    <span>{owner.name?.charAt(0).toUpperCase()}</span>
-                  </div>
-                )}
-
+                <Avatar
+                  src={ownerAvatar}
+                  name={owner?.name}
+                  className="venue-host-avatar"
+                />
                 <div>
                   <p className="small text-muted mb-1">Hosted by</p>
                   <p className="fw-semibold mb-0">{owner.name}</p>

@@ -1,14 +1,20 @@
+import { useState } from "react";
+import Avatar from "../common/Avatar";
+
 export default function ProfileHeader({ auth, onEdit }) {
   const avatarUrl = auth.avatar?.url || auth.avatar || "";
   const bannerUrl = auth.banner?.url || auth.banner || "";
 
+  const [hasValidBanner, setHasValidBanner] = useState(Boolean(bannerUrl));
+
   return (
     <section className="card shadow-sm border-0 rounded overflow-hidden">
-      {bannerUrl ? (
+      {hasValidBanner ? (
         <img
           src={bannerUrl}
           alt={`${auth.name} banner`}
           className="banner img-fluid"
+          onError={() => setHasValidBanner(false)}
         />
       ) : (
         <div className="banner banner-color" />
@@ -16,19 +22,11 @@ export default function ProfileHeader({ auth, onEdit }) {
 
       <div className="card-body p-4 p-lg-5">
         <div className="text-center">
-          {avatarUrl ? (
-            <img
-              src={avatarUrl}
-              alt={`${auth.name} avatar`}
-              className="avatar rounded-circle img-fluid mb-3"
-            />
-          ) : (
-            <div className="avatar rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
-              <span className="avatar-initial">
-                {auth.name?.charAt(0).toUpperCase()}
-              </span>
-            </div>
-          )}
+          <Avatar
+            src={avatarUrl}
+            name={auth.name}
+            className="avatar rounded-circle img-fluid mb-3"
+          />
 
           <h1 className="h3 mb-1">{auth.name}</h1>
           <p className="text-muted mb-3">{auth.email}</p>

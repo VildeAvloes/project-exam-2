@@ -250,6 +250,7 @@ export default function Venues() {
                 className="form-select venues-sort-select"
                 value={sortOrder}
                 onChange={handleSortChange}
+                aria-label="Sorting"
               >
                 <option value="recommended">Recommended</option>
                 <option value="price-low">Price: low to high</option>

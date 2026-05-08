@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 
 export default function VenueCard({ venue }) {
+  const [imageError, setImageError] = useState(false);
+
   const image = venue.media?.[0]?.url;
   const imageAlt = venue.media?.[0]?.alt || venue.name || "Venue image";
 
@@ -16,11 +19,12 @@ export default function VenueCard({ venue }) {
         to={`/venue/${venue.id}`}
         className="card venue-card h-100 text-decoration-none"
       >
-        {image ? (
+        {image && !imageError ? (
           <img
             src={image}
             alt={imageAlt}
             className="card-img-top venue-card-image"
+            onError={() => setImageError(true)}
           />
         ) : (
           <div className="venue-card-image d-flex align-items-center justify-content-center bg-light">
@@ -31,14 +35,17 @@ export default function VenueCard({ venue }) {
         <div className="card-body d-flex flex-column">
           <div className="mb-3">
             <div className="d-flex justify-content-between align-items-start mb-1">
-              <h3 className="venue-card-title mb-0">{venue.name}</h3>
+              <p className="venue-card-title mb-0 h3">{venue.name}</p>
+
               <div className="d-flex align-items-center gap-2">
                 <span className="venue-card-rating">
                   <FaStar aria-hidden="true" />
+                  <span className="visually-hidden">Rating:</span>
                   <span>{venue.rating ?? 0}</span>
                 </span>
               </div>
             </div>
+
             <p className="venue-card-location mb-0">{location}</p>
           </div>
 
