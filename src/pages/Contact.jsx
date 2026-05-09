@@ -121,6 +121,7 @@ export default function Contact() {
                       type="text"
                       value={values.fullName}
                       onChange={handleChange}
+                      autoComplete="name"
                     />
                     {errors.fullName && (
                       <div className="invalid-feedback">{errors.fullName}</div>
@@ -140,6 +141,7 @@ export default function Contact() {
                       type="email"
                       value={values.email}
                       onChange={handleChange}
+                      autoComplete="email"
                     />
                     {errors.email && (
                       <div className="invalid-feedback">{errors.email}</div>

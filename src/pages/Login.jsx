@@ -149,6 +149,7 @@ export default function Login() {
                     type="email"
                     value={values.email}
                     onChange={handleChange}
+                    autoComplete="email"
                   />
                   {errors.email && (
                     <div className="invalid-feedback">{errors.email}</div>
@@ -168,6 +169,7 @@ export default function Login() {
                     type="password"
                     value={values.password}
                     onChange={handleChange}
+                    autoComplete="current-password"
                   />
                   {errors.password && (
                     <div className="invalid-feedback">{errors.password}</div>

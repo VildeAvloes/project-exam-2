@@ -159,6 +159,7 @@ export default function Register() {
                     type="email"
                     value={values.email}
                     onChange={handleChange}
+                    autoComplete="email"
                   />
                   {errors.email && (
                     <div className="invalid-feedback">{errors.email}</div>
@@ -178,6 +179,7 @@ export default function Register() {
                     type="password"
                     value={values.password}
                     onChange={handleChange}
+                    autoComplete="new-password"
                   />
                   {errors.password && (
                     <div className="invalid-feedback">{errors.password}</div>
