@@ -27,7 +27,7 @@ export default function ProfileHeader({ auth, onEdit }) {
           onError={() => setBannerSrc("")}
         />
       ) : (
-        <div className="banner banner-color" />
+        <div className="banner" />
       )}
 
       <div className="card-body p-4 p-lg-5">
