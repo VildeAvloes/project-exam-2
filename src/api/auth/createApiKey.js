@@ -7,9 +7,7 @@ export async function createApiKey(accessToken) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify({
-      name: API_KEY_NAME,
-    }),
+    body: JSON.stringify({ name: API_KEY_NAME }),
   });
 
   const json = await response.json();

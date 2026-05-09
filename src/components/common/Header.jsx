@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
+import LogoutButton from "./LogoutButton";
 import SearchBar from "./SearchBar";
-import LogoutButton from "../LogoutButton";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function Header() {
@@ -19,7 +19,7 @@ export default function Header() {
 
   return (
     <header className="site-header">
-      <nav className="navbar navbar-expand-lg bg-light ">
+      <nav className="navbar navbar-expand-lg bg-light">
         <div className="container">
           <Link className="navbar-brand logo" to="/" onClick={handleCloseMenu}>
             Holidaze
@@ -44,9 +44,11 @@ export default function Header() {
               <Link className="nav-link" to="/" onClick={handleCloseMenu}>
                 Home
               </Link>
+
               <Link className="nav-link" to="/venues" onClick={handleCloseMenu}>
                 Venues
               </Link>
+
               <Link
                 className="nav-link"
                 to="/contact"
@@ -62,16 +64,17 @@ export default function Header() {
                     to="/profile"
                     onClick={handleCloseMenu}
                   >
-                    {auth.name}
+                    {auth.name || "Profile"}
                   </Link>
-                  <div className="text-start ">
-                    <LogoutButton />
+
+                  <div className="text-start">
+                    <LogoutButton onLogout={handleCloseMenu} />
                   </div>
                 </>
               ) : (
                 <Link
-                  to="/login"
                   className="nav-link text-start"
+                  to="/login"
                   onClick={handleCloseMenu}
                 >
                   Log in

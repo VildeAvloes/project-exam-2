@@ -11,12 +11,7 @@ export async function registerUser({
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      name,
-      email,
-      password,
-      venueManager,
-    }),
+    body: JSON.stringify({ name, email, password, venueManager }),
   });
 
   const json = await response.json();

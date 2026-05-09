@@ -5,16 +5,16 @@ import Message from "../components/common/Message";
 import { useAuth } from "../contexts/AuthContext";
 import Loader from "../components/common/Loader";
 
+const initialValues = {
+  name: "",
+  email: "",
+  password: "",
+  venueManager: false,
+};
+
 export default function Register() {
   const navigate = useNavigate();
   const { auth, loading: authLoading } = useAuth();
-
-  const initialValues = {
-    name: "",
-    email: "",
-    password: "",
-    venueManager: false,
-  };
 
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
@@ -85,13 +85,11 @@ export default function Register() {
         message: "Your account has been created. Redirecting to login...",
       });
 
-      setTimeout(() => {
-        navigate("/login");
-      }, 1200);
+      navigate("/login");
     } catch (error) {
       setStatus({
         type: "error",
-        title: "Register failed",
+        title: "Registration failed",
         message: error.message || "Something went wrong.",
       });
     } finally {

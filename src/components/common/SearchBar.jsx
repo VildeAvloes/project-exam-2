@@ -7,7 +7,6 @@ export default function SearchBar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
-
   const { searchInput, setSearchInput } = useSearch();
 
   useEffect(() => {
@@ -31,9 +30,10 @@ export default function SearchBar() {
 
     if (trimmedQuery) {
       navigate(`/venues?q=${encodeURIComponent(trimmedQuery)}`);
-    } else {
-      navigate("/venues");
+      return;
     }
+
+    navigate("/venues");
   }
 
   return (

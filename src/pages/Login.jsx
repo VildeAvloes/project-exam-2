@@ -7,14 +7,14 @@ import { useAuth } from "../contexts/AuthContext";
 import Message from "../components/common/Message";
 import Loader from "../components/common/Loader";
 
+const initialValues = {
+  email: "",
+  password: "",
+};
+
 export default function Login() {
   const navigate = useNavigate();
   const { auth, setAuth, loading: authLoading } = useAuth();
-
-  const initialValues = {
-    email: "",
-    password: "",
-  };
 
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
