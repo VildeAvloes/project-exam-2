@@ -1,4 +1,4 @@
-import { BASE_URL } from "../constants";
+import { BASE_URL, DEFAULT_AVATAR_URL, DEFAULT_BANNER_URL } from "../constants";
 
 export async function registerUser({
   name,
@@ -11,7 +11,20 @@ export async function registerUser({
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name, email, password, venueManager }),
+    body: JSON.stringify({
+      name,
+      email,
+      password,
+      venueManager,
+      avatar: {
+        url: DEFAULT_AVATAR_URL,
+        alt: `${name} avatar`,
+      },
+      banner: {
+        url: DEFAULT_BANNER_URL,
+        alt: `${name} banner`,
+      },
+    }),
   });
 
   const json = await response.json();
