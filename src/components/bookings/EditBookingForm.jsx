@@ -164,6 +164,10 @@ export default function EditBookingForm({
     }
   }
 
+  function handleCancelDelete() {
+    setShowDeleteConfirm(false);
+  }
+
   async function handleConfirmDelete() {
     setStatus(null);
 
@@ -228,7 +232,7 @@ export default function EditBookingForm({
               <button
                 type="button"
                 className="btn btn-outline-secondary"
-                onClick={() => setShowDeleteConfirm(false)}
+                onClick={handleCancelDelete}
                 disabled={isSubmitting || isDeleting}
               >
                 Keep booking
@@ -310,7 +314,7 @@ export default function EditBookingForm({
                 {nights} nights × ${price}
               </p>
               <span className="visually-hidden">Total price</span>
-              <p className="h5 mb-0"> ${totalPrice}</p>
+              <p className="h5 mb-0">${totalPrice}</p>
             </div>
           )}
 

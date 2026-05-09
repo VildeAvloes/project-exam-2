@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { FiSliders, FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { FiChevronLeft, FiChevronRight, FiSliders, FiX } from "react-icons/fi";
 import { getVenues } from "../api/venues/getVenues";
-import VenueCard from "../components/venues/VenueCard";
 import Loader from "../components/common/Loader";
 import Message from "../components/common/Message";
+import VenueCard from "../components/venues/VenueCard";
 import { useSearch } from "../contexts/SearchContext";
 
 const ITEMS_PER_PAGE = 12;
@@ -211,7 +211,7 @@ export default function Venues() {
         </div>
       </div>
 
-      <div className="border-0  mb-4">
+      <div className="border-0 mb-4">
         <div className=" p-3 p-lg-4">
           <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>

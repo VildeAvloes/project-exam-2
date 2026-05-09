@@ -1,7 +1,7 @@
 import Message from "../../common/Message";
 import VenueItem from "./VenueItem";
 
-export default function VenueManagerList({ venues = [], onManage }) {
+export default function VenueList({ venues = [], onManage }) {
   if (!venues.length) {
     return (
       <Message
@@ -17,6 +17,7 @@ export default function VenueManagerList({ venues = [], onManage }) {
     <div className="d-flex flex-column gap-3">
       {venues.map((venue) => (
         <VenueItem
+          s
           key={venue.id}
           venue={venue}
           onManage={() => onManage(venue.id)}

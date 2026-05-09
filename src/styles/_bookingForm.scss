@@ -61,7 +61,7 @@
   text-align: left;
 
   &:hover,
-  :focus {
+  &:focus {
     border-color: $accent;
     outline: none;
   }

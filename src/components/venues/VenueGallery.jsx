@@ -75,7 +75,7 @@ export default function VenueGallery({
                     src={image.url}
                     alt={image.alt || fallbackAlt}
                     className="venue-gallery__thumb-image"
-                    onError={() => handleImageError(images[0].url)}
+                    onError={() => handleImageError(image.url)}
                   />
                 </button>
               );
@@ -110,7 +110,7 @@ export default function VenueGallery({
             src={activeImage.url}
             alt={activeImage.alt || fallbackAlt}
             className="venue-gallery-modal__image rounded"
-            onError={() => handleImageError(images[0].url)}
+            onError={() => handleImageError(activeImage.url)}
           />
 
           {images.length > 1 && (

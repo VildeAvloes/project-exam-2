@@ -50,24 +50,23 @@ export default function VenueItem({ venue, onManage }) {
               </div>
             </div>
 
-            <div className="d-flex justify-content-center justify-content-md-end mt-auto">
-              <div className="d-flex gap-2 justify-content-center justify-content-md-end flex-wrap mt-auto">
-                {venueId && (
-                  <Link
-                    to={`/venue/${venueId}`}
-                    className="btn btn-outline-primary"
-                  >
-                    View venue
-                  </Link>
-                )}
-                <button
-                  type="button"
-                  className="btn btn-accent"
-                  onClick={onManage}
+            <div className="d-flex gap-2 justify-content-center justify-content-md-end flex-wrap mt-auto">
+              {" "}
+              {venueId && (
+                <Link
+                  to={`/venue/${venueId}`}
+                  className="btn btn-outline-primary"
                 >
-                  Manage venue
-                </button>
-              </div>
+                  View venue
+                </Link>
+              )}
+              <button
+                type="button"
+                className="btn btn-accent"
+                onClick={onManage}
+              >
+                Manage venue
+              </button>
             </div>
           </div>
         </div>

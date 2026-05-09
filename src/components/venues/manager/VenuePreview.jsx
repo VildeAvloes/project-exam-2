@@ -102,11 +102,19 @@ export default function VenuePreview({ venue, onBack, onSave }) {
       </div>
 
       <div className="d-flex justify-content-between flex-wrap gap-2 mt-4">
-        <button className="btn btn-outline-secondary" onClick={onBack}>
+        <button
+          type="button "
+          className="btn btn-outline-secondary"
+          onClick={onBack}
+        >
           Back to editing
         </button>
 
-        <button className="btn btn-accent" onClick={() => onSave(venue)}>
+        <button
+          type="button"
+          className="btn btn-accent"
+          onClick={() => onSave(venue)}
+        >
           Save venue
         </button>
       </div>

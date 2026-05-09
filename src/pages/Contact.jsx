@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import Message from "../components/common/Message";
 
-export default function Contact() {
-  const initialValues = {
-    fullName: "",
-    email: "",
-    subject: "",
-    body: "",
-  };
+const initialValues = {
+  fullName: "",
+  email: "",
+  subject: "",
+  body: "",
+};
 
+export default function Contact() {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null);
@@ -70,13 +70,6 @@ export default function Contact() {
     setLoading(true);
 
     setTimeout(() => {
-      console.log("Contact form submitted:", {
-        fullName: values.fullName,
-        email: values.email,
-        subject: values.subject,
-        message: values.body,
-      });
-
       setStatus({
         type: "success",
         title: "Message sent",

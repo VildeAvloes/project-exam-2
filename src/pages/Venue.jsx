@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { FaWifi, FaParking, FaCoffee, FaPaw, FaStar } from "react-icons/fa";
+import { FaCoffee, FaParking, FaPaw, FaStar, FaWifi } from "react-icons/fa";
 import { FiMapPin, FiUsers } from "react-icons/fi";
+import { useParams } from "react-router-dom";
 import { getVenueById } from "../api/venues/getVenueById";
+import BookingForm from "../components/bookings/BookingForm";
+import Avatar from "../components/common/Avatar";
 import Loader from "../components/common/Loader";
 import Message from "../components/common/Message";
-import BookingForm from "../components/bookings/BookingForm";
 import VenueGallery from "../components/venues/VenueGallery";
-import Avatar from "../components/common/Avatar";
 
 export default function Venue() {
   const { id } = useParams();
@@ -112,7 +112,7 @@ export default function Venue() {
 
             <p className="mb-4">{venue.description}</p>
 
-            <div className="d-flex align-items-end gap-2 mb-4 ">
+            <div className="d-flex align-items-end gap-2 mb-4">
               <span className="h3 mb-0 text-secondary">${venue.price}</span>
               <span className="text-muted mb-1">/ night</span>
             </div>
@@ -151,7 +151,7 @@ export default function Venue() {
       </div>
 
       <div className="mt-5">
-        <div className="card shadow-sm border-0 ">
+        <div className="card shadow-sm border-0">
           <div className="card-body p-4 p-lg-5">
             <div className="mb-4 text-start">
               <p className="text-uppercase text-muted fw-semibold small mb-2">

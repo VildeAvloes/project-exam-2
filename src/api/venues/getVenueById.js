@@ -1,6 +1,10 @@
 import { BASE_URL } from "../constants";
 
 export async function getVenueById(id, query = "") {
+  if (!id) {
+    throw new Error("Venue ID is required");
+  }
+
   const response = await fetch(`${BASE_URL}/holidaze/venues/${id}${query}`);
   const json = await response.json();
 

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getFeaturedVenues } from "../api/venues/getFeaturedVenues";
-import VenueCard from "../components/venues/VenueCard";
 import Loader from "../components/common/Loader";
 import Message from "../components/common/Message";
+import VenueCard from "../components/venues/VenueCard";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function Home() {
@@ -66,7 +66,7 @@ export default function Home() {
 
   return (
     <>
-      <section className="py-5 ">
+      <section className="py-5">
         <div className="container">
           <div className="row justify-content-center text-center">
             <div className="col-12 col-lg-8">
@@ -96,7 +96,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="container py-5 ">
+      <section className="container py-5">
         <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
           <div>
             <h2 className="h3 mb-1">Featured venues</h2>

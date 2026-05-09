@@ -155,6 +155,10 @@ export default function VenueForm({
     onPreview();
   }
 
+  function handleCancelDelete() {
+    setShowDeleteConfirm(false);
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
     setStatus(null);
@@ -169,17 +173,19 @@ export default function VenueForm({
 
     setLoading(true);
 
-    const result = await onSave(buildPayload(values));
+    try {
+      const result = await onSave(buildPayload(values));
 
-    if (!result?.success) {
-      setStatus({
-        type: "error",
-        title: "Something went wrong",
-        message: result?.message || "Failed to save venue.",
-      });
+      if (!result?.success) {
+        setStatus({
+          type: "error",
+          title: "Something went wrong",
+          message: result?.message || "Failed to save venue.",
+        });
+      }
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   async function handleConfirmDelete() {
@@ -245,7 +251,7 @@ export default function VenueForm({
               <button
                 type="button"
                 className="btn btn-outline-secondary"
-                onClick={() => setShowDeleteConfirm(false)}
+                onClick={handleCancelDelete}
                 disabled={loading}
               >
                 Keep venue

@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
 import { useState } from "react";
-import { FiArrowRight } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
+import { FiArrowRight } from "react-icons/fi";
 
 export default function VenueCard({ venue }) {
   const [imageError, setImageError] = useState(false);

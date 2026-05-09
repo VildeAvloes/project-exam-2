@@ -61,7 +61,7 @@ export default function VenueBookingsList({ bookings = [], price = 0 }) {
                   <div className="d-flex align-items-center gap-3">
                     <Avatar
                       src={avatarUrl}
-                      name={customer.name}
+                      name={customer?.name}
                       className="booking-customer-avatar"
                     />
 

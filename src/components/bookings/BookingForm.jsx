@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { DayPicker } from "react-day-picker";
-import { createBooking } from "../../api/bookings/createBooking";
-import Message from "../common/Message";
-import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
+import { createBooking } from "../../api/bookings/createBooking";
+import { useAuth } from "../../contexts/AuthContext";
+import Message from "../common/Message";
 
 function getToday() {
   const today = new Date();
@@ -17,7 +17,9 @@ function toDateInputValue(date) {
 }
 
 function toApiDate(date) {
-  return new Date(date).toISOString();
+  const safeDate = new Date(date);
+  safeDate.setHours(12, 0, 0, 0);
+  return safeDate.toISOString();
 }
 
 function getDisabledBookingRanges(bookings = []) {
@@ -41,6 +43,10 @@ function getNights(dateFrom, dateTo) {
   return Math.max(diffDays, 0);
 }
 
+const initialValues = {
+  guests: 1,
+};
+
 export default function BookingForm({
   venueId,
   maxGuests,
@@ -51,9 +57,6 @@ export default function BookingForm({
 }) {
   const { auth } = useAuth();
   const isLoggedIn = Boolean(auth?.accessToken);
-  const initialValues = {
-    guests: 1,
-  };
 
   const today = getToday();
   const disabledDates = [
