@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import Avatar from "../common/Avatar";
+
 import { DEFAULT_BANNER_URL } from "../../api/constants";
+import Avatar from "../common/Avatar";
 
 export default function ProfileHeader({ auth, onEdit }) {
   const avatarUrl = auth.avatar?.url || "";
@@ -10,15 +11,15 @@ export default function ProfileHeader({ auth, onEdit }) {
       ? auth.banner.url
       : "";
 
-  const [bannerSrc, setBannerSrc] = useState(bannerUrl || DEFAULT_BANNER_URL);
+  const [bannerSrc, setBannerSrc] = useState(bannerUrl);
 
   useEffect(() => {
-    setBannerSrc(bannerUrl || DEFAULT_BANNER_URL);
+    setBannerSrc(bannerUrl);
   }, [bannerUrl]);
 
   return (
     <section className="card shadow-sm border-0 rounded overflow-hidden">
-      {bannerUrl ? (
+      {bannerSrc ? (
         <img
           src={bannerSrc}
           alt={`${auth.name} banner`}

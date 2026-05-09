@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { FiX } from "react-icons/fi";
+import { DEFAULT_AVATAR_URL, DEFAULT_BANNER_URL } from "../../api/constants";
 import { updateProfile } from "../../api/profile/updateProfile";
 
 import Loader from "../common/Loader";
 import Message from "../common/Message";
-import { DEFAULT_AVATAR_URL, DEFAULT_BANNER_URL } from "../../api/constants";
+
 import { saveAuth } from "../../utils/storage/saveAuth";
 
 export default function EditProfile({ auth, setAuth, onCancel }) {
@@ -26,6 +27,14 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
 
   function handleRemoveBanner() {
     setBannerUrl(DEFAULT_BANNER_URL);
+  }
+
+  function handleAvatarChange(event) {
+    setAvatarUrl(event.target.value);
+  }
+
+  function handleBannerChange(event) {
+    setBannerUrl(event.target.value);
   }
 
   async function handleSubmit(event) {
@@ -120,9 +129,7 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
               type="url"
               className="form-control"
               value={avatarUrl}
-              onChange={(event) => {
-                setAvatarUrl(event.target.value);
-              }}
+              onChange={handleAvatarChange}
               placeholder="Paste image URL"
             />
 
@@ -148,9 +155,7 @@ export default function EditProfile({ auth, setAuth, onCancel }) {
               type="url"
               className="form-control"
               value={bannerUrl}
-              onChange={(event) => {
-                setBannerUrl(event.target.value);
-              }}
+              onChange={handleBannerChange}
               placeholder="Paste image URL"
             />
 

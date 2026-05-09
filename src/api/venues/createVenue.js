@@ -4,6 +4,10 @@ import { BASE_URL } from "../constants";
 export async function createVenue(data) {
   const auth = getAuth();
 
+  if (!auth) {
+    throw new Error("You must be logged in");
+  }
+
   const response = await fetch(`${BASE_URL}/holidaze/venues`, {
     method: "POST",
     headers: {

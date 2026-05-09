@@ -4,6 +4,10 @@ import { getAuth } from "../../utils/storage/getAuth";
 export async function createBooking(data) {
   const auth = getAuth();
 
+  if (!auth) {
+    throw new Error("You must be logged in");
+  }
+
   const response = await fetch(`${BASE_URL}/holidaze/bookings`, {
     method: "POST",
     headers: {

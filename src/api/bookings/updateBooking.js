@@ -8,6 +8,10 @@ export async function updateBooking(bookingId, data) {
     throw new Error("Booking ID is required");
   }
 
+  if (!auth) {
+    throw new Error("You must be logged in");
+  }
+
   const response = await fetch(`${BASE_URL}/holidaze/bookings/${bookingId}`, {
     method: "PUT",
     headers: {

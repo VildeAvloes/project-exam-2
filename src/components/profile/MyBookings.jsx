@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
+import { deleteBooking } from "../../api/bookings/deleteBooking";
 import { getBookingsByProfile } from "../../api/bookings/getBookingsByProfile";
+import { updateBooking } from "../../api/bookings/updateBooking";
+import BookingList from "../bookings/BookingList";
 import Loader from "../common/Loader";
 import Message from "../common/Message";
-import BookingList from "../bookings/BookingList";
-import { updateBooking } from "../../api/bookings/updateBooking";
-import { deleteBooking } from "../../api/bookings/deleteBooking";
 
 function isPastBooking(booking) {
   const today = new Date();

@@ -10,7 +10,6 @@ export async function getVenues(page = 1, allVenues = []) {
   }
 
   const json = await response.json();
-
   const updatedVenues = [...allVenues, ...(json.data || [])];
 
   if (json.meta?.nextPage) {

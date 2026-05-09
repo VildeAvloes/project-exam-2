@@ -8,6 +8,10 @@ export async function deleteVenue(venueId) {
     throw new Error("Venue ID is required");
   }
 
+  if (!auth) {
+    throw new Error("You must be logged in");
+  }
+
   const response = await fetch(`${BASE_URL}/holidaze/venues/${venueId}`, {
     method: "DELETE",
     headers: {
@@ -23,7 +27,7 @@ export async function deleteVenue(venueId) {
       const json = await response.json();
       message = json.errors?.[0]?.message || message;
     } catch {
-      // No JSON body
+      // Response has no JSON body
     }
 
     throw new Error(message);

@@ -12,7 +12,7 @@ export default function Avatar({ src, name = "User", className = "" }) {
   if (!realSrc || hasError) {
     return (
       <div
-        className={`${className} avatar-fallback d-inline-flex align-items-center justify-content-center`}
+        className={`avatar-fallback d-inline-flex align-items-center justify-content-center ${className}`}
         aria-label={`${name} avatar`}
       >
         <span className="avatar-initial">

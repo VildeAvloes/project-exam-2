@@ -8,6 +8,10 @@ export async function updateVenue(venueId, data) {
     throw new Error("Venue ID is required");
   }
 
+  if (!auth) {
+    throw new Error("You must be logged in");
+  }
+
   const response = await fetch(`${BASE_URL}/holidaze/venues/${venueId}`, {
     method: "PUT",
     headers: {

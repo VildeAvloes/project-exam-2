@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import ProfileHeader from "../components/profile/ProfileHeader";
-import EditProfile from "../components/profile/EditProfile";
 import Loader from "../components/common/Loader";
+import EditProfile from "../components/profile/EditProfile";
 import MyBookings from "../components/profile/MyBookings";
+import ProfileHeader from "../components/profile/ProfileHeader";
 import MyVenues from "../components/venues/manager/MyVenues";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Profile() {
   const { auth, setAuth, loading } = useAuth();

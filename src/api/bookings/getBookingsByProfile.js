@@ -16,11 +16,9 @@ export async function getBookingsByProfile(name, accessToken, apiKey) {
   const response = await fetch(
     `${BASE_URL}/holidaze/profiles/${name}?_bookings=true`,
     {
-      method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
         "X-Noroff-API-Key": apiKey,
-        "Content-Type": "application/json",
       },
     }
   );
@@ -29,7 +27,7 @@ export async function getBookingsByProfile(name, accessToken, apiKey) {
 
   if (!response.ok) {
     throw new Error(
-      json?.errors?.[0]?.message || "Failed to fetch profile bookings."
+      json.errors?.[0]?.message || "Failed to fetch profile bookings."
     );
   }
 

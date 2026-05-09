@@ -8,12 +8,14 @@ export async function getVenuesByProfile(name, query = "") {
     throw new Error("Profile name is required");
   }
 
+  if (!auth) {
+    throw new Error("You must be logged in");
+  }
+
   const response = await fetch(
     `${BASE_URL}/holidaze/profiles/${name}/venues${query}`,
     {
-      method: "GET",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${auth.accessToken}`,
         "X-Noroff-API-Key": auth.apiKey,
       },

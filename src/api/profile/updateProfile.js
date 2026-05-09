@@ -4,6 +4,10 @@ import { getAuth } from "../../utils/storage/getAuth";
 export async function updateProfile(data) {
   const auth = getAuth();
 
+  if (!auth) {
+    throw new Error("You must be logged in");
+  }
+
   const response = await fetch(`${BASE_URL}/holidaze/profiles/${auth.name}`, {
     method: "PUT",
     headers: {
